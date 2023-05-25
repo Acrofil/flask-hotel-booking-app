@@ -1,0 +1,7 @@
+# Do not track venv folder
+env
+env/
+venv
+venv/
+.venv
+.venv/

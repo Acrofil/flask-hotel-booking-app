@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book Now
+{% endblock %}
+
+{% block main %}
+<section id="cover" class="">
+    <div id="">
+        <div class="container">
+            <div class="row text-white">
+                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+                    <h1 class="display-4 py-2 text-truncate">Center my form.</h1>
+                    <div class="px-2">
+                        <form action="/index" method="POST" class="justify-content-center">
+                            <div class="form-group">
+                                <label class="sr-only">First Name</label>
+                                <input type="text" class="form-control" placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Last Name</label>
+                                <input type="text" class="form-control" placeholder="Last Name">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Phone number</label>
+                                <input type="text" class="form-control" placeholder="Phone Number">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Email</label>
+                                <input type="text" class="form-control" placeholder="Email Address">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Credit Card Number</label>
+                                <input type="text" class="form-control" placeholder="Credit Card">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Email</label>
+                                <input type="text" class="form-control" placeholder="jane.doe@example.com">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg mt-5">Make Reservation</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<template>
+    <div>
+      <b-form-group label="Select calendar interactive state" v-slot="{ ariaDescribedby }">
+        <b-form-radio-group
+          v-model="state"
+          :aria-describedby="ariaDescribedby"
+          aria-controls="ex-disabled-readonly"
+        >
+          <b-form-radio value="disabled">Disabled</b-form-radio>
+          <b-form-radio value="readonly">Readonly</b-form-radio>
+          <b-form-radio value="normal">Normal</b-form-radio>
+        </b-form-radio-group>
+      </b-form-group>
+  
+      <b-calendar
+        id="ex-disabled-readonly"
+        :disabled="disabled"
+        :readonly="readonly"
+      ></b-calendar>
+    </div>
+  </template>
+  
+  <script>
+    export default {
+      data() {
+        return {
+          state: 'disabled'
+        }
+      },
+      computed: {
+        disabled() {
+          return this.state === 'disabled'
+        },
+        readonly() {
+          return this.state === 'readonly'
+        }
+      }
+    }
+  </script>
+
+{% endblock %}

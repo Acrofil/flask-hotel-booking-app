@@ -1,0 +1,33 @@
+.dates {
+    
+    margin-right: 10px;
+    margin-left: 10px;
+    width:300px; 
+    
+}
+
+.bg-img {
+    /* The image used */
+    background-image: url("/static/banner-5.png");
+  
+    min-height: 380px;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+    /* Needed to position the navbar */
+    position: relative;
+  }
+
+  #children {
+    display: block;
+  }
+
+  .one_child, .two_children{
+    display: none;
+
+  }
+
+  
