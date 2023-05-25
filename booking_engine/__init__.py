@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///" +os.path.join(basedir, "hotel
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-app.debug = True 
+app.debug = True
+app.app_context().push()
 
 from booking_engine import routes

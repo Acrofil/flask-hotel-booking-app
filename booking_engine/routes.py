@@ -3,7 +3,7 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from booking_engine import app, db
 from booking_engine.helpers import login_required
-from booking_engine.models import Admin
+from booking_engine.models import Admin, Room
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -98,3 +98,42 @@ def admin_register():
 def admin_panel():
 
     return render_template("admin_panel.html")
+
+@app.route("/create_rooms", methods=["GET", "POST"])
+@login_required
+def create_rooms():
+
+    if request.method == "POST":
+
+        room_name = request.form.get("room")
+        max_guests = int(request.form.get("max_guests"))
+        max_adults = int(request.form.get("max_adults"))
+        max_children = int(request.form.get("max_children"))
+        total_rooms = request.form.get("total_rooms")
+        room_image = request.form.get("room_image")
+
+        if max_guests == max_adults and max_children > 0 or max_adults > max_guests or max_children + max_adults > max_guests:
+            flash("Max capacity exceeded!")
+            return redirect("/create_rooms")
+        
+        if not total_rooms:
+            flash("Total rooms cannot be zero!")
+            return redirect("create_rooms")
+        
+
+        room = Room(
+            name = room_name,
+            max_guests = max_guests,
+            max_adults = max_adults,
+            max_children = max_children,
+            total_of_this_type = int(total_rooms),
+            room_image = room_image 
+        )
+
+        db.session.add(room)
+        db.session.commit()
+
+        return redirect("/create_rooms")
+    else:
+
+        return render_template("create_rooms.html")
