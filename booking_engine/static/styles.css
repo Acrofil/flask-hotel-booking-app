@@ -1,3 +1,5 @@
+
+
 .dates {
     
     margin-right: 10px;
@@ -39,8 +41,9 @@
     background-color: lightskyblue;
     -webkit-text-fill-color: black;
     border-radius: 7px;
-    margin-left: 10px;
+
   }
+
 
   .navbar-toggler {
     background-color: gold;
@@ -53,4 +56,8 @@
     font-weight: bold;
     transition: scale 0.3 ease-in-out;
     
+}
+
+.nav-link {
+  -webkit-text-fill-color: lightgoldenrodyellow;
 }
