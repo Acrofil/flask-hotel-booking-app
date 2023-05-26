@@ -8,7 +8,7 @@
 
 .bg-img {
     /* The image used */
-    background-image: url("/static/banner-5.png");
+    background-image: url("/static/images/banner-5.png");
   
     min-height: 380px;
   
@@ -34,3 +34,23 @@
     color: red;
 
   }
+
+  .active {
+    background-color: lightskyblue;
+    -webkit-text-fill-color: black;
+    border-radius: 7px;
+    margin-left: 10px;
+  }
+
+  .navbar-toggler {
+    background-color: gold;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: scale 0.3 ease-in-out;
+    
+}

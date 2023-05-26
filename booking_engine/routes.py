@@ -1,8 +1,9 @@
 from flask import flash, render_template, redirect, session, request
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
-from booking_engine import app, db
-from booking_engine.helpers import login_required
+from werkzeug.utils import secure_filename
+from booking_engine import app, db, os, basedir
+from booking_engine.helpers import login_required, allowed_file
 from booking_engine.models import Admin, Room
 
 
@@ -110,9 +111,9 @@ def create_rooms():
         max_adults = int(request.form.get("max_adults"))
         max_children = int(request.form.get("max_children"))
         total_rooms = request.form.get("total_rooms")
-        room_image = request.form.get("room_image")
+        room_image = request.files.get("room_image")
 
-        if max_guests == max_adults and max_children > 0 or max_adults > max_guests or max_children + max_adults > max_guests:
+        if max_guests == max_adults and max_children > 0 or max_adults > max_guests:
             flash("Max capacity exceeded!")
             return redirect("/create_rooms")
         
@@ -120,14 +121,28 @@ def create_rooms():
             flash("Total rooms cannot be zero!")
             return redirect("create_rooms")
         
+        room_image_new = ''
 
+        #if room_image.filename == '':
+            #stock_image_path = os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename)
+           # file = request.files.get('stock_room_image.jpeg')
+          #  filename = secure_filename(file.filename)
+           # room_image_new = filename
+
+        if room_image and allowed_file(room_image.filename):
+            filename = secure_filename(room_image.filename)
+            room_image.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename))
+            room_image_new = filename
+            flash('succes!')
+        
+        print(room_image_new)
         room = Room(
             name = room_name,
             max_guests = max_guests,
             max_adults = max_adults,
             max_children = max_children,
             total_of_this_type = int(total_rooms),
-            room_image = room_image 
+            room_image = room_image_new
         )
 
         db.session.add(room)
@@ -136,4 +151,21 @@ def create_rooms():
         return redirect("/create_rooms")
     else:
 
-        return render_template("create_rooms.html")
+        room_info = Room.query.all()
+
+
+        return render_template("create_rooms.html", room_info=room_info)
+
+@app.route("/delete_rooms", methods=["GET", "POST"])
+@login_required
+def delete_rooms():
+    
+    if request.method == "POST":
+
+        delete_room = int(request.form.get("delete_room"))
+      
+
+        if delete_room:
+            Room.query.filter(Room.id == delete_room).delete()
+            db.session.commit()
+            return redirect("/create_rooms")

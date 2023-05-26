@@ -26,12 +26,16 @@
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
-    <!-- Font awesome -->
+    <!-- Font awesome / fa-icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" />
 
     <!-- For JavaScript -->
     <script src="/static/hotel.js" type="text/javascript" defer></script>
-
 
     <title>Reservations: {% block title %}{% endblock %}</title>
 
@@ -46,16 +50,23 @@
         <section>
             <nav class="navbar navbar-expand-lg navbar-light bg-secondary rounded-3 border border-1 border-warning shadow-lg bg-opacity-75">
                 <a class="navbar-brand" href="#">
-                    <img src="/static/logo1.png" width="100" height="50" class="d-inline-block align-top ml-3" alt="">
-                  </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <img src="/static/images/logo1.png" width="100" height="50" class="d-inline-block align-top ml-3" alt="cs50xhotellogo">
+                </a>
+                <button class="navbar-toggler"
+                type="button" 
+                data-toggle="collapse" 
+                data-target="#navbarNavAltMarkup" 
+                aria-controls="navbarNavAltMarkup" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation"
+                >
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     {% if session["admin_id"] %}
                     <ul class="navbar-nav ms-auto">
-                        <li class="bg-light bg-gradient shadow-lg rounded border border-1 border-primary rounded-3"><a class="nav-link" href="#">Active Reservations</a></li>
-                        <li class="nav-item text-light"><a class="nav-link" href="/create_rooms">Create Rooms</a></li>
+                        <li class="{{'active' if active_page == 'reservations'}}"><a class="nav-link" href="/admin_panel">Reservations</a></li>
+                        <li class="{{'active' if active_page == 'create_rooms'}}" id="create_rooms"><a class="nav-link" href="/create_rooms" >Create Rooms</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">List Rooms</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Cancelations</a></li>
                         <li class="nav-item"><a class="nav-link" href="/logout">Log out</a></li>
