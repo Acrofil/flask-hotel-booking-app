@@ -1,10 +1,11 @@
-from flask import flash, render_template, redirect, session, request
+from flask import flash, render_template, redirect, session, request, jsonify
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from booking_engine import app, db, os, basedir
 from booking_engine.helpers import login_required, allowed_file
-from booking_engine.models import Admin, Room
+from booking_engine.models import Admin, Room, RateType ,RatePlan
+from datetime import datetime
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -174,4 +175,87 @@ def delete_rooms():
 @login_required
 def rate_plans():
 
-    return render_template("rate_plans.html")
+    if request.method == "POST":
+
+        rate_name = request.form.get("rate_plan_name")
+        start_date = datetime.strptime(request.form.get("start_date_1"), "%d-%m-%Y")
+        end_date = datetime.strptime(request.form.get("end_date_1"), "%d-%m-%Y")
+        price_adult = request.form.get("price_per_day_adult_1")
+        price_child_12 = request.form.get("price_per_day_child_under_12_1")
+        price_child_7 = request.form.get("price_per_day_child_under_7_1")
+        price_child_2 = request.form.get("price_per_day_child_under_2_1")
+
+
+        if not price_adult.isnumeric() or not price_child_12.isnumeric() or not price_child_7.isnumeric() or not price_child_2.isnumeric():
+            flash("Only digits supported for prices!")
+            return redirect("/rate_plans")
+
+
+        total_rate_plans = 1
+        rate_plan2 = request.form.get("start_date_2")
+        rate_plan3 = request.form.get("start_date_3")
+        rate_plan4 = request.form.get("start_date_4")
+
+        if rate_plan2:
+            total_rate_plans += 1
+        if rate_plan3:
+            total_rate_plans += 1
+        if rate_plan4:
+            total_rate_plans += 1
+
+        rate_plan = RateType(
+            rate_type = rate_name
+        )
+
+        db.session.add(rate_plan)
+        db.session.flush()
+
+        if total_rate_plans == 1:
+
+            rate_plan_rates = RatePlan(
+            rate_adult = price_adult,
+            rate_child_under_12 = price_child_12,
+            rate_child_under_7 = price_child_7,
+            rate_child_under_2 = price_child_2,
+            from_date = start_date,
+            to_date = end_date,
+            rate_type_id = rate_plan.id
+        )
+            
+            db.session.add(rate_plan_rates)
+
+        
+        elif total_rate_plans > 1:
+            
+            count = 1
+            while count <= total_rate_plans:
+
+                start_date = datetime.strptime(request.form.get("start_date" + "_" + str(count)), "%d-%m-%Y")
+                end_date = datetime.strptime(request.form.get("end_date" + "_" + str(count)), "%d-%m-%Y")
+                price_adult = request.form.get("price_per_day_adult" + "_" + str(count))
+                price_child_12 = request.form.get("price_per_day_child_under_12" + "_" + str(count))
+                price_child_7 = request.form.get("price_per_day_child_under_7" + "_" + str(count))
+                price_child_2 = request.form.get("price_per_day_child_under_2" + "_" + str(count))
+
+
+                rate_plan_rates = RatePlan(
+                rate_adult = price_adult,
+                rate_child_under_12 = price_child_12,
+                rate_child_under_7 = price_child_7,
+                rate_child_under_2 = price_child_2,
+                from_date = start_date,
+                to_date = end_date,
+                rate_type_id = rate_plan.id
+            )
+                                                
+                db.session.add(rate_plan_rates) 
+
+                count += 1
+      
+        db.session.commit()
+
+        return redirect("/rate_plans")
+    else:
+
+
+        return render_template("rate_plans.html")

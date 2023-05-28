@@ -9,24 +9,203 @@
 
 {% block main %}
 <h3>Rate Plans</h3>
-<div class="container border border-1 border-warning bg-light bg-gradient shadow-lg">
 
-    <div class="form p-1" action="/rate_plans" method="post" id="rate_plans_form">
+<div class="container bg-secondary bg-opacity-75 shadow-lg">
+    <form class="form p-1" action="/rate_plans" method="post" id="rate_plans_form">
         <div class="container-fluid d-flex justify-content-center">
-            <div class="row">
-                <div class="col md-5 mt-4">
-                    <input type="text" class="form-control-lg shadow-lg border border-1 border-info was-validated" 
-                        required placeholder="Rate plan"
+            <div class="row">         
+                <div class="col md-5 mt-5  d-block">
+                    <input type="text" class="form-control-lg was-validated shadow-lg border border-1 border-info was-validated" 
+                        required placeholder="Rate plan name"
                         id="rate_plan_name"
                         name="rate_plan_name"
                         autocomplete="off">
+
+                        <h5 class="mt-3">Date Period</h5>
+
+                        <div class="col-md-2 mt-4 calendar_rate_plan">
+        
+                            <div class="dates_rate_plans d-flex shadow" id="datepicker1">
+                                <input type="text" class="form-control was-validated" required id="start_date_1" name="start_date_1" placeholder="Start Date" autocomplete="off"/>
+                                <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
+                                    <span class="bi bi-calendar"></span>
+                                </span>
+                            </div>
+        
+                            <div class="dates_rate_plans d-flex shadow mt-4">
+                                <input type="text" class="form-control was-validated" required id="end_date_1" name="end_date_1" placeholder="End Date" autocomplete="off" >
+                                <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
+                                    <span class="bi bi-calendar"></span>
+                                </span>
+                            </div>
+                        </div>             
                 </div>
-            </div>
+                
+                <div class="col md-4 mt-4">
+                    <h5>Prices per person per day</h5>
+                    <input type="text" required class="form-control-lg  was-validated shadow-lg border border-1 border-info was-validated was-validated" 
+                        required placeholder="Adult"
+                        id="price_per_day_adult_1"
+                        name="price_per_day_adult_1"
+                        autocomplete="off">
+
+                        <input type="text" required class="form-control-lg was-validated shadow-lg border mt-2  border-1 border-info was-validated" 
+                        required placeholder="Child under 12"
+                        id="price_per_day_child_under_12_1"
+                        name="price_per_day_child_under_12_1"
+                        autocomplete="off">
+
+                        <input type="text" required class="form-control-lg was-validated shadow-lg border mt-2  border-1 border-info was-validated" 
+                        required placeholder="Child under 7"
+                        id="price_per_day_child_under_7_1"
+                        name="price_per_day_child_under_7_1"
+                        autocomplete="off">
+
+                        <input type="text" required class="form-control-lg was-validated shadow-lg border mt-2 mb-5  border-1 border-info was-validated" 
+                        required placeholder="Child under 2"
+                        id="price_per_day_child_under_2_1"
+                        name="price_per_day_child_under_2_1"
+                        autocomplete="off">
+                </div>
+               
+
+                <div>
+                    <button class="btn btn-warning bg-gradient mb-3 text-dark mt-3 rounded shadow shadow-lg" id="add_rate_plan" value="add" type="button">ADD DATE PRICE PERIOD</button>
+                    <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="button">REMOVE RATE PRICE PERIOD</button>
+                    <button class="btn btn-success bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="add_rate_plan" type="submit">CREATE RATE PLAN</button>
+                </div>
+
+                </div>
+            
+                </div>
+
+                <div class="row m-lg-2 border border-3 border-warning">
+                    <div class="col-md-4 mt-4 period_two border-bottom border-end">
+                        <h5>Date Period 2</h5>
+
+                        <div class="dates_rate_plans  d-block m-5 ml-5 shadow " id="datepicker1">
+                            <input type="text" class="form-control requered_rate_plan2 calendar_rate_plan" id="start_date_2" name="start_date_2" placeholder="Start Date" autocomplete="off"/>
+                        </div>
+
+                        <div class="dates_rate_plans hidden_dates d-block m-5 ml-5 shadow" id="datepicker1">
+                            <input type="text" class="form-control requered_rate_plan2 calendar_rate_plan" id="end_date_2" name="end_date_2" placeholder="End Date" autocomplete="off"/>
+                        </div>
+                    
+                        <div class="col md-4 mt-4">
+                            <h5>Prices per person per day</h5>
+                            <input type="text" class="form-control-lg requered_rate_plan2 shadow-lg border border-1 border-info" 
+                                placeholder="Adult"
+                                id="price_per_day_adult_2"
+                                name="price_per_day_adult_2"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan2 shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="Child under 12"
+                                id="price_per_day_child_under_12_2"
+                                name="price_per_day_child_under_12_2"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan2 shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="Child under 7"
+                                id="price_per_day_child_under_7_2"
+                                name="price_per_day_child_under_7_2"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan2 shadow-lg border mt-2 mb-5  border-1 border-info" 
+                                placeholder="Child under 2"
+                                id="price_per_day_child_under_2_2"
+                                name="price_per_day_child_under_2_2"
+                                autocomplete="off">                   
+                        </div>
+                        <button class="btn btn-warning bg-gradient mb-3 text-dark mt-3 rounded shadow shadow-lg" id="add_rate_plan" value="add" type="submit">ADD ANOTHER</button>
+                        <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="submit">REMOVE</button>
+                    </div>
+
+                    <div class="col-md-4 mt-4 period_three border-bottom border-end">
+                        <h5>Date Period 3</h5>
+
+                        <div class="dates_rate_plans d-block m-5 ml-5 shadow" id="datepicker1">
+                            <input type="text" class="form-control requered_rate_plan3" id="start_date_3" name="start_date_3" placeholder="Start Date" autocomplete="off"/>
+                        </div>
+
+                        <div class="dates_rate_plans d-block m-5 ml-5 shadow" id="datepicker1">
+                            <input type="text" class="form-control requered_rate_plan3" id="end_date_3" name="end_date_3" placeholder="End Date" autocomplete="off"/>
+                        </div>
+                    
+                        <div class="col md-4 mt-4">
+                            <h5>Prices per person per day</h5>
+                            <input type="text" class="form-control-lg requered_rate_plan3 shadow-lg border border-1 border-info" 
+                                placeholder="Adult"
+                                id="price_per_day_adult_3"
+                                name="price_per_day_adult_3"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan3 shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="Child under 12"
+                                id="price_per_day_child_under_12_3"
+                                name="price_per_day_child_under_12_3"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan3 shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="Child under 7"
+                                id="price_per_day_child_under_7_3"
+                                name="price_per_day_child_under_7_3"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan3 shadow-lg border mt-2 mb-5  border-1 border-info" 
+                                placeholder="Child under 2"
+                                id="price_per_day_child_under_2_3"
+                                name="price_per_day_child_under_2_3"
+                                autocomplete="off">                   
+                        </div>
+                        <button class="btn btn-warning bg-gradient mb-3 text-dark mt-3 rounded shadow shadow-lg" id="add_rate_plan" value="add" type="submit">ADD ANOTHER</button>
+                        <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="submit">REMOVE</button>
+                    </div>
+
+                    <div class="col-md-4 mt-4 period_four">
+                        <h5 class="">Date Period 4</h5>
+
+                        <div class="dates_rate_plans  d-block m-5 ml-5 shadow" id="datepicker1">
+                            <input type="text" class="form-control requered_rate_plan4" id="start_date_4" name="start_date_4" placeholder="Start Date" autocomplete="off"/>
+                        </div>
+
+                        <div class="dates_rate_plans  d-block m-5 ml-5 shadow" id="datepicker1">
+                            <input type="text" class="form-control requered_rate_plan4" id="end_date_4" name="end_date_4" placeholder="End Date" autocomplete="off"/>
+                        </div>
+                    
+                        <div class="col md-4 mt-4">
+                            <h5>Prices per person per day</h5>
+                            <input type="text" class="form-control-lg requered_rate_plan4 shadow-lg border border-1 border-info" 
+                                placeholder="Adult"
+                                id="price_per_day_adult_4"
+                                name="price_per_day_adult_4"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan4 shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="Child under 12"
+                                id="price_per_day_child_under_12_4"
+                                name="price_per_day_child_under_12_4"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan4 shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="Child under 7"
+                                id="price_per_day_child_under_7_4"
+                                name="price_per_day_child_under_7_4"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg requered_rate_plan4 shadow-lg border mt-2 mb-5  border-1 border-info" 
+                                placeholder="Child under 2"
+                                id="price_per_day_child_under_2_4"
+                                name="price_per_day_child_under_2_4"
+                                autocomplete="off">                   
+                        </div>
+                        <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="submit">REMOVE</button>
+                    </div>
+
+                </div>
+            </div>              
         </div>
-
-
-    </div>
-
+    </form>
 </div>
 
 {% endblock %}
