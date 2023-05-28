@@ -21,18 +21,29 @@ class Room(db.Model):
     room_image = db.Column(db.String(), nullable=True)
     room_description = db.Column(db.String(), nullable=True)
     # Create relationship - One to many with RatePlan and refer to room table
-    rate_plans = db.relationship('RatePlan', backref='room')
+    #rate_plans = db.relationship('RatePlan', backref='room')
+
+
+class RateType(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    rate_type = db.Column(db.String(), nullable=False)
+    # Create relationship with rate_plan table
+    rate_plan_type = db.relationship('RatePlan', backref='rate_type')
 
 
 class RatePlan(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    rate_plan_name = db.Column(db.String())
-    # Foreign key to link Room (refer to primary key)
-    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
-    # Create relationship
-    rate_plan_range = db.relationship('RatePlanRange', backref='rate_plan')
+    rate_adult = db.Column(db.Integer, nullable=False)
+    rate_child_under_12 = db.Column(db.Integer, nullable=False)
+    rate_child_under_7 = db.Column(db.Integer, nullable=False)
+    rate_child_under_2 = db.Column(db.Integer, nullable=False)
+    from_date = db.Column(db.DateTime, nullable=False)
+    to_date = db.Column(db.DateTime, nullable=False)
+    # Foreign key to link rate_plan with rate_type by id
+    rate_type_id = db.Column(db.Integer, db.ForeignKey('rate_type.id'))
 
 
+"""
 class RatePlanRange(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     rate_plan_ = db.Column(db.DateTime, nullable=False)
@@ -53,3 +64,4 @@ class RatePlanPrice(db.Model):
     rate_plan_range_id = db.Column(db.Integer, db.ForeignKey('rate_plan_range.id'))
 
 
+"""

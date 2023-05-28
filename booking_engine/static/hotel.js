@@ -47,7 +47,68 @@
         }
         
     });
+
+
+    // Function to show or hide different date periods in Rate Plans section
+    let val = 0
+    $(document).on('click', '#add_rate_plan, #remove_rate_plan', function(){ 
+
+
+            // Target classes
+            period_2 = document.querySelector('.period_two')
+            period_3 = document.querySelector('.period_three')
+            period_4 = document.querySelector('.period_four')
+        
+        var on_button_click = $(this).val();
+
+        // if add or remove 
+        if(on_button_click == 'add'){
+            val += 1
+
+            if(val > 3){
+                val -= 1
+            }
+        }
+        else if(on_button_click == 'remove'){
+            val -= 1
+            
+            if(val < 0){
+                val += 1
+            }
+        }
+        
+            if(val == 1){
+                period_2.style.display = 'block'
+                period_3.style.display = 'none'
+                period_4.style.display = 'none'
+
+                $('.requered_rate_plan2').prop('required', true);
+            }
+            else if(val == 2){
+                period_4.style.display = 'none'
+                period_3.style.display = 'block'
+                $('.requered_rate_plan3').prop('required', true);
+                
+            }
+            else if(val == 3){
+                period_4.style.display = 'block'
+                $('.requered_rate_plan4').prop('required', true);
+            }
+            else if(val == 0){
+                period_2.style.display = 'none'
+                period_3.style.display = 'none'
+                period_4.style.display = 'none'
+                $('.requered_rate_plan2').prop('required', false);
+                $('.requered_rate_plan3').prop('required', false);
+                $('.requered_rate_plan4').prop('required', false);
+
+            }
+            ;
+    });
+
 });
+
+
 
 // for the datepicker calendar
     $(function() {
@@ -68,3 +129,21 @@
 
 });
 
+// for the datepicker calendar in rate plans
+$(function() {
+
+    $('.dates_rate_plans #start_date_1, #start_date_2, #start_date_3, #start_date_4').datepicker({
+        'format': 'dd-mm-yyyy', 'todayHighlight': true, 'showOnFocus': true, 'startDate': '0',
+        'autoclose': true
+        
+    });
+
+     
+
+    $('.dates_rate_plans #end_date_1, #end_date_2, #end_date_3, #end_date_4').datepicker({
+        'format': 'dd-mm-yyyy', 'todayHighlight': true, 'showOnFocus': true, 'startDate': '0',
+        'autoclose': true
+    });
+    
+
+});

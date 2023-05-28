@@ -1,11 +1,22 @@
-
-
 .dates {
     
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 25px;
+    margin-left: 25px;
     width:300px; 
     
+}
+
+.dates_rate_plans {
+    
+  margin-right: 160px;
+  margin-left: 160px;
+  width:300px; 
+  
+}
+
+
+.hidden_dates {
+  margin-left: 250px;
 }
 
 .bg-img {
@@ -60,4 +71,8 @@
 
 .nav-link {
   -webkit-text-fill-color: lightgoldenrodyellow;
+}
+
+.period_two, .period_three, .period_four{
+  display: none;
 }
