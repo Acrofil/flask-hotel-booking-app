@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% set active_page = "rate_plans" %}
+
+{% block title %}
+    Rate plans
+{% endblock %}
+
+
+
+{% block main %}
+<h3>Rate Plans</h3>
+<div class="container border border-1 border-warning bg-light bg-gradient shadow-lg">
+
+    <div class="form p-1" action="/rate_plans" method="post" id="rate_plans_form">
+        <div class="container-fluid d-flex justify-content-center">
+            <div class="row">
+                <div class="col md-5 mt-4">
+                    <input type="text" class="form-control-lg shadow-lg border border-1 border-info was-validated" 
+                        required placeholder="Rate plan"
+                        id="rate_plan_name"
+                        name="rate_plan_name"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

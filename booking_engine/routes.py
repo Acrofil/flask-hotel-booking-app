@@ -169,3 +169,9 @@ def delete_rooms():
             Room.query.filter(Room.id == delete_room).delete()
             db.session.commit()
             return redirect("/create_rooms")
+
+@app.route("/rate_plans", methods=["GET", "POST"])
+@login_required
+def rate_plans():
+
+    return render_template("rate_plans.html")
