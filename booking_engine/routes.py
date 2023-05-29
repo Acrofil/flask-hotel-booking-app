@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from booking_engine import app, db, os, basedir
 from booking_engine.helpers import login_required, allowed_file
-from booking_engine.models import Admin, Room, RateType ,RatePlan
+from booking_engine.models import Admin, Room, RateType, RatePlan
 from datetime import datetime
 
 
@@ -134,7 +134,6 @@ def create_rooms():
             room_image_new = filename
             flash('succes!')
         
-        print(room_image_new)
         room = Room(
             name = room_name,
             max_guests = max_guests,
@@ -190,6 +189,7 @@ def rate_plans():
         if rate_plan4:
             total_rate_plans += 1
 
+
         rate_plan = RateType(
             rate_name = rate_plan_name
         )
@@ -206,22 +206,31 @@ def rate_plans():
             end_date = datetime.strptime(request.form.get("end_date" + "_" + str(i)), "%d-%m-%Y")
             price_adult = request.form.get("price_per_day_adult" + "_" + str(i))
             price_single_adult = request.form.get("price_per_day_single_adult" + "_" + str(i))
+            price_child_under_12_reg_bed = request.form.get("price_per_day_child_under_12_regular_bed" + "_" + str(i))
+            price_child_18 = request.form.get("price_per_day_child_under_18" + "_" + str(i))
             price_child_12 = request.form.get("price_per_day_child_under_12" + "_" + str(i))
             price_child_7 = request.form.get("price_per_day_child_under_7" + "_" + str(i))
             price_child_2 = request.form.get("price_per_day_child_under_2" + "_" + str(i))
 
-            if not price_adult.isnumeric() or not price_single_adult.isnumeric() or not price_child_12.isnumeric() or not price_child_7.isnumeric() or not price_child_2.isnumeric():
-                flash("Only digits supported for prices!")
-                all_data_is_correct = False
-                return redirect("/rate_plans")
+            if (price_adult.isalpha() or
+                    price_single_adult.isalpha() or
+                    price_child_under_12_reg_bed.isalpha() or
+                    price_child_12.isalpha() or
+                    price_child_7.isalpha() or
+                    price_child_2.isalpha()):
+                        flash("Only digits supported for prices!")
+                        all_data_is_correct = False
+                        return redirect("/rate_plans")
 
             # Create rate plan object
             rate_plan_rates = RatePlan(
-            rate_adult = price_adult,
-            rate_single_adult = price_single_adult,
-            rate_child_under_12 = price_child_12,
-            rate_child_under_7 = price_child_7,
-            rate_child_under_2 = price_child_2,
+            adult = price_adult,
+            single_adult = price_single_adult,
+            child_under_12_rb = price_child_under_12_reg_bed,
+            child_under_18_exb = price_child_18,
+            child_under_12_exb = price_child_12,
+            child_under_7_exb = price_child_7,
+            child_under_2_exb = price_child_2,
             from_date = start_date,
             to_date = end_date,
             rate_type_id = rate_plan.id
@@ -236,6 +245,5 @@ def rate_plans():
 
         return redirect("/rate_plans")
     else:
-
 
         return render_template("rate_plans.html")

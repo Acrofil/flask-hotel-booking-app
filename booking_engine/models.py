@@ -27,18 +27,20 @@ class Room(db.Model):
 
 class RateType(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    rate_name = db.Column(db.String(), nullable=False)
+    rate_name = db.Column(db.String(50), nullable=False)
     # Create relationship with rate_plan table
     rate_plan_type = db.relationship('RatePlan', backref='rate_type')
 
-
+# exb - extra bed, rb - regular bed
 class RatePlan(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    rate_adult = db.Column(db.Integer, nullable=False)
-    rate_single_adult = db.Column(db.Integer, nullable=False)
-    rate_child_under_12 = db.Column(db.Integer, nullable=False)
-    rate_child_under_7 = db.Column(db.Integer, nullable=False)
-    rate_child_under_2 = db.Column(db.Integer, nullable=False)
+    adult = db.Column(db.Integer, nullable=False)
+    single_adult = db.Column(db.Integer, nullable=False)
+    child_under_12_rb = db.Column(db.Integer, nullable=False)
+    child_under_18_exb = db.Column(db.Integer, nullable=True)
+    child_under_12_exb = db.Column(db.Integer, nullable=True)
+    child_under_7_exb = db.Column(db.Integer, nullable=True)
+    child_under_2_exb = db.Column(db.Integer, nullable=True)
     from_date = db.Column(db.DateTime, nullable=False)
     to_date = db.Column(db.DateTime, nullable=False)
     # Foreign key to link rate_plan with rate_type by id

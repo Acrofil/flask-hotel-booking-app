@@ -14,7 +14,7 @@
                 <h3 class="mt-2 text-warning">RATE PLANS</h3>         
                 <div class="col md-5 mt-5  d-block border-end">
 
-                    <h5>Rate plan name</h5>
+                    <h5>Rate plan name *</h5>
 
                     <input type="text" class="form-control-lg shadow-lg border border-1 border-info was-validated" 
                         required placeholder="Example: Double-Room-BB"
@@ -22,7 +22,7 @@
                         name="rate_plan_name"
                         autocomplete="off">
 
-                        <h5 class="mt-3">Date Period</h5>
+                        <h5 class="mt-3">Date Period *</h5>
 
                         <div class="col-md-2 mt-4 calendar_rate_plan">
         
@@ -43,7 +43,7 @@
                     </div>
                 
                 <div class="col md-4 mt-4">
-                    <h5>Adult prices per day</h5>
+                    <h5>Adult prices per day *</h5>
                     <input type="text" required class="form-control-lg w-50  shadow-lg border border-1 border-info was-validated was-validated" 
                         required placeholder="Adult price"
                         id="price_per_day_adult_1"
@@ -56,22 +56,38 @@
                         name="price_per_day_single_adult_1"
                         autocomplete="off">
 
-                        <h5 class="mt-2">Children prices for extra beds</h5>
-
-                        <input type="text" required class="form-control-lg w-50  shadow-lg border mt-2  border-1 border-info was-validated" 
-                        required placeholder="Under 12"
-                        id="price_per_day_child_under_12_1"
-                        name="price_per_day_child_under_12_1"
+                        <h5 class="mt-5">Children under 12 on regular bed *</h5>
+                        <input type="text" required class="form-control-lg mt-2 w-50  shadow-lg border border-1 border-info was-validated was-validated" 
+                        required placeholder="0 to 11.99 y.o"
+                        id="price_per_day_child_under_12_regular_bed_1"
+                        name="price_per_day_child_under_12_regular_bed_1"
                         autocomplete="off">
 
-                        <input type="text" required class="form-control-lg w-50  shadow-lg border mt-2  border-1 border-info was-validated" 
-                        required placeholder="Under 7"
+                        <h5 class="mt-5">Children prices for extra beds</h5>
+                        <p class="mb-2 text-warning">(*Leave empty if no price)</p> 
+
+                        <input type="text" class="form-control-lg w-50  shadow-lg border mt-2  border-1 border-info" 
+                        placeholder="12 to 17.99 y.o"
+                        id="price_per_day_child_under_18_1"
+                        name="price_per_day_child_under_18_1"
+                        autocomplete="off"
+                        >
+
+                        <input type="text" class="form-control-lg w-50  shadow-lg border mt-2  border-1 border-info" 
+                        placeholder="7 to 11.99 y.o"
+                        id="price_per_day_child_under_12_1"
+                        name="price_per_day_child_under_12_1"
+                        autocomplete="off"
+                        >
+
+                        <input type="text"  class="form-control-lg w-50  shadow-lg border mt-2  border-1 border-info" 
+                        placeholder="2 to 6.99 y.o"
                         id="price_per_day_child_under_7_1"
                         name="price_per_day_child_under_7_1"
                         autocomplete="off">
 
-                        <input type="text" required class="form-control-lg w-50  shadow-lg border mt-2 mb-5  border-1 border-info was-validated" 
-                        required placeholder="Under 2"
+                        <input type="text" class="form-control-lg w-50  shadow-lg border mt-2 mb-5  border-1 border-info " 
+                        placeholder="0 to 1.99 y.o"
                         id="price_per_day_child_under_2_1"
                         name="price_per_day_child_under_2_1"
                         autocomplete="off">
@@ -102,7 +118,7 @@
                        
                     
                         <div class="col md-4 mt-4">
-                            <h5>Adult prices per day</h5>
+                            <h5>Adult prices per day *</h5>
                             <input type="text" class="form-control-lg w-75 requered_rate_plan2 shadow-lg border border-1 border-info" 
                                 placeholder="Adult"
                                 id="price_per_day_adult_2"
@@ -115,22 +131,36 @@
                                 name="price_per_day_single_adult_2"
                                 autocomplete="off">
 
-                                <h5 class="mt-2">Children prices for extra beds</h5>
+                                <h5 class="mt-5">Children under 12 on regular bed *</h5>
+                                <input type="text"  class="form-control-lg mt-2 w-75 requered_rate_plan2 shadow-lg border border-1 border-info" 
+                                placeholder="0 to 11.99 y.o"
+                                id="price_per_day_child_under_12_regular_bed_2"
+                                name="price_per_day_child_under_12_regular_bed_2"
+                                autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan2 shadow-lg border mt-2  border-1 border-info" 
-                                placeholder="Under 12"
+                                <h5 class="mt-5">Children prices for extra beds</h5>
+                                <p class="mb-2 text-warning">(*Leave empty if no price)</p> 
+
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="12 to 17.99 y.o"
+                                id="price_per_day_child_under_18_2"
+                                name="price_per_day_child_under_18_2"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="7 to 11.99 y.o"
                                 id="price_per_day_child_under_12_2"
                                 name="price_per_day_child_under_12_2"
                                 autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan2 shadow-lg border mt-2  border-1 border-info" 
-                                placeholder="Under 7"
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="2 to 6.99 y.o"
                                 id="price_per_day_child_under_7_2"
                                 name="price_per_day_child_under_7_2"
                                 autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan2 shadow-lg border mt-2 mb-5  border-1 border-info" 
-                                placeholder="Under 2"
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2 mb-5  border-1 border-info" 
+                                placeholder="0 to 1.99 y.o"
                                 id="price_per_day_child_under_2_2"
                                 name="price_per_day_child_under_2_2"
                                 autocomplete="off">                   
@@ -151,7 +181,7 @@
                         </div>
                     
                         <div class="col md-4 mt-4">
-                            <h5>Adult prices per day</h5>
+                            <h5>Adult prices per day *</h5>
                             <input type="text" class="form-control-lg w-75 requered_rate_plan3 shadow-lg border border-1 border-info" 
                                 placeholder="Adult"
                                 id="price_per_day_adult_3"
@@ -164,22 +194,36 @@
                                 name="price_per_day_single_adult_3"
                                 autocomplete="off">
 
-                                <h5 class="mt-2">Children prices for extra beds</h5>
+                                <h5 class="mt-5">Children under 12 on regular bed *</h5>
+                                <input type="text"  class="form-control-lg mt-2 w-75 requered_rate_plan2 shadow-lg border border-1 border-info" 
+                                placeholder="0 to 11.99 y.o"
+                                id="price_per_day_child_under_12_regular_bed_3"
+                                name="price_per_day_child_under_12_regular_bed_3"
+                                autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan3 shadow-lg border mt-2  border-1 border-info" 
-                                placeholder="Under 12"
+                                <h5 class="mt-5">Children prices for extra beds</h5>
+                                <p class="mb-2 text-warning">(*Leave empty if no price)</p> 
+
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="12 to 17.99 y.o"
+                                id="price_per_day_child_under_18_3"
+                                name="price_per_day_child_under_18_3"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="7 to 11.99 y.o"
                                 id="price_per_day_child_under_12_3"
                                 name="price_per_day_child_under_12_3"
                                 autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan3 shadow-lg border mt-2  border-1 border-info" 
-                                placeholder="Under 7"
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="2 to 6.99 y.o"
                                 id="price_per_day_child_under_7_3"
                                 name="price_per_day_child_under_7_3"
                                 autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan3 shadow-lg border mt-2 mb-5  border-1 border-info" 
-                                placeholder="Under 2"
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2 mb-5  border-1 border-info" 
+                                placeholder="0 to 1.99 y.o"
                                 id="price_per_day_child_under_2_3"
                                 name="price_per_day_child_under_2_3"
                                 autocomplete="off">                   
@@ -200,7 +244,7 @@
                         </div>
                     
                         <div class="col md-4 mt-4">
-                            <h5>Adult prices per day</h5>
+                            <h5>Adult prices per day *</h5>
                             <input type="text" class="form-control-lg w-75 requered_rate_plan4 shadow-lg border border-1 border-info" 
                                 placeholder="Adult"
                                 id="price_per_day_adult_4"
@@ -213,25 +257,40 @@
                                 name="price_per_day_single_adult_4"
                                 autocomplete="off">
 
-                                <h5 class="mt-2">Children prices for extra beds</h5>
+                                <h5 class="mt-5">Children under 12 on regular bed *</h5>
+                                <input type="text"  class="form-control-lg mt-2 w-75 requered_rate_plan2 shadow-lg border border-1 border-info" 
+                                placeholder="0 to 11.99 y.o"
+                                id="price_per_day_child_under_12_regular_bed_4"
+                                name="price_per_day_child_under_12_regular_bed_4"
+                                autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan4 shadow-lg border mt-2  border-1 border-info" 
-                                placeholder="Under 12"
+                                <h5 class="mt-5">Children prices for extra beds</h5>
+                                <p class="mb-2 text-warning">(*Leave empty if no price)</p>  
+
+                                <input type="text" class="form-control-lg w-75 mt-2  shadow-lg border border-1 border-info" 
+                                placeholder="12 to 17.99 y.o"
+                                id="price_per_day_child_under_18_4"
+                                name="price_per_day_child_under_18_4"
+                                autocomplete="off">
+
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="7 to 11.99 y.o"
                                 id="price_per_day_child_under_12_4"
                                 name="price_per_day_child_under_12_4"
                                 autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan4 shadow-lg border mt-2  border-1 border-info" 
-                                placeholder="Under 7"
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2  border-1 border-info" 
+                                placeholder="2 to 6.99 y.o"
                                 id="price_per_day_child_under_7_4"
                                 name="price_per_day_child_under_7_4"
                                 autocomplete="off">
 
-                                <input type="text" class="form-control-lg w-75 requered_rate_plan4 shadow-lg border mt-2 mb-5  border-1 border-info" 
-                                placeholder="Under 2"
+                                <input type="text" class="form-control-lg w-75  shadow-lg border mt-2 mb-5  border-1 border-info" 
+                                placeholder="0 to 1.99 y.o"
                                 id="price_per_day_child_under_2_4"
                                 name="price_per_day_child_under_2_4"
-                                autocomplete="off">                   
+                                autocomplete="off">     
+                                             
                         </div>
                         <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="submit">REMOVE</button>
                     </div>
