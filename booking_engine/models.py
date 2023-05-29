@@ -22,7 +22,7 @@ class Room(db.Model):
     room_image = db.Column(db.String(), nullable=True)
     room_description = db.Column(db.String(), nullable=True)
     # Create relationship - One to many with RatePlan and refer to room table
-    #rate_plans = db.relationship('RatePlan', backref='room')
+    listed_room = db.relationship("ListedRoom", backref='room')
 
 
 class RateType(db.Model):
@@ -30,6 +30,8 @@ class RateType(db.Model):
     rate_name = db.Column(db.String(50), nullable=False)
     # Create relationship with rate_plan table
     rate_plan_type = db.relationship('RatePlan', backref='rate_type')
+    # Relationship with ListedRoom
+    listed_room = db.relationship("ListedRoom", backref='rate_type')
 
 # exb - extra bed, rb - regular bed
 class RatePlan(db.Model):
@@ -47,25 +49,22 @@ class RatePlan(db.Model):
     rate_type_id = db.Column(db.Integer, db.ForeignKey('rate_type.id'))
 
 
-"""
-class RatePlanRange(db.Model):
+class ListedRoom(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    rate_plan_ = db.Column(db.DateTime, nullable=False)
-    rate_plan_end_date = db.Column(db.DateTime, nullable=False)
-    # Foreign key to link RatePlan - refer to primary key
-    rate_plan_id = db.Column(db.Integer, db.ForeignKey('rate_plan.id'))
-    # Create relationship with RatePlanPrice
-    rate_plan_price = db.relationship('RatePlanPrice', backref='rate_plan_range')
+    listed_date = db.Column(db.DateTime, nullable=False)
+    quantity_per_date = db.Column(db.Integer, nullable=False)
+    # Foreign keys for rate_type and room
+    rate_type_id = db.Column(db.Integer, db.ForeignKey('rate_type.id'))
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
+    # Relationship between room_availability and listed_room
+    room_availability = db.relationship('RoomAvailability', backref='listed_room')
 
 
-class RatePlanPrice(db.Model):
+class RoomAvailability(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    price_per_adult = db.Column(db.Integer, nullable=False)
-    price_per_children_under_12 = db.Column(db.Integer, nullable=False)
-    price_per_children_under_7 = db.Column(db.Integer, nullable=False)
-    price_per_children_under_2 = db.Column(db.Integer, nullable=False)
-    # Foreign key to link RatePlanRange - refer to primary key
-    rate_plan_range_id = db.Column(db.Integer, db.ForeignKey('rate_plan_range.id'))
+    left_to_sell = db.Column(db.Integer, nullable=False)
+    booked_quantity = db.Column(db.Integer, nullable=False)
+    is_it_available = db.Column(db.Boolean, nullable=False, default=False)
+    listed_room_id = db.Column(db.Integer, db.ForeignKey('listed_room.id'), nullable=False)
 
 
-"""
