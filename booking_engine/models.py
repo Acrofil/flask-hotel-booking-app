@@ -15,6 +15,7 @@ class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(100), unique=True, nullable=False)
     max_guests = db.Column(db.Integer, nullable=False)
+    min_guests = db.Column(db.Integer,)
     max_adults = db.Column(db.Integer, nullable=False)
     max_children = db.Column(db.Integer, nullable=False)
     total_of_this_type = db.Column(db.Integer, nullable=False)
@@ -26,7 +27,7 @@ class Room(db.Model):
 
 class RateType(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    rate_type = db.Column(db.String(), nullable=False)
+    rate_name = db.Column(db.String(), nullable=False)
     # Create relationship with rate_plan table
     rate_plan_type = db.relationship('RatePlan', backref='rate_type')
 
@@ -34,6 +35,7 @@ class RateType(db.Model):
 class RatePlan(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     rate_adult = db.Column(db.Integer, nullable=False)
+    rate_single_adult = db.Column(db.Integer, nullable=False)
     rate_child_under_12 = db.Column(db.Integer, nullable=False)
     rate_child_under_7 = db.Column(db.Integer, nullable=False)
     rate_child_under_2 = db.Column(db.Integer, nullable=False)
