@@ -3,8 +3,8 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from booking_engine import app, db, os, basedir
-from booking_engine.helpers import login_required, allowed_file
-from booking_engine.models import Admin, Room, RateType, RatePlan
+from booking_engine.helpers import login_required, allowed_file, usd
+from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, RoomAvailability
 from datetime import datetime
 
 
@@ -245,5 +245,30 @@ def rate_plans():
 
         return redirect("/rate_plans")
     else:
+        
 
         return render_template("rate_plans.html")
+    
+
+@app.route("/view_rate_plans", methods=["GET", "POST"])
+@login_required
+def view_rate_plans():
+
+    if request.method == "POST":
+
+        delete_rate = request.form.get("delete")
+
+        if delete_rate:
+            RateType.query.filter(RateType.id == delete_rate).delete()
+            RatePlan.query.filter(RatePlan.rate_type_id == delete_rate).delete()
+            db.session.commit()
+
+
+        return redirect("/view_rate_plans")
+
+    else:
+
+        rate_plans = RateType.query.all()
+    
+    
+    return render_template("view_rate_plans.html", rate_plans=rate_plans, usd=usd)

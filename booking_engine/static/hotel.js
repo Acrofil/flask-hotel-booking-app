@@ -109,6 +109,24 @@
 });
 
 
+$(document).ready(function(){
+	$('#show1, #hide1').on('click',function(){	
+		$('.hide_row1').toggle();
+	});
+});
+
+$(document).ready(function(){
+	$('#show2, #hide2').on('click',function(){	
+		$('.hide_row2').toggle();
+	});
+});
+
+$(document).ready(function(){
+	$('#show3, #hide3').on('click',function(){	
+		$('.hide_row3').toggle();
+	});
+});
+
 
 // for the datepicker calendar
     $(function() {
