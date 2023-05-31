@@ -7,265 +7,56 @@
 
 {% block main %}
 
+<h3 class="mt-2 text-primary">RATE PLANS</h3>  
+
+<div class="container-fluid">
 {% for rate_type in rate_plans %}
+
+<h3>{{ rate_type.rate_name }}</h3>
+<input class="btn btn-success bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "button" name = "Test1" id="show{{ rate_type.id }}" value = "Show/Hide">
+
 <form action="/view_rate_plans" method="post">
-<div class="container-fluid d-flex justify-content-start">   
-    <table class="mt-5" style="width: 50%;" id="all_rate_plans">
-        <tr>
-          <th>Name:</th>
-          <td class="rate_plan_view">{{ rate_type.rate_name }}</td>
-          <td><input class="btn btn-success bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "button" name = "Test1" id="show{{ rate_type.id }}" value = "Show/Hide"></td>
-          <td>
-            <!-- Button trigger modal -->
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-            Delete Rate plan
-        </button>
-  
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Rate plan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body">
-                    Are you sure you want to delete the rate plan?
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger" id="delete" name="delete" value="{{ rate_type.id }}">Delete</button>
-                    </div>
-                </div>
-                </div>
-            </div>
-            
-            
-    
-            </div>
-            </div>
-            </div>
-        </td>
-        </tr>
-        {% if rate_type.rate_plan_type|length == 1 %}
-            {% for rate_plan in rate_type.rate_plan_type %}
-            <tr class="hide_row{{ rate_type.id }}">
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Starting Date</th>
-                    <td>{{ rate_plan.from_date.strftime('%Y-%m-%d') }}</td>       
+    <div class="container-fluid d-flex justify-content-start">   
+        <table  class="mt-5 border border-3 border-info hide_row{{ rate_type.id }}"  style="width: 50%;" id="all_rate_plans">
+            <tr class="">
+                <th>Name</th>
+                 <td class="rate_plan_view"><strong class="text-primary">{{ rate_type.rate_name }}</strong></td>
+                <td><button type="submit" 
+                        class="btn btn-danger"  
+                        id="delete" name="delete" 
+                        value="{{ rate_type.id }}">Delete Rate plan</button></td>        
                 </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Ending Date</th>
-                    <td>{{ rate_plan.to_date.strftime('%Y-%m-%d') }}</td>  
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                <th>Adult:</th>
-                <td>{{ usd(rate_plan.adult) }}</td>
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                <th>Single adult:</th>
-                <td>{{ rate_plan.single_adult }}</td>
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Child 0-12 RB:</th>
-                    <td>{{ rate_plan.child_under_12_rb }}</td>
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Child 12-17.99 Exb</th>
-                    <td>{{ rate_plan.child_under_18_exb}}</td>
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Child 7-11.99 Exb:</th>
-                    <td>{{ rate_plan.child_under_12_exb }}</td>
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Child 2-6.99</th>
-                    <td>{{ rate_plan.child_under_7_exb }}</td>
-                </tr>
-                <tr class="hide_row{{ rate_type.id }}">
-                    <th>Child 0-1.99:</th>
-                    <td>{{ rate_plan.child_under_2_exb }}</td>
-                </tr>
-            </tr>
-            {% endfor %}
-        
-        {% elif rate_type.rate_plan_type|length == 2 %}
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Starting Date</th>
-                <td>{{ rate_type.rate_plan_type[0].from_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[1].from_date.strftime('%Y-%m-%d') }}</td>          
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Ending Date</th>
-                <td>{{ rate_type.rate_plan_type[0].to_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[1].to_date.strftime('%Y-%m-%d') }}</td>   
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-            <th>Adult:</th>
-                <td>{{ rate_type.rate_plan_type[0].adult }}</td>
-                <td>{{ rate_type.rate_plan_type[1].adult }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-            <th>Single adult:</th>
-                <td>{{ rate_type.rate_plan_type[0].single_adult }}</td>
-                <td>{{ rate_type.rate_plan_type[1].single_adult }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 0-12 RB:</th>
-                    <td>{{ rate_type.rate_plan_type[0].child_under_12_rb }}</td>
-                    <td>{{ rate_type.rate_plan_type[1].child_under_12_rb }}</td>
-             </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 12-17.99 Exb</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_18_exb}}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_18_exb}}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 7-11.99 Exb:</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_12_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_12_exb }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}"> 
-                <th>Child 2-6.99</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_7_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_7_exb }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 0-1.99:</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_2_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_2_exb }}</td>
-            </tr>
 
-            {% elif rate_type.rate_plan_type|length == 3 %}
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Starting Date</th>
-                <td>{{ rate_type.rate_plan_type[0].from_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[1].from_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[2].from_date.strftime('%Y-%m-%d') }}</td>           
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Ending Date</th>
-                <td>{{ rate_type.rate_plan_type[0].to_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[1].to_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[2].to_date.strftime('%Y-%m-%d') }}</td>     
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-            <th>Adult:</th>
-                <td>{{ rate_type.rate_plan_type[0].adult }}</td>
-                <td>{{ rate_type.rate_plan_type[1].adult }}</td>
-                <td>{{ rate_type.rate_plan_type[2].adult }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-            <th>Single adult:</th>
-                <td>{{ rate_type.rate_plan_type[0].single_adult }}</td>
-                <td>{{ rate_type.rate_plan_type[1].single_adult }}</td>
-                <td>{{ rate_type.rate_plan_type[2].single_adult }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 0-12 RB:</th>
-                    <td>{{ rate_type.rate_plan_type[0].child_under_12_rb }}</td>
-                    <td>{{ rate_type.rate_plan_type[1].child_under_12_rb }}</td>
-                    <td>{{ rate_type.rate_plan_type[2].child_under_12_rb }}</td>
-             </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 12-17.99 Exb</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_18_exb}}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_18_exb}}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_18_exb}}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 7-11.99 Exb:</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_12_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_12_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_12_exb }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 2-6.99</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_7_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_7_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_7_exb }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 0-1.99:</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_2_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_2_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_2_exb }}</td>
-            </tr>
-
-            {% elif rate_type.rate_plan_type|length == 4 %}
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Starting Date</th>
-                <td>{{ rate_type.rate_plan_type[0].from_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[1].from_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[2].from_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[3].from_date.strftime('%Y-%m-%d') }}</td>             
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Ending Date</th>
-                <td>{{ rate_type.rate_plan_type[0].to_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[1].to_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[2].to_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ rate_type.rate_plan_type[3].to_date.strftime('%Y-%m-%d') }}</td>      
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}"> 
-            <th>Adult:</th>
-                <td>{{ usd(rate_type.rate_plan_type[0].adult) }}</td>
-                <td>{{ rate_type.rate_plan_type[1].adult }}</td>
-                <td>{{ rate_type.rate_plan_type[2].adult }}</td>
-                <td>{{ rate_type.rate_plan_type[3].adult }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-            <th>Single adult:</th>
-                <td>{{ rate_type.rate_plan_type[0].single_adult }}</td>
-                <td>{{ rate_type.rate_plan_type[1].single_adult }}</td>
-                <td>{{ rate_type.rate_plan_type[2].single_adult }}</td>
-                <td>{{ rate_type.rate_plan_type[3].single_adult }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 0-12 RB:</th>
-                    <td>{{ rate_type.rate_plan_type[0].child_under_12_rb }}</td>
-                    <td>{{ rate_type.rate_plan_type[1].child_under_12_rb }}</td>
-                    <td>{{ rate_type.rate_plan_type[2].child_under_12_rb }}</td>
-                    <td>{{ rate_type.rate_plan_type[3].child_under_12_rb }}</td>
-             </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 12-17.99 Exb</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_18_exb}}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_18_exb}}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_18_exb}}</td>
-                <td>{{ rate_type.rate_plan_type[3].child_under_18_exb}}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 7-11.99 Exb:</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_12_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_12_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_12_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[3].child_under_12_exb }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 2-6.99</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_7_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_7_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_7_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[3].child_under_7_exb }}</td>
-            </tr>
-            <tr class="hide_row{{ rate_type.id }}">
-                <th>Child 0-1.99:</th>
-                <td>{{ rate_type.rate_plan_type[0].child_under_2_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[1].child_under_2_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[2].child_under_2_exb }}</td>
-                <td>{{ rate_type.rate_plan_type[3].child_under_2_exb }}</td>
-            </tr>
-        {% endif %}
-      </table>
-   
-</div>
+                <tr>   
+                    {% for header in headings %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>     
+                <tr>
+                    {% set date_period = namespace(value=1) %}
+                    {% for rate_plan in rate_type.rate_plan_type %}  
+                        <th>{{ date_period.value }}</th>
+                        <td>{{ rate_plan.from_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ rate_plan.to_date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ rate_plan.adult }}</td>
+                        <td>{{ rate_plan.single_adult}}</td>
+                        <td>{{ rate_plan.child_under_12_rb}}</td>
+                        <td>{{ rate_plan.child_under_18_exb}}</td>
+                        <td>{{ rate_plan.child_under_12_exb}}</td>
+                        <td>{{ rate_plan.child_under_12_exb}}</td>
+                        <td>{{ rate_plan.child_under_12_exb}}</td>
+                        {% set date_period.value = date_period.value + 1 %}       
+                </tr>
+            </tr>      {% endfor %}             
+        </table> 
+    </div>
 </form>
 {% endfor %}
 
 
-
-
+</div>
 {% endblock %}
+
+
+
+

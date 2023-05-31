@@ -59,56 +59,57 @@
             period_3 = document.querySelector('.period_three')
             period_4 = document.querySelector('.period_four')
         
-        var on_button_click = $(this).val();
+            var on_button_click = $(this).val();
 
-        // if add or remove 
-        if(on_button_click == 'add'){
-            val += 1
-
-            if(val > 3){
-                val -= 1
-            }
-        }
-        else if(on_button_click == 'remove'){
-            val -= 1
-            
-            if(val < 0){
+            // if add or remove 
+            if(on_button_click == 'add'){
                 val += 1
+    
+                if(val > 3){
+                    val -= 1
+                }
             }
-        }
-        
-            if(val == 1){
-                period_2.style.display = 'block'
-                period_3.style.display = 'none'
-                period_4.style.display = 'none'
-
-                $('.requered_rate_plan2').prop('required', true);
-            }
-            else if(val == 2){
-                period_4.style.display = 'none'
-                period_3.style.display = 'block'
-                $('.requered_rate_plan3').prop('required', true);
+            else if(on_button_click == 'remove'){
+                val -= 1
                 
+                if(val < 0){
+                    val += 1
+                }
             }
-            else if(val == 3){
-                period_4.style.display = 'block'
-                $('.requered_rate_plan4').prop('required', true);
-            }
-            else if(val == 0){
-                period_2.style.display = 'none'
-                period_3.style.display = 'none'
-                period_4.style.display = 'none'
-                $('.requered_rate_plan2').prop('required', false);
-                $('.requered_rate_plan3').prop('required', false);
-                $('.requered_rate_plan4').prop('required', false);
-
-            }
-            ;
+            
+                if(val == 1){
+                    period_2.style.display = 'block'
+                    period_3.style.display = 'none'
+                    period_4.style.display = 'none'
+    
+                    $('.requered_rate_plan2').prop('required', true);
+                }
+                else if(val == 2){
+                    period_4.style.display = 'none'
+                    period_3.style.display = 'block'
+                    $('.requered_rate_plan3').prop('required', true);
+                    
+                }
+                else if(val == 3){
+                    period_4.style.display = 'block'
+                    $('.requered_rate_plan4').prop('required', true);
+                }
+                else if(val == 0){
+                    period_2.style.display = 'none'
+                    period_3.style.display = 'none'
+                    period_4.style.display = 'none'
+                    $('.requered_rate_plan2').prop('required', false);
+                    $('.requered_rate_plan3').prop('required', false);
+                    $('.requered_rate_plan4').prop('required', false);
+    
+                }
+                ;
     });
 
 });
 
 
+// Trying to hide each rate plan - not working for now
 $(document).ready(function(){
 	$('#show1, #hide1').on('click',function(){	
 		$('.hide_row1').toggle();
@@ -127,6 +128,17 @@ $(document).ready(function(){
 	});
 });
 
+$(document).ready(function(){
+	$('#show4, #hide4').on('click',function(){	
+		$('.hide_row4').toggle();
+	});
+});
+
+$(document).ready(function(){
+	$('#show5, #hide5').on('click',function(){	
+		$('.hide_row5').toggle();
+	});
+});
 
 // for the datepicker calendar
     $(function() {

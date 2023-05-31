@@ -104,6 +104,7 @@
 #all_rate_plans tr:hover {background-color: #ddd;}
 
 
-.hide_row, .hide_row1, .hide_row2, .hide_row3{
+.hide_row, .hide_row1, .hide_row2, .hide_row3, .hide_row4, .hide_row5{
   display: none;
 }
+

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% set active_page = "rate_plans" %}
+
+{% block title %}
+    Availability
+{% endblock %}
+
+{% block main %}
+
+<!--Select Dates -->
+<h3 class="mb-5">Check availability for the selected dates</h3>
+<div class="container bg-light border border-1 border-info shadow-lg">
+    <form class="form p-1" action="/availability" method="post" id="availability_dates">
+
+        <h5>Dates</h5>
+        
+        <div class="row d-flex justify-content-start">
+            <div class="dates_rate_plans d-flex shadow mb-4">
+                <input type="text" class="form-control was-validated"  id="end_date_1" name="end_date_1" placeholder="Start Date" autocomplete="off" >
+                <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
+                    <span class="bi bi-calendar"></span>
+                </span>
+            </div>
+
+            <div class="dates_rate_plans d-flex shadow mb-4">
+                <input type="text" class="form-control was-validated"  id="end_date_1" name="end_date_1" placeholder="End Date" autocomplete="off" >
+                <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
+                    <span class="bi bi-calendar"></span>
+                </span>
+            </div>
+
+            <div>
+                <input class="btn btn-success bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "submit" name = "Test1" id="show_dates" value = "Show">
+            </div> 
+        </div>            
+    </form>
+</div>
+
+
+
+
+{% endblock %}

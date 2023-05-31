@@ -269,6 +269,25 @@ def view_rate_plans():
     else:
 
         rate_plans = RateType.query.all()
+
+        headings = [
+                    "Date period", 
+                    "Starting date", 
+                    "Ending date", 
+                    "Adult", 
+                    "Single adult", 
+                    "Child 0-12 RB", 
+                    "Child 12-17.99 Exb", 
+                    "Child 7-11.99 Exb", 
+                    "Child 2-6.99", 
+                    "Child 0-1.99"
+                ]
     
-    
-    return render_template("view_rate_plans.html", rate_plans=rate_plans, usd=usd)
+    return render_template("view_rate_plans.html", rate_plans=rate_plans, headings=headings, usd=usd)
+
+
+@app.route("/availability", methods=["GET", "POST"])
+@login_required
+def availability():
+
+    return render_template("availability.html")
