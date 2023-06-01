@@ -7,8 +7,47 @@
 
 {% block main %}
 
+
+
+<h3 class="mb-2">Add available rooms for the selected dates</h3>
+<div class="container bg-light border border-1 border-info shadow-lg">
+    <form class="form p-5 d-flex justify-content-center" action="/add_room" method="post" id="availability_dates">
+
+        <div>
+          <select class="form-select d-flex" style="width: 500px; height: 30px;" name="selected_room" id="selected_room">
+            <option selected disabled>Select Room</option>
+            {% for room in rooms %}
+              <option value="{{ room.id }}">{{ room.name }}</option>
+            {% endfor %}
+          </select>
+          <p class="mt-2">Room quantity</p>
+          <input class="number" type="number" min="1" max="10" id="selected_quantity" name="selected_quantity">
+        </div>
+        
+        <div class="row d-flex justify-content-end">
+            <div class="dates_rate_plans d-flex shadow mb-4">
+                <input type="text" class="form-control was-validated"  id="start_date" name="start_date" placeholder="Start Date" autocomplete="off" >
+                <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
+                    <span class="bi bi-calendar"></span>
+                </span>
+            </div>
+
+            <div class="dates_rate_plans d-flex shadow mb-4">
+                <input type="text" class="form-control was-validated"  id="end_date" name="end_date" placeholder="End Date" autocomplete="off" >
+                <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
+                    <span class="bi bi-calendar"></span>
+                </span>
+            </div>  
+        </div>
+        <div>
+          <input class="btn btn-primary bg-gradient mb-2 text-light mt-3 rounded shadow shadow-lg mt-5" type = "submit" name = "Test1" id="show_dates" value = "ADD ROOM">
+      </div>          
+    </form>
+</div>
+
 <!--Select Dates -->
-<h3 class="mb-5">Check availability for the selected dates</h3>
+
+<h3 class="mb-2 mt-5">Check availability for the selected dates</h3>
 <div class="container bg-light border border-1 border-info shadow-lg">
     <form class="form p-1" action="/availability" method="post" id="availability_dates">
 
@@ -30,7 +69,7 @@
             </div>
 
             <div>
-                <input class="btn btn-success bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "submit" name = "Test1" id="show_dates" value = "Show">
+                <input class="btn btn-primary bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "submit" name = "Test1" id="show_dates" value = "SHOW">
             </div> 
         </div>            
     </form>
@@ -47,6 +86,20 @@
       <tr>
         <th style="width:300px">Room</th>
         <th>Status</th>
+        <th>21 Jun 2023 <button type="button" style="width: 25px; height: 25px; color: white; background-color: green; border-radius: 20px;">a</button></th>
+        <th>22 Jun 2023 <button type="button" style="width: 25px; height: 25px; color: white; background-color: green; border-radius: 20px;">n</button></th>
+        <th>23 Jun 2023 <button type="button" style="width: 25px; height: 25px; color: white; background-color: red; border-radius: 20px;">n</button></th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
         <th>Indiv date</th>
         <th>Indiv date</th>
         <th>Indiv date</th>
@@ -66,10 +119,56 @@
   
     <tbody>
       <tr>
-        <td rowspan="5">Room Name</td>
+        <td rowspan="7">Room Name Placeholder</td>
       </tr>
       <tr class="border border-2">
-        <td>Added</td>
+        <td><strong>Total</strong></td>
+        <td>10</td>
+        <td>10</td>
+        <td>10</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+      </tr>
+      <tr>
+      <tr class="border border-2">
+        <td>For sell</td>
+        <td>6</td>
+        <td>6</td>
+        <td>6</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
         <td>4</td>
         <td>4</td>
         <td>4</td>
@@ -87,6 +186,20 @@
       </tr>
       <tr>
         <td>Available</td>
+        <td>5</td>
+        <td>5</td>
+        <td>5</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
         <td>4</td>
         <td>4</td>
         <td>4</td>
@@ -104,6 +217,20 @@
       </tr>
       <tr>
         <td>Booked</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
         <td>4</td>
         <td>4</td>
         <td>4</td>
@@ -121,6 +248,20 @@
       </tr>
       <tr>
         <td>Stop Sale</td>
+        <td><button type="button" style="width: 30px; height: 30px; color: white; background-color: red; border-radius: 20px;">S</button></td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
         <td>4</td>
         <td>4</td>
         <td>4</td>
@@ -159,6 +300,20 @@
         <th>Indiv date</th>
         <th>Indiv date</th>
         <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
+        <th>Indiv date</th>
       </tr>
     </thead>
   
@@ -168,6 +323,20 @@
       </tr>
       <tr class="border border-2">
         <td>Added</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
         <td>4</td>
         <td>4</td>
         <td>4</td>
@@ -199,6 +368,20 @@
         <td>4</td>
         <td>4</td>
         <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
       </tr>
       <tr>
         <td>Booked</td>
@@ -216,9 +399,37 @@
         <td>4</td>
         <td>4</td>
         <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
       </tr>
       <tr>
         <td>Stop Sale</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
+        <td>4</td>
         <td>4</td>
         <td>4</td>
         <td>4</td>

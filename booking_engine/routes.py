@@ -30,7 +30,6 @@ def index():
         print(two)
 
 
-
         return redirect("/")
     else:
 
@@ -285,9 +284,48 @@ def view_rate_plans():
     
     return render_template("view_rate_plans.html", rate_plans=rate_plans, headings=headings, usd=usd)
 
-
+# Availability
 @app.route("/availability", methods=["GET", "POST"])
 @login_required
 def availability():
 
+    rooms = Room.query.all()
+
+
+    return render_template("availability.html", rooms=rooms)
+
+
+# Add room to availability
+@app.route("/add_room", methods=["GET", "POST"])
+@login_required
+def add_room():
+
+    if request.method == "POST":
+        room_type = request.form.get("selected_room")
+        add_room_quantity = request.form.get("selected_quantity")
+        start_date = request.form.get("start_date")
+        end_date = request.form.get("end_date")
+        
+
+        room = db.session.query(Room).filter(Room.id == room_type).first()
+        listed_rooms = db.session.query(ListedRoom).filter(ListedRoom.room_id == room_type).filter(ListedRoom.listed_date.between(start_date, end_date))
+        #available_rooms = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id)
+        
+
+
+        if int(add_room_quantity) > room.total_of_this_type:
+            flash("Cannot add more than total amount!")
+            return redirect("/availability")
+
+        for listed_room in listed_rooms:
+
+            if add_room_quantity + listed_room.quantity_per_date > room.total_of_this_type:
+                flash(f"Cannot add more rooms from total owned of this type {listed_room.room_id.name} for the date {listed_room.listed_date}") 
+                return redirect("/availability")
+
+
+        return redirect("/availability")
+
+    
     return render_template("availability.html")
+

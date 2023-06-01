@@ -162,7 +162,7 @@ $(document).ready(function(){
 // for the datepicker calendar in rate plans
 $(function() {
 
-    $('.dates_rate_plans #start_date_1, #start_date_2, #start_date_3, #start_date_4').datepicker({
+    $('.dates_rate_plans #start_date, #start_date_1, #start_date_2, #start_date_3, #start_date_4').datepicker({
         'format': 'dd-mm-yyyy', 'todayHighlight': true, 'showOnFocus': true, 'startDate': '0',
         'autoclose': true
         
@@ -170,7 +170,7 @@ $(function() {
 
      
 
-    $('.dates_rate_plans #end_date_1, #end_date_2, #end_date_3, #end_date_4').datepicker({
+    $('.dates_rate_plans #end_date, #end_date_1, #end_date_2, #end_date_3, #end_date_4').datepicker({
         'format': 'dd-mm-yyyy', 'todayHighlight': true, 'showOnFocus': true, 'startDate': '0',
         'autoclose': true
     });
