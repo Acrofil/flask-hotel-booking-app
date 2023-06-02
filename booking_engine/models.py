@@ -63,8 +63,8 @@ class ListedRoom(db.Model):
 class RoomAvailability(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     left_to_sell = db.Column(db.Integer, nullable=False)
-    booked_quantity = db.Column(db.Integer, nullable=False)
-    is_it_available = db.Column(db.Boolean, nullable=False, default=False)
+    booked_quantity = db.Column(db.Integer, nullable=True)
+    is_it_available = db.Column(db.Boolean, nullable=False, default=True)
     listed_room_id = db.Column(db.Integer, db.ForeignKey('listed_room.id'), nullable=False)
 
 

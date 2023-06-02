@@ -312,7 +312,6 @@ def add_room():
     
         room = Room.query.filter_by(id=room_type).one()
         listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(start_date, end_date)).filter_by(room_id=room_type).all()
-        #available_rooms = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id)
 
         if add_room_quantity > room.total_of_this_type:
             flash("Cannot add more than total amount!")
@@ -332,16 +331,32 @@ def add_room():
      
         dates = pd.date_range(start=start_date, end=end_date)
 
+        # If we have listed rooms for the selected dates
         if listed_rooms:
             
+            # Update the quantity + the desired add
             for listed_room in listed_rooms:
                 listed_room.quantity_per_date += add_room_quantity
-                
 
+            # Update room availability. Query all that == listed_room.id             
+            available_rooms = []
+            for listed_room in listed_rooms:
+                room = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).all()
+                available_rooms.append(room) 
+
+            # Loop and add the + new value
+            for rooms in available_rooms:
+
+                for available_room in rooms:
+                    available_room.left_to_sell += add_room_quantity
+
+        # If we do not have listed rooms for the selected dates           
         if not listed_rooms:
-
+            
+            # Loop each day
             for date in dates:
 
+                # Create listed_room obj
                 listed_room = ListedRoom(
                     listed_date = date,
                     quantity_per_date = add_room_quantity,
@@ -349,8 +364,21 @@ def add_room():
                     room_id = room_type,        
                 )
 
+                # Add and commit
                 db.session.add(listed_room)
-  
+                db.session.commit()
+
+                # Init room_availability with the created above obj.id
+                available_room = RoomAvailability(
+                    left_to_sell = add_room_quantity,
+                    booked_quantity = 0,
+                    listed_room_id = listed_room.id    
+                )
+
+                # Add it
+                db.session.add(available_room)
+                
+        # Final commit and redirect
         db.session.commit()
 
         return redirect("/availability")
