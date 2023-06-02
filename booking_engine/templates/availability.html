@@ -20,9 +20,16 @@
               <option value="{{ room.id }}">{{ room.name }}</option>
             {% endfor %}
           </select>
+          <select class="form-select d-flex mt-2" style="width: 500px; height: 30px;" name="rate_name" id="rate_name">
+            <option selected disabled>Select Rate plan</option>
+            {% for rate_type in rate_types %}
+            <option value="{{ rate_type.id }}">{{ rate_type.rate_name }}</option>
+            {% endfor %}
+          </select>
           <p class="mt-2">Room quantity</p>
           <input class="number" type="number" min="1" max="10" id="selected_quantity" name="selected_quantity">
         </div>
+        
         
         <div class="row d-flex justify-content-end">
             <div class="dates_rate_plans d-flex shadow mb-4">

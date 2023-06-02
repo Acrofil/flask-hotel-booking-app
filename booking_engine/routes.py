@@ -5,7 +5,8 @@ from werkzeug.utils import secure_filename
 from booking_engine import app, db, os, basedir
 from booking_engine.helpers import login_required, allowed_file, usd
 from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, RoomAvailability
-from datetime import datetime
+from datetime import datetime, timedelta
+import pandas as pd
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -290,9 +291,10 @@ def view_rate_plans():
 def availability():
 
     rooms = Room.query.all()
+    rate_types = RateType.query.all()
 
 
-    return render_template("availability.html", rooms=rooms)
+    return render_template("availability.html", rooms=rooms, rate_types=rate_types)
 
 
 # Add room to availability
@@ -301,31 +303,59 @@ def availability():
 def add_room():
 
     if request.method == "POST":
+
         room_type = request.form.get("selected_room")
-        add_room_quantity = request.form.get("selected_quantity")
-        start_date = request.form.get("start_date")
-        end_date = request.form.get("end_date")
-        
-
-        room = db.session.query(Room).filter(Room.id == room_type).first()
-        listed_rooms = db.session.query(ListedRoom).filter(ListedRoom.room_id == room_type).filter(ListedRoom.listed_date.between(start_date, end_date))
+        rate_name = request.form.get("rate_name")
+        add_room_quantity = int(request.form.get("selected_quantity"))
+        start_date = datetime.strptime(request.form.get("start_date"), "%d-%m-%Y")
+        end_date = datetime.strptime(request.form.get("end_date"), "%d-%m-%Y")
+    
+        room = Room.query.filter_by(id=room_type).one()
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(start_date, end_date)).filter_by(room_id=room_type).all()
         #available_rooms = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id)
-        
 
-
-        if int(add_room_quantity) > room.total_of_this_type:
+        if add_room_quantity > room.total_of_this_type:
             flash("Cannot add more than total amount!")
             return redirect("/availability")
 
         for listed_room in listed_rooms:
 
+            check_dates = []
             if add_room_quantity + listed_room.quantity_per_date > room.total_of_this_type:
-                flash(f"Cannot add more rooms from total owned of this type {listed_room.room_id.name} for the date {listed_room.listed_date}") 
+                check_dates.append(listed_room.listed_date)
+            
+
+            if len(check_dates) != 0:
+                flash(f"Cannot add more rooms from total owned of this type {room.name} for the date {[date for date in check_dates]}") 
                 return redirect("/availability")
 
+     
+        dates = pd.date_range(start=start_date, end=end_date)
+
+        if listed_rooms:
+            
+            for listed_room in listed_rooms:
+                listed_room.quantity_per_date += add_room_quantity
+                
+
+        if not listed_rooms:
+
+            for date in dates:
+
+                listed_room = ListedRoom(
+                    listed_date = date,
+                    quantity_per_date = add_room_quantity,
+                    rate_type_id = rate_name,
+                    room_id = room_type,        
+                )
+
+                db.session.add(listed_room)
+  
+        db.session.commit()
 
         return redirect("/availability")
 
+    else:
     
-    return render_template("availability.html")
+        return render_template("availability.html")
 
