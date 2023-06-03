@@ -90,6 +90,28 @@
   padding: 15px;
 }
 
+#availability_table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+}
+
+#availability_table td, #availability_table th {
+  border: 1px solid #ddd;
+  padding: 15px;
+}
+
+
+#availability_table th {
+  width: 30px;
+  height: 60px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: lightblue;
+  color: black;
+}
+
 
 #all_rate_plans th {
   padding-top: 12px;
@@ -99,9 +121,9 @@
   color: black;
 }
 
-#all_rate_plans tr:nth-child(even){background-color: #f2f2f2;}
+#all_rate_plans, #availability_table tr:nth-child(even){background-color: #f2f2f2;}
 
-#all_rate_plans tr:hover {background-color: #ddd;}
+#all_rate_plans, #availability_table tr:hover {background-color: #ddd;}
 
 
 .hide_row, .hide_row1, .hide_row2, .hide_row3, .hide_row4, .hide_row5{
@@ -110,4 +132,11 @@
 
 table, th, td {
   border: 1px solid black;
+}
+
+.testing{
+  width: 180px;
+  border: 10px;
+  border-color: red;
+  margin-left: 20px;
 }

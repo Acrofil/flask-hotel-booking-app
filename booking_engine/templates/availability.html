@@ -8,6 +8,7 @@
 {% block main %}
 
 
+<!-- Add rooms for sale / booking -->
 
 <h3 class="mb-2">Add available rooms for the selected dates</h3>
 <div class="container bg-light border border-1 border-info shadow-lg">
@@ -16,7 +17,7 @@
         <div>
           <select class="form-select d-flex" style="width: 500px; height: 30px;" name="selected_room" id="selected_room">
             <option selected disabled>Select Room</option>
-            {% for room in rooms %}
+            {% for room in all_rooms %}
               <option value="{{ room.id }}">{{ room.name }}</option>
             {% endfor %}
           </select>
@@ -52,7 +53,7 @@
     </form>
 </div>
 
-<!--Select Dates -->
+<!--Select Dates to check availability for all room types -->
 
 <h3 class="mb-2 mt-5">Check availability for the selected dates</h3>
 <div class="container bg-light border border-1 border-info shadow-lg">
@@ -62,14 +63,14 @@
         
         <div class="row d-flex justify-content-start">
             <div class="dates_rate_plans d-flex shadow mb-4">
-                <input type="text" class="form-control was-validated"  id="end_date_1" name="end_date_1" placeholder="Start Date" autocomplete="off" >
+                <input type="text" class="form-control was-validated"  id="from_date" name="from_date" placeholder="Start Date" autocomplete="off" >
                 <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
                     <span class="bi bi-calendar"></span>
                 </span>
             </div>
 
             <div class="dates_rate_plans d-flex shadow mb-4">
-                <input type="text" class="form-control was-validated"  id="end_date_1" name="end_date_1" placeholder="End Date" autocomplete="off" >
+                <input type="text" class="form-control was-validated"  id="to_date" name="to_date" placeholder="End Date" autocomplete="off" >
                 <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
                     <span class="bi bi-calendar"></span>
                 </span>
@@ -84,380 +85,142 @@
 
 <h3 class="mt-5 mb-4">Availability Calendar</h3>
 
-<div class="container-fluid ">
 
 
-
-<table border="1" width="100%" id="all_rate_plans">
+<!-- Loop each room in rooms -->
+{% for room in rooms %}
+<div class="container d-flex justify-content-center">
+<div class="container-fluid mt-5  d-flex justify-content-center">
+<table class="border border-3 border-info bg-light bg-gradient shadow" border="1" width="50%" id="availability_table">
     <thead>
       <tr>
         <th style="width:300px">Room</th>
+        <!-- Loop tru each date in dates loop tru listed_rooms and available_rooms and compare / check if is bookable -->
         <th>Status</th>
-        <th>21 Jun 2023 <button type="button" style="width: 25px; height: 25px; color: white; background-color: green; border-radius: 20px;">a</button></th>
-        <th>22 Jun 2023 <button type="button" style="width: 25px; height: 25px; color: white; background-color: green; border-radius: 20px;">n</button></th>
-        <th>23 Jun 2023 <button type="button" style="width: 25px; height: 25px; color: white; background-color: red; border-radius: 20px;">n</button></th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
+        {% for date in dates %}
+          <th>{{ date.strftime('%d')}}
+            {{ date.strftime('%B')[0:3] }}
+            {{date.strftime('%a')}}
+
+            {% for listed_room in listed_rooms %}
+              {% for available_room in available_rooms %}
+                {% if listed_room.room_id == room.id and listed_room.listed_date == date and available_room.listed_room_id == listed_room.id %}
+                  {% if available_room.is_it_available == 1 %}
+                    <br>
+                    <button type="button" style="width: 25px; height: 25px; color: white; background-color: green; border-radius: 20px;">a</button>
+
+                  {% elif available_room.is_it_available == 0 %}
+                    <br>
+                    <button type="button" style="width: 25px; height: 25px; color: white; background-color: red; border-radius: 20px;">n</button>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+
+          </th>
+        {% endfor %}
       </tr>
     </thead>
   
     <tbody>
       <tr>
-        <td rowspan="7">Room Name Placeholder</td>
+        <td rowspan="7">{{ room.name }}</td>
+        <!-- room.name -->
       </tr>
       <tr class="border border-2">
         <td><strong>Total</strong></td>
-        <td>10</td>
-        <td>10</td>
-        <td>10</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
+        <!-- Loop each date in dates -->
+            <!--room.total_of_this_type -->
+        {% for date in dates %}
+          <td>{{ room.total_of_this_type }}</td>
+        {% endfor %}
       </tr>
       <tr>
-      <tr class="border border-2">
-        <td>For sell</td>
-        <td>6</td>
-        <td>6</td>
-        <td>6</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <td>Available</td>
-        <td>5</td>
-        <td>5</td>
-        <td>5</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <td>Booked</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <td>Stop Sale</td>
-        <td><button type="button" style="width: 30px; height: 30px; color: white; background-color: red; border-radius: 20px;">S</button></td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-      </tr>
-    </tbody>
-  </table>
-
-
-<table border="1" class="mt-5" width="100%" id="all_rate_plans">
-    <thead>
-      <tr>
-        <th style="width:300px">Room</th>
-        <th>Status</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-        <th>Indiv date</th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <tr>
-        <td rowspan="5">Room Name Two</td>
-      </tr>
       <tr class="border border-2">
         <td>Added</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
+        <!-- Loop avail from availability -->
+              <!--avail.quantity_per_date -->
+        {% for listed_room in listed_rooms %}
+
+          {% if listed_room.room_id == room.id %}
+
+            {% if listed_room.quantity_per_date > 0 %}
+
+              <td>{{ listed_room.quantity_per_date }}</td>     
+
+            {% endif %}
+
+          {% endif %}
+        
+        {% endfor %}
       </tr>
-      <tr>
+      <tr class="border border-2">
         <td>Available</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
+        <!-- Loop avail from availability -->
+              <!--avail.left_to_sell -->
+        {% for date in dates %}
+
+          {% for listed_room in listed_rooms %}
+
+              {% if listed_room.room_id == room.id and listed_room.listed_date == date %}
+
+                {% for available_room in available_rooms %}
+                  
+                  {% if available_room.listed_room_id == listed_room.id %}
+
+                    <td>{{ available_room.left_to_sell }}</td>
+
+                  {% endif %}
+
+                {% endfor %}
+
+              {% endif %}
+          {% endfor %}
+
+        {% endfor %}
       </tr>
       <tr>
         <td>Booked</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
+        <!-- Loop avail from availability -->
+              <!--avail.booked_quantity -->
+        {% for date in dates %}
+
+        {% for listed_room in listed_rooms %}
+
+            {% if listed_room.room_id == room.id and listed_room.listed_date == date %}
+
+              {% for available_room in available_rooms %}
+                
+                {% if available_room.listed_room_id == listed_room.id %}
+
+                  <td>{{ available_room.booked_quantity }}</td>
+
+                {% endif %}
+
+              {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+
+      {% endfor %}
       </tr>
       <tr>
-        <td>Stop Sale</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
-        <td>4</td>
       </tr>
     </tbody>
   </table>
-
-  
+  <form action="/stop_sale" method="POST">
+    <div class="testing bg-light bg-gradient opacity-75 container-fluid d-block border border-1 border-danger shadow">
+      <h5 class="mt-4">STOP / ADD SALE</h5>
+      <input type="text" class="form-control"  id="start_date" name="start_stop_date" placeholder="Start date" autocomplete="off" >
+      <input type="text" class="form-control mt-2"  id="end_date" name="end_stop_date" placeholder="End Date" autocomplete="off" >
+      <button class="btn btn-danger bg-gradient  text-light  rounded shadow shadow-lg mt-5 mb-3" type = "submit" name = "stop_sale" id="show_dates" value = "STOP">STOP SALE</button>
+      <input type="text" value="{{ room.id }}" style="display: none;" id="stop_sale_room_id" name="stop_sale_room_id">
+      <button class="btn btn-success bg-gradient text-light  rounded shadow shadow-lg mt-3 mb-5" type = "submit" name = "add_sale" id="show_dates" value = "ADD">ADD SALE</button>
+    </div>
+    
+  </form>
 </div>
-
-
+</div>
+{% endfor %}
 
 {% endblock %}

@@ -290,11 +290,68 @@ def view_rate_plans():
 @login_required
 def availability():
 
-    rooms = Room.query.all()
-    rate_types = RateType.query.all()
+    if request.method == "POST":
+    
+
+        rooms = Room.query.all()
+        rate_types = RateType.query.all()
+        rate_types = RateType.query.all()
+
+        from_date = datetime.strptime(request.form.get("from_date"), "%d-%m-%Y")
+        to_date = datetime.strptime(request.form.get("to_date"), "%d-%m-%Y")
+        dates = pd.date_range(start=from_date, end=to_date)
+
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(from_date, to_date)).all()
+        available_rooms = RoomAvailability.query.all()
 
 
-    return render_template("availability.html", rooms=rooms, rate_types=rate_types)
+        return render_template("availability.html", rooms=rooms, dates=dates, listed_rooms=listed_rooms, available_rooms=available_rooms, rate_types=rate_types)
+
+    else:
+
+        all_rooms = Room.query.all()
+        rate_types = RateType.query.all()
+
+        
+
+        return render_template("availability.html", all_rooms=all_rooms, rate_types=rate_types)
+
+@app.route("/stop_sale", methods=["GET", "POST"])
+@login_required
+def stop_sale():
+
+    if request.method == "POST":
+
+       
+        stop_sale_start = datetime.strptime(request.form.get("start_stop_date"), "%d-%m-%Y")
+        stop_sale_end = datetime.strptime(request.form.get("end_stop_date"),  "%d-%m-%Y")
+        stop_sale_room = request.form.get("stop_sale_room_id")
+
+            
+        dates = pd.date_range(start=stop_sale_start, end=stop_sale_end)
+
+        rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(stop_sale_start, stop_sale_end)).filter_by(room_id=stop_sale_room).all()
+
+        
+        for room in rooms:
+
+            rooms_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == room.id)
+
+            for each_room in rooms_availability:
+
+                if request.form.get("stop_sale") == "STOP":
+                    each_room.is_it_available = 0
+                    print("Changed to FALSE")
+                    db.session.commit()
+                
+                elif request.form.get("add_sale") == "ADD":
+                    each_room.is_it_available = 1
+                    print("Changed to TRUE")
+                    db.session.commit()
+
+
+        return render_template("availability.html")
+
 
 
 # Add room to availability

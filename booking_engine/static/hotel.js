@@ -109,7 +109,7 @@
 });
 
 
-// Trying to hide each rate plan - not working for now
+// hiding each rate plan
 $(document).ready(function(){
 	$('#show1, #hide1').on('click',function(){	
 		$('.hide_row1').toggle();
@@ -162,7 +162,7 @@ $(document).ready(function(){
 // for the datepicker calendar in rate plans
 $(function() {
 
-    $('.dates_rate_plans #start_date, #start_date_1, #start_date_2, #start_date_3, #start_date_4').datepicker({
+    $('.dates_rate_plans #from_date, #start_date, #start_date_1, #start_date_2, #start_date_3, #start_date_4').datepicker({
         'format': 'dd-mm-yyyy', 'todayHighlight': true, 'showOnFocus': true, 'startDate': '0',
         'autoclose': true
         
@@ -170,10 +170,24 @@ $(function() {
 
      
 
-    $('.dates_rate_plans #end_date, #end_date_1, #end_date_2, #end_date_3, #end_date_4').datepicker({
+    $('.dates_rate_plans #to_date, #end_date, #end_date_1, #end_date_2, #end_date_3, #end_date_4').datepicker({
         'format': 'dd-mm-yyyy', 'todayHighlight': true, 'showOnFocus': true, 'startDate': '0',
         'autoclose': true
     });
     
 
 });
+
+// does nothing for now
+$(document).ready(function(){
+    $("form[name='availability_form']").submit(function(event) {
+      event.preventDefault();
+      $.post("/greet", $(this).serialize())
+        .done(function(data) {
+          $("#message").html(data.message);
+        })
+        .fail(function() {
+          $("#message").html("An error has occurred.");
+        });
+    });
+  });
