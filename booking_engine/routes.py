@@ -53,7 +53,7 @@ def index():
         for room in all_rooms:
 
             # Check if can be accommodated in one room
-            if total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests:
+            if total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests or adults == 1:
                 print("Can be accomodated in ONE room")
                 print(room.name)
 
@@ -70,15 +70,26 @@ def index():
                         
                         for rp in rate_plan:
 
-                            price_per_day_adults = adults * rp.adult
+                            price_per_day_adults = 0
                             price_per_day_childen = 0
 
-                            if one_child == '12':
-                                price_per_day_childen = total_children * rp.child_under_12_exb
-                            elif one_child == '6':
-                                price_per_day_childen = total_children * rp.child_under_7_exb
-                            elif one_child == '2':
-                                price_per_day_childen = total_children * rp.child_under_2_exb
+                            if adults < 2:
+                                price_per_day_adults = adults * rp.single_adult
+
+                            if adults < 2 and total_children == 1:
+                                price_per_day_adults = adults * rp.adult
+                                price_per_day_childen = total_children * rp.child_under_12_rb
+
+                            elif adults > 1:
+                                price_per_day_adults = adults * rp.adult
+
+                            if adults > 1:
+                                if one_child == '12':
+                                    price_per_day_childen = total_children * rp.child_under_12_exb
+                                elif one_child == '6':
+                                    price_per_day_childen = total_children * rp.child_under_7_exb
+                                elif one_child == '2':
+                                    price_per_day_childen = total_children * rp.child_under_2_exb
 
                             total_price = (price_per_day_adults + price_per_day_childen) * total_days
                             
@@ -94,8 +105,7 @@ def index():
                                 'total_price': total_price
 
                                 }
-                            
-                            
+                               
                             room_prices.append(room_option)
                             
                 # List comprehension over room_prices,  preserve original order and remove duplicates            
