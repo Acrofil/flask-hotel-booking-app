@@ -114,6 +114,7 @@ def create_rooms():
         max_children = int(request.form.get("max_children"))
         total_rooms = request.form.get("total_rooms")
         room_image = request.files.get("room_image")
+        room_description = request.form.get("room_description")
 
         if max_guests == max_adults and max_children > 0 or max_adults > max_guests:
             flash("Max capacity exceeded!")
@@ -141,7 +142,8 @@ def create_rooms():
             max_adults = max_adults,
             max_children = max_children,
             total_of_this_type = int(total_rooms),
-            room_image = room_image_new
+            room_image = room_image_new,
+            room_description = room_description
         )
 
         db.session.add(room)
@@ -222,6 +224,7 @@ def rate_plans():
                         all_data_is_correct = False
                         return redirect("/rate_plans")
 
+
             # Create rate plan object
             rate_plan_rates = RatePlan(
             adult = price_adult,
@@ -236,9 +239,7 @@ def rate_plans():
             rate_type_id = rate_plan.id
             )
                                             
-            db.session.add(rate_plan_rates) 
-
-
+            db.session.add(rate_plan_rates)
 
         if all_data_is_correct:
             db.session.commit()

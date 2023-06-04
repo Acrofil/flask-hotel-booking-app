@@ -96,8 +96,14 @@
                             <td><strong>Max Adults: </strong> {{ room.max_adults }}</td>
                             <td><strong>Max Children: </strong>{{ room.max_children }}</td>
                             <td><strong>Rooms of this type: </strong>{{ room.total_of_this_type }}</td>
+                            
                         </tr>
                     </table>
+                    <table>
+                    <tr>
+                        <td><strong>Room description: </strong>{{ room.room_description }}</td>
+                    </tr>
+                </table>
                 </div>
                 <form action="/delete_rooms" method="post" enctype="multipart/form-data" id="form">
                     <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="delete_room" value="{{ room.id }}" name="delete_room" type="submit">DELETE ROOM</button>
