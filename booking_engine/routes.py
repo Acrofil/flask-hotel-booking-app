@@ -4,9 +4,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from booking_engine import app, db, os, basedir
 from booking_engine.helpers import login_required, allowed_file, usd
-from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, RoomAvailability
+from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, RoomAvailability, bookings, Client, Reservation
 from datetime import datetime, timedelta
+from iteration_utilities import unique_everseen
 import pandas as pd
+
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -14,22 +16,110 @@ def index():
 
     if request.method == "POST":
 
-        checkin = request.form.get("checkin")
-        checkout = request.form.get("checkout")
-        rooms = request.form.get("rooms")
-        adults = request.form.get("adults")
+        days = timedelta(days=1)
+
+        checkin = datetime.strptime(request.form.get("checkin"), "%d-%m-%Y")
+        checkout = datetime.strptime(request.form.get("checkout"), "%d-%m-%Y")
+        rooms = int(request.form.get("rooms"))
+        adults = int(request.form.get("adults"))
         children = request.form.get("children")
-        one = request.form.get('first_child')
-        two = request.form.get('second_child')
+        one_child = request.form.get('first_child')
+        two_children = request.form.get('second_child')
 
-        print(checkin)
-        print(checkout)
-        print(rooms)
-        print(adults)
-        print(children)
-        print(one)
-        print(two)
+        check_out = checkout - days
 
+        total_days = int((checkout - checkin).days)
+
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(checkin, check_out)).join(RoomAvailability).filter(RoomAvailability.is_it_available == 1).all()
+
+        # First we check if there is any listed room for the client dates
+        if not listed_rooms:
+            flash("NO rooms available for the selected dates")
+            return redirect("/")
+        
+        total_children = 0
+
+        if children == "one":
+            total_children = 1
+        elif children == "two":
+            total_children = 2
+
+        all_rooms = Room.query.all()
+
+        # total guests selected by client
+        total_guests = adults + total_children
+
+        # Loop tru all created rooms in db
+        for room in all_rooms:
+
+            # Check if can be accommodated in one room
+            if total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests:
+                print("Can be accomodated in ONE room")
+                print(room.name)
+
+                room_prices = []
+
+                for listed_room in listed_rooms:
+                    
+                    if listed_room.quantity_per_date < rooms:
+                        print("No rooms")
+
+                    elif listed_room.quantity_per_date > rooms and listed_room.room_id == room.id:
+                    
+                        rate_plan = RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).filter(RatePlan.from_date.between(checkin, checkout)).all()
+                        
+                        for rp in rate_plan:
+
+                            price_per_day_adults = adults * rp.adult
+                            price_per_day_childen = 0
+
+                            if one_child == '12':
+                                price_per_day_childen = total_children * rp.child_under_12_exb
+                            elif one_child == '6':
+                                price_per_day_childen = total_children * rp.child_under_7_exb
+                            elif one_child == '2':
+                                price_per_day_childen = total_children * rp.child_under_2_exb
+
+                            total_price = (price_per_day_adults + price_per_day_childen) * total_days
+                            
+                            room_option = {
+                                'room_type': room.name,
+                                'from_date': checkin,
+                                'to_date': checkout,
+                                'total_days': total_days,
+                                'total_guests': total_guests,
+                                'total_adults': adults,
+                                'total_children': total_children,
+                                'children_age': one_child,
+                                'total_price': total_price
+
+                                }
+                            
+                            
+                            room_prices.append(room_option)
+                            
+                # List comprehension over room_prices,  preserve original order and remove duplicates            
+                bookable_rooms = list(unique_everseen(room_prices, key=lambda item: frozenset(item.items())))
+                print(bookable_rooms)
+                
+                # Continue from here
+
+
+
+                        # return render_template .. .. ..
+            
+            # Check if can be accomodated in more than one room
+            elif total_guests <= room.max_guests * rooms and adults <= room.max_adults * rooms and total_children <= room.max_children * rooms:
+                print("Can be accommodated in TWO rooms")
+                print(room.name)
+
+            #for listed_room in listed_rooms:
+                #if listed_room.quantity_per_date < rooms:
+                   # print("Not that many rooms for that period")
+                #elif listed_room.quantity_per_date > rooms:
+                    #print("Can be booked")
+                   # print(listed_room.quantity_per_date)
+                   # print(rooms)
 
         return redirect("/")
     else:

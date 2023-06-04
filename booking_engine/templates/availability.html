@@ -98,8 +98,8 @@
         <!-- Loop tru each date in dates loop tru listed_rooms and available_rooms and compare / check if is bookable -->
         <th>Status</th>
         {% for date in dates %}
-          <th>{{ date.strftime('%d')}}
-            {{ date.strftime('%B')[0:3] }}
+          <th>{{ date.strftime('%B')[0:3] }}
+            {{ date.strftime('%-d')}}    
             {{date.strftime('%a')}}
 
             {% for listed_room in listed_rooms %}
