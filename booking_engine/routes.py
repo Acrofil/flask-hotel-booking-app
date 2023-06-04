@@ -76,6 +76,11 @@ def index():
                             if adults < 2:
                                 price_per_day_adults = adults * rp.single_adult
 
+                            if adults < 2 and total_children > 0 :
+                                price_per_day_adults = adults * rp.adult
+                                price_per_day_childen = (total_children - 1) * rp.child_under_12_rb
+                                price_per_day_childen += (total_children -1) * rp.child_under_12_exb
+                            
                             if adults < 2 and total_children == 1:
                                 price_per_day_adults = adults * rp.adult
                                 price_per_day_childen = total_children * rp.child_under_12_rb
@@ -113,8 +118,6 @@ def index():
                 print(bookable_rooms)
                 
                 # Continue from here
-
-
 
                         # return render_template .. .. ..
             
