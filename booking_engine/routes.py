@@ -69,6 +69,7 @@ def index():
                         rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                                      filter(RatePlan.from_date <= checkin).
                                      filter(check_out <= RatePlan.to_date).all())
+    
                         
                         for rp in rate_plan:
 
@@ -84,44 +85,38 @@ def index():
                                 price_per_day_adults = adults * rp.single_adult
 
                             # Offer the room for the full price even if adults are less than req minimum    
-                            elif adults < room.min_guests:
+                            if adults < room.min_guests and total_children == 0:
                                 price_per_day_adults = room.min_guests * rp.adult
                             
                             # Adults + children under 12 y.o on regular beds + exb
-                            if adults < room.max_adults and adults == room.min_guests and total_children <= room.max_children:
+                            if adults < room.max_adults and adults <= room.min_guests and total_children <= room.max_children and total_children != 0:
                                 price_per_day_adults = adults * rp.adult
 
                                 adults_difference = room.max_adults - adults
 
                                 if adults_difference == 1:
+
                                     if total_children == 1:
                                         price_per_day_childen = total_children * rp.child_under_12_rb
+
                                     elif total_children == 2:
                                         price_per_day_childen = ((total_children -1) * rp.child_under_12_rb) + ((total_children - 1) * rp.child_under_12_exb)
 
                                 elif adults_difference == 2:
                                     price_per_day_childen = total_children * rp.child_under_12_rb
                             
-                            if adults < 2 and total_children == 1:
-                                price_per_day_adults = adults * rp.adult
-                                price_per_day_childen = total_children * rp.child_under_12_rb
-
 
                             if adults == room.max_adults and total_children:
 
-                                for i in range(total_children):
-                                    if first_child == '12':
-                                        price_per_day_childen += total_children * rp.child_under_12_exb
-                                    elif first_child == '6':
-                                        price_per_day_childen += total_children * rp.child_under_7_exb
-                                    elif first_child == '2':
-                                        price_per_day_childen += total_children * rp.child_under_2_exb
+                                children = [first_child, second_child]
 
-                                    if second_child == '12':
+                                for child in children:
+
+                                    if child == '12':
                                         price_per_day_childen += total_children * rp.child_under_12_exb
-                                    elif first_child == '6':
+                                    elif child == '6':
                                         price_per_day_childen += total_children * rp.child_under_7_exb
-                                    elif first_child == '2':
+                                    elif child == '2':
                                         price_per_day_childen += total_children * rp.child_under_2_exb
 
 
