@@ -27,14 +27,14 @@
                 <div class="col-md d-flex justify-content-center">
 
                     <div class="dates d-flex shadow" id="datepicker1">
-                        <input type="text" class="form-control" id="checkin" name="checkin" placeholder="Check In" autocomplete="off"/>
+                        <input type="text" class="form-control was-validated" required id="checkin" name="checkin" placeholder="Check In" autocomplete="off"/>
                         <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
                             <span class="bi bi-calendar"></span>
                         </span>
                     </div>
 
                     <div class="dates d-flex shadow">
-                        <input type="text" class="form-control" id="checkout" name="checkout" placeholder="Check Out" autocomplete="off" >
+                        <input type="text" class="form-control was-validated" required id="checkout" name="checkout" placeholder="Check Out" autocomplete="off" >
                         <span class="input-group-addon p-1 bg-light bg-opacity-75 opacity-75" data-target="#datepicker1" data-toggle="datetimepicker">
                             <span class="bi bi-calendar"></span>
                         </span>
@@ -43,7 +43,7 @@
 
                 <div class="form d-block">
                     <label for="exampleFormControlSelect1">Total rooms</label>
-                    <select class="form-select border border-1 shadow" id="rooms" name="rooms">
+                    <select class="form-select border border-1 shadow" required id="rooms" name="rooms">
                     <option selected disabled>Rooms</option>
                     <option value="1">1 Room</option>
                     <option value="2">2 Rooms</option>

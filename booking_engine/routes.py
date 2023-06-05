@@ -20,11 +20,11 @@ def index():
 
         checkin = datetime.strptime(request.form.get("checkin"), "%d-%m-%Y")
         checkout = datetime.strptime(request.form.get("checkout"), "%d-%m-%Y")
-        rooms = int(request.form.get("rooms"))
+        rooms_request = int(request.form.get("rooms"))
         adults = int(request.form.get("adults"))
         children = request.form.get("children")
-        one_child = request.form.get('first_child')
-        two_children = request.form.get('second_child')
+        first_child = request.form.get('first_child')
+        second_child = request.form.get('second_child')
 
         check_out = checkout - days
 
@@ -53,48 +53,77 @@ def index():
         for room in all_rooms:
 
             # Check if can be accommodated in one room
-            if total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests or adults == 1:
+            if total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests or adults < room.min_guests:
                 print("Can be accomodated in ONE room")
                 print(room.name)
 
                 room_prices = []
-
+                
                 for listed_room in listed_rooms:
-                    
-                    if listed_room.quantity_per_date < rooms:
+                
+                    if listed_room.quantity_per_date < rooms_request:
                         print("No rooms")
 
-                    elif listed_room.quantity_per_date > rooms and listed_room.room_id == room.id:
-                    
-                        rate_plan = RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).filter(RatePlan.from_date.between(checkin, checkout)).all()
+                    elif listed_room.quantity_per_date >= rooms_request and listed_room.room_id == room.id:
+                                       
+                        rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
+                                     filter(RatePlan.from_date <= checkin).
+                                     filter(check_out <= RatePlan.to_date).all())
                         
                         for rp in rate_plan:
 
                             price_per_day_adults = 0
                             price_per_day_childen = 0
-
-                            if adults < 2:
+                            
+                            # For adults that are equal or more than room min guests and less or == max_guests
+                            if adults >= room.min_guests and adults <= room.max_guests:
+                                price_per_day_adults = adults * rp.adult
+                            
+                            # For single person with room that has min guest of 1 person
+                            if adults == 1 and room.min_guests == 1:
                                 price_per_day_adults = adults * rp.single_adult
 
-                            if adults < 2 and total_children > 0 :
+                            # Offer the room for the full price even if adults are less than req minimum    
+                            elif adults < room.min_guests:
+                                price_per_day_adults = room.min_guests * rp.adult
+                            
+                            # Adults + children under 12 y.o on regular beds + exb
+                            if adults < room.max_adults and adults == room.min_guests and total_children <= room.max_children:
                                 price_per_day_adults = adults * rp.adult
-                                price_per_day_childen = (total_children - 1) * rp.child_under_12_rb
-                                price_per_day_childen += (total_children -1) * rp.child_under_12_exb
+
+                                adults_difference = room.max_adults - adults
+
+                                if adults_difference == 1:
+                                    if total_children == 1:
+                                        price_per_day_childen = total_children * rp.child_under_12_rb
+                                    elif total_children == 2:
+                                        price_per_day_childen = ((total_children -1) * rp.child_under_12_rb) + ((total_children - 1) * rp.child_under_12_exb)
+
+                                elif adults_difference == 2:
+                                    price_per_day_childen = total_children * rp.child_under_12_rb
                             
                             if adults < 2 and total_children == 1:
                                 price_per_day_adults = adults * rp.adult
                                 price_per_day_childen = total_children * rp.child_under_12_rb
 
-                            elif adults > 1:
-                                price_per_day_adults = adults * rp.adult
 
-                            if adults > 1:
-                                if one_child == '12':
-                                    price_per_day_childen = total_children * rp.child_under_12_exb
-                                elif one_child == '6':
-                                    price_per_day_childen = total_children * rp.child_under_7_exb
-                                elif one_child == '2':
-                                    price_per_day_childen = total_children * rp.child_under_2_exb
+                            if adults == room.max_adults and total_children:
+
+                                for i in range(total_children):
+                                    if first_child == '12':
+                                        price_per_day_childen += total_children * rp.child_under_12_exb
+                                    elif first_child == '6':
+                                        price_per_day_childen += total_children * rp.child_under_7_exb
+                                    elif first_child == '2':
+                                        price_per_day_childen += total_children * rp.child_under_2_exb
+
+                                    if second_child == '12':
+                                        price_per_day_childen += total_children * rp.child_under_12_exb
+                                    elif first_child == '6':
+                                        price_per_day_childen += total_children * rp.child_under_7_exb
+                                    elif first_child == '2':
+                                        price_per_day_childen += total_children * rp.child_under_2_exb
+
 
                             total_price = (price_per_day_adults + price_per_day_childen) * total_days
                             
@@ -106,7 +135,7 @@ def index():
                                 'total_guests': total_guests,
                                 'total_adults': adults,
                                 'total_children': total_children,
-                                'children_age': one_child,
+                                'children_age': tuple([first_child, second_child]) if total_children == 2 else first_child,
                                 'total_price': total_price
 
                                 }
@@ -116,13 +145,13 @@ def index():
                 # List comprehension over room_prices,  preserve original order and remove duplicates            
                 bookable_rooms = list(unique_everseen(room_prices, key=lambda item: frozenset(item.items())))
                 print(bookable_rooms)
-                
+
                 # Continue from here
 
                         # return render_template .. .. ..
             
             # Check if can be accomodated in more than one room
-            elif total_guests <= room.max_guests * rooms and adults <= room.max_adults * rooms and total_children <= room.max_children * rooms:
+            elif total_guests <= room.max_guests * rooms_request and adults <= room.max_adults * rooms_request and total_children <= room.max_children * rooms_request:
                 print("Can be accommodated in TWO rooms")
                 print(room.name)
 
