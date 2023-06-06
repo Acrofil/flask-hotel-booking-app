@@ -140,3 +140,14 @@ table, th, td {
   border-color: red;
   margin-left: 20px;
 }
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+.footerWrap {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}

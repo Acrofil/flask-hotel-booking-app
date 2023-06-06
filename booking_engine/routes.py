@@ -8,6 +8,7 @@ from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, R
 from datetime import datetime, timedelta
 from iteration_utilities import unique_everseen
 import pandas as pd
+from math import ceil
 
 
 
@@ -49,16 +50,18 @@ def index():
         # total guests selected by client
         total_guests = adults + total_children
 
+        # Save different results from client search 
+        room_prices = []
+        multiple_room_prices = []
+
         # Loop tru all created rooms in db
         for room in all_rooms:
 
             # Check if can be accommodated in one room
-            if total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests or adults < room.min_guests:
+            if rooms_request == 1 and total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests or adults < room.min_guests:
                 print("Can be accomodated in ONE room")
                 print(room.name)
-
-                room_prices = []
-                
+       
                 for listed_room in listed_rooms:
                 
                     if listed_room.quantity_per_date < rooms_request:
@@ -137,17 +140,16 @@ def index():
                                
                             room_prices.append(room_option)
                             
-                # List comprehension over room_prices,  preserve original order and remove duplicates            
-                bookable_rooms = list(unique_everseen(room_prices, key=lambda item: frozenset(item.items())))
-                print(bookable_rooms)
+               
+                            
+            
 
                 # Continue from here
 
-                        # return render_template .. .. ..
+                        # return render_template .. .. .. bookable_rooms
             
             # Check if can be accomodated in more than one room
-            elif total_guests <= room.max_guests * rooms_request and adults <= room.max_adults * rooms_request and total_children <= room.max_children * rooms_request:
-                print("Can be accommodated in TWO rooms")
+            elif rooms_request > 1 and total_children == 0:
                 print(room.name)
 
             #for listed_room in listed_rooms:
@@ -157,7 +159,75 @@ def index():
                     #print("Can be booked")
                    # print(listed_room.quantity_per_date)
                    # print(rooms)
+                
 
+                client_search = [(adults, rooms_request)]        
+
+                for guests, rooms in client_search:
+
+                    capacity_needed = (guests / room.max_adults)
+                   # print(capacity_needed)
+
+                    # Offer x rooms depending on search
+                    if capacity_needed <= room.max_adults and room.min_guests == 1:
+                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
+                        needed_rooms = ceil(capacity_needed)
+                    
+                    elif capacity_needed >= room.max_adults and room.min_guests == 1:
+                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
+                        needed_rooms = ceil(capacity_needed)
+       
+                    if capacity_needed <= room.min_guests and room.min_guests > 1:
+                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
+                        needed_rooms = ceil(capacity_needed)
+                    
+                    elif capacity_needed >= room.min_guests and room.min_guests > 1:
+                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
+                        needed_rooms = ceil(capacity_needed)
+                  
+                    # Loop all listed rooms for the selected dates
+                    rooms_needed = ceil(capacity_needed)
+                    for listed_room in listed_rooms:
+                        
+                        # Check if we have the requeired quantity for the selected dates
+                        if  listed_room.quantity_per_date >= rooms_needed and room.id == listed_room.room_id:
+            
+                            rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
+                                     filter(RatePlan.from_date <= checkin).
+                                     filter(check_out <= RatePlan.to_date).first())
+
+                            if rate_plan:
+                                adults_price_per_day = total_guests * rate_plan.adult
+                                total_price = adults_price_per_day * total_days
+
+                                room_option = {
+                                    'room_type': room.name,
+                                    'room_quantity': rooms_needed,
+                                    'from_date': checkin,
+                                    'to_date': checkout,
+                                    'total_days': total_days,
+                                    'total_guests': total_guests,
+                                    'total_adults': adults,
+                                    'total_children': 0,
+                                    "price_per_day": adults_price_per_day,
+                                    'total_price': total_price
+
+                                    }   
+                    
+                                multiple_room_prices.append(room_option)
+
+
+        # List comprehension over room_prices,  preserve original order and remove duplicates            
+       # one_room_bookable_offers = list(unique_everseen(one_room_search_prices, key=lambda item: frozenset(item.items())))
+        #print(one_room_search_prices)
+
+        test = list(unique_everseen(multiple_room_prices, key=lambda item: frozenset(item.items())))
+        #print(test)
+
+         # List comprehension over room_prices,  preserve original order and remove duplicates            
+        bookable_rooms = list(unique_everseen(room_prices, key=lambda item: frozenset(item.items())))
+        print(bookable_rooms)
+                                
         return redirect("/")
     else:
 
