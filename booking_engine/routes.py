@@ -17,8 +17,6 @@ def index():
 
     if request.method == "POST":
 
-        days = timedelta(days=1)
-
         checkin = datetime.strptime(request.form.get("checkin"), "%d-%m-%Y")
         checkout = datetime.strptime(request.form.get("checkout"), "%d-%m-%Y")
         rooms_request = int(request.form.get("rooms"))
@@ -27,15 +25,15 @@ def index():
         first_child = request.form.get('first_child')
         second_child = request.form.get('second_child')
 
-        check_out = checkout - days
-
+        day = timedelta(days=1)
         total_days = int((checkout - checkin).days)
 
-        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(checkin, check_out)).join(RoomAvailability).filter(RoomAvailability.is_it_available == 1).all()
+        # Filter all listed rooms between checkin and checkout that have is_it_available status == True
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(checkin, checkout - day)).join(RoomAvailability).filter(RoomAvailability.is_it_available == 1).all()
 
         # First we check if there is any listed room for the client dates
         if not listed_rooms:
-            flash("NO rooms available for the selected dates")
+            flash("N rooms available for the selected dates!")
             return redirect("/")
         
         total_children = 0
@@ -52,81 +50,94 @@ def index():
 
         # Save different results from client search 
         room_prices = []
-        multiple_room_prices = []
+        bookable_rooms = []
 
         # Loop tru all created rooms in db
         for room in all_rooms:
 
             # Check if can be accommodated in one room
-            if rooms_request == 1 and total_guests <= room.max_guests and adults <= room.max_adults and total_children <= room.max_children and total_guests >= room.min_guests or adults < room.min_guests:
-                print("Can be accomodated in ONE room")
-                print(room.name)
-       
+            if (rooms_request == 1 and 
+                total_guests <= room.max_guests and 
+                adults <= room.max_adults and 
+                total_children <= room.max_children and 
+                total_guests >= room.min_guests or adults < room.min_guests):
+         
                 for listed_room in listed_rooms:
                 
                     if listed_room.quantity_per_date < rooms_request:
-                        print("No rooms")
-
+                        flash("No rooms")
+                        return redirect("/")
+                    
+                    # If there is desired room quantity available
                     elif listed_room.quantity_per_date >= rooms_request and listed_room.room_id == room.id:
-                                       
-                        rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
+
+                        # Get rateplan between dates                      
+                        rp = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                                      filter(RatePlan.from_date <= checkin).
-                                     filter(check_out <= RatePlan.to_date).all())
-    
+                                     filter(checkout - day <= RatePlan.to_date).first())
                         
-                        for rp in rate_plan:
+                        if rp and listed_room.listed_date == checkout - day:
 
                             price_per_day_adults = 0
                             price_per_day_childen = 0
+                            children_extra_bed = 0
+                            adults_difference = 0
+                            total_price = 0
+                            children_on_regular_bed = 0
                             
+                            # If adults are between min guests and max adults and total children + adults not exceeds max_guests
+                            if adults >= room.min_guests and adults <= room.max_adults and total_children and total_children + adults <= room.max_guests:
+
+                                # Get price per day for adults
+                                price_per_day_adults = adults * rp.adult
+
+                                # Check how many children
+                                all_children = list([first_child if children == 'one' else first_child, second_child])
+
+                                # Check each child of what age is it and add the correct price from the rateplan
+                                for child in all_children:
+     
+                                    if child == '12':
+                                        price_per_day_childen += rp.child_under_12_exb
+                                    elif child == '6':
+                                        price_per_day_childen += rp.child_under_7_exb
+                                    elif child == '2':
+                                        price_per_day_childen += rp.child_under_2_exb
+                                  
                             # For adults that are equal or more than room min guests and less or == max_guests
-                            if adults >= room.min_guests and adults <= room.max_guests:
+                            if adults >= room.min_guests and adults <= room.max_guests and not total_children:
                                 price_per_day_adults = adults * rp.adult
                             
                             # For single person with room that has min guest of 1 person
-                            if adults == 1 and room.min_guests == 1:
+                            if adults == 1 and room.min_guests == 1 and not total_children:
                                 price_per_day_adults = adults * rp.single_adult
 
-                            # Offer the room for the full price even if adults are less than req minimum    
+                            # Offer the room for the full price even if adults are less than req minimum guests   
                             if adults < room.min_guests and total_children == 0:
                                 price_per_day_adults = room.min_guests * rp.adult
                             
                             # Adults + children under 12 y.o on regular beds + exb
-                            if adults < room.max_adults and adults <= room.min_guests and total_children <= room.max_children and total_children != 0:
+                            if adults < room.min_guests and total_children <= room.max_children and total_children != 0 and adults + total_children <= room.max_guests:
                                 price_per_day_adults = adults * rp.adult
 
-                                adults_difference = room.max_adults - adults
+                                # Get the difference Example: 1 adult with 2 children - min guests = 3 - 1 adult == 2, 2 children must be taxed for regular bed
+                                adults_difference = room.min_guests - adults
+                                
+                                end = adults_difference
+                                for child in range(1, adults_difference + (1 if adults_difference == end else 0)):
+                                    price_per_day_childen += 1 * rp.child_under_12_rb
+                                    children_on_regular_bed += 1
+                                
+                                children_extra_bed = (total_children - children_on_regular_bed) * rp.child_under_12_exb
 
-                                if adults_difference == 1:
+                            total_price = (price_per_day_adults + price_per_day_childen + children_extra_bed) * total_days
 
-                                    if total_children == 1:
-                                        price_per_day_childen = total_children * rp.child_under_12_rb
+                            price_room_stay = total_price / rooms_request
+                            price_per_day = price_room_stay / total_days
 
-                                    elif total_children == 2:
-                                        price_per_day_childen = ((total_children -1) * rp.child_under_12_rb) + ((total_children - 1) * rp.child_under_12_exb)
-
-                                elif adults_difference == 2:
-                                    price_per_day_childen = total_children * rp.child_under_12_rb
-                            
-
-                            if adults == room.max_adults and total_children:
-
-                                children = [first_child, second_child]
-
-                                for child in children:
-
-                                    if child == '12':
-                                        price_per_day_childen += total_children * rp.child_under_12_exb
-                                    elif child == '6':
-                                        price_per_day_childen += total_children * rp.child_under_7_exb
-                                    elif child == '2':
-                                        price_per_day_childen += total_children * rp.child_under_2_exb
-
-
-                            total_price = (price_per_day_adults + price_per_day_childen) * total_days
-                            
                             room_option = {
                                 'room_type': room.name,
+                                'room_quantity': rooms_request,
                                 'from_date': checkin,
                                 'to_date': checkout,
                                 'total_days': total_days,
@@ -134,71 +145,44 @@ def index():
                                 'total_adults': adults,
                                 'total_children': total_children,
                                 'children_age': tuple([first_child, second_child]) if total_children == 2 else first_child,
+                                'price_per_day': price_per_day,
+                                'price_room_stay': price_room_stay,
                                 'total_price': total_price
 
                                 }
-                               
-                            room_prices.append(room_option)
-                            
-               
-                            
-            
-
-                # Continue from here
-
-                        # return render_template .. .. .. bookable_rooms
-            
+                                
+                            bookable_rooms.append(room_option)
+                                 
             # Check if can be accomodated in more than one room
             elif rooms_request > 1 and total_children == 0:
                 print(room.name)
-
-            #for listed_room in listed_rooms:
-                #if listed_room.quantity_per_date < rooms:
-                   # print("Not that many rooms for that period")
-                #elif listed_room.quantity_per_date > rooms:
-                    #print("Can be booked")
-                   # print(listed_room.quantity_per_date)
-                   # print(rooms)
-                
-
+      
                 client_search = [(adults, rooms_request)]        
 
                 for guests, rooms in client_search:
 
-                    capacity_needed = (guests / room.max_adults)
-                   # print(capacity_needed)
-
-                    # Offer x rooms depending on search
-                    if capacity_needed <= room.max_adults and room.min_guests == 1:
-                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
-                        needed_rooms = ceil(capacity_needed)
-                    
-                    elif capacity_needed >= room.max_adults and room.min_guests == 1:
-                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
-                        needed_rooms = ceil(capacity_needed)
-       
-                    if capacity_needed <= room.min_guests and room.min_guests > 1:
-                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
-                        needed_rooms = ceil(capacity_needed)
-                    
-                    elif capacity_needed >= room.min_guests and room.min_guests > 1:
-                        #print(f"Must take total of {ceil(capacity_needed)} {room.name} for {guests} persons")
-                        needed_rooms = ceil(capacity_needed)
+                    capacity = (guests / room.max_adults)
                   
+                    rooms_needed = ceil(capacity)
+                    
                     # Loop all listed rooms for the selected dates
-                    rooms_needed = ceil(capacity_needed)
                     for listed_room in listed_rooms:
                         
                         # Check if we have the requeired quantity for the selected dates
-                        if  listed_room.quantity_per_date >= rooms_needed and room.id == listed_room.room_id:
+                        if  listed_room.quantity_per_date >= rooms_needed and room.id == listed_room.room_id and rooms_needed == rooms_request:
             
                             rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                                      filter(RatePlan.from_date <= checkin).
-                                     filter(check_out <= RatePlan.to_date).first())
+                                     filter(checkout - day <= RatePlan.to_date).first())
 
-                            if rate_plan:
+                            # If there is rate plan for the selected dates
+                            if rate_plan and listed_room.listed_date == checkout - day:
+
                                 adults_price_per_day = total_guests * rate_plan.adult
                                 total_price = adults_price_per_day * total_days
+                                price_room_stay = total_price / rooms_request
+                                price_per_day = price_room_stay / total_days
+                                all_rooms_per_day = price_per_day * rooms_request
 
                                 room_option = {
                                     'room_type': room.name,
@@ -209,24 +193,28 @@ def index():
                                     'total_guests': total_guests,
                                     'total_adults': adults,
                                     'total_children': 0,
-                                    "price_per_day": adults_price_per_day,
+                                    'price_per_day': price_per_day,
+                                    'price_room_stay': all_rooms_per_day,
                                     'total_price': total_price
 
                                     }   
                     
-                                multiple_room_prices.append(room_option)
+                                bookable_rooms.append(room_option)
 
 
         # List comprehension over room_prices,  preserve original order and remove duplicates            
        # one_room_bookable_offers = list(unique_everseen(one_room_search_prices, key=lambda item: frozenset(item.items())))
         #print(one_room_search_prices)
 
-        test = list(unique_everseen(multiple_room_prices, key=lambda item: frozenset(item.items())))
-        #print(test)
+        #bookable_rooms = list(unique_everseen(multiple_room_prices, key=lambda item: frozenset(item.items())))
+        #print(bookable_rooms)
 
          # List comprehension over room_prices,  preserve original order and remove duplicates            
-        bookable_rooms = list(unique_everseen(room_prices, key=lambda item: frozenset(item.items())))
-        print(bookable_rooms)
+        #bookable_rooms = list(unique_everseen(room_prices, key=lambda item: frozenset(item.items())))
+        #print(bookable_rooms)
+
+        if bookable_rooms:
+            return render_template("offer_rooms.html", bookable_rooms=bookable_rooms)
                                 
         return redirect("/")
     else:

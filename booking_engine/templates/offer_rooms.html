@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Select rooms
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>Rooms</th>
+                <th>Quantity</th>
+                <th>Checkin</th>
+                <th>Checkout</th>
+                <th>Total days</th>
+                <th>Guests</th>
+                <th>Adults</th>
+                <th>Children</th>
+                <th>Children age</th>
+                <th>Room price per DAY</th>
+                <th>Room price TOTAL</th>
+                <th>All rooms TOTAL</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            
+                {% for room in bookable_rooms %}
+                <tr>
+                <td>{{room.room_type}}</td>
+                <td>{{room.room_quantity}}</td>
+                <td>{{room.from_date.strftime('%Y-%m-%d')}}</td>
+                <td>{{room.to_date.strftime('%Y-%m-%d')}}</td>
+                <td>{{room.total_days}}</td>
+                <td>{{room.total_guests}}</td>
+                <td>{{room.total_adults}}</td>
+                <td>{{room.total_children}}</td>
+                <td>{{room.children_age}}</td>
+                <td>{{room.price_per_day}}</td>
+                <td>{{room.price_room_stay}}</td>
+                <td>{{room.total_price}}</td>
+                </tr>
+                {% endfor %}
+
+        </tbody>
+        
+
+
+    </table>
+
+
+</div>
+
+{% endblock %}
