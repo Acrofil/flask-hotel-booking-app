@@ -202,13 +202,14 @@ def index():
                             # room_capacity is between min guests and max_adults: Tax the rooms with aduults == max_adults with regular price and tax with single_price the ones who are with less
                             if room_capacity > room.min_guests and room_capacity < room.max_adults:
                                 adult_difference = floor(adults / rooms_request)
+                                print(adult_difference)
 
-                                if adult_difference < room.max_guests or adults_difference == 1:
+                                if adult_difference < room.min_guests or adult_difference == 1:
                                     adults_price_per_day = (((total_guests - adult_difference) * rate_plan.adult) + (adult_difference * rate_plan.single_adult) 
                                                             if (room.max_adults == (adults - adult_difference) and adult_difference == 1 or room.max_adults == ((total_guests - adult_difference) / room.max_adults))
                                                             else ((total_guests - (adult_difference + 1)) * rate_plan.adult) + ((adult_difference + 1) * rate_plan.single_adult))
                                 
-                                elif adult_difference > room.min_guests and adults_difference < room.max_guests and adults_difference != 1:
+                                elif adult_difference >= room.min_guests and adult_difference < room.max_guests and adult_difference != 1:
                                     adults_price_per_day = (((total_guests - adult_difference) * rate_plan.adult) + (adult_difference * rate_plan.single_adult) 
                                                             if (room.max_adults == (adults - adult_difference) and adult_difference == 1 or room.max_adults == ((total_guests - adult_difference) / room.max_adults))
                                                             else ((total_guests - (adult_difference + 1)) * rate_plan.adult) + ((adult_difference + 1) * rate_plan.adult))
