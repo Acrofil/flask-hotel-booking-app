@@ -10,8 +10,6 @@ from iteration_utilities import unique_everseen
 import pandas as pd
 from math import ceil, floor
 
-
-
 @app.route("/", methods=["GET", "POST"])
 def index():
 
@@ -318,6 +316,7 @@ def index():
                                 }   
                 
                             bookable_rooms.append(room_option)
+                            
                                 
             # Continue from here
 
