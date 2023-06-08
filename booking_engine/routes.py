@@ -8,7 +8,7 @@ from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, R
 from datetime import datetime, timedelta
 from iteration_utilities import unique_everseen
 import pandas as pd
-from math import ceil
+from math import ceil, floor
 
 
 
@@ -161,45 +161,173 @@ def index():
 
                 for guests, rooms in client_search:
 
-                    capacity = (guests / room.max_adults)
+                    capacity = guests / rooms
                   
-                    rooms_needed = ceil(capacity)
+                    room_capacity = capacity
                     
                     # Loop all listed rooms for the selected dates
                     for listed_room in listed_rooms:
                         
                         # Check if we have the requeired quantity for the selected dates
-                        if  listed_room.quantity_per_date >= rooms_needed and room.id == listed_room.room_id and rooms_needed == rooms_request:
+                        if  (listed_room.quantity_per_date >= rooms_request and
+                              room.id == listed_room.room_id and room_capacity <= room.max_adults):
             
                             rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                                      filter(RatePlan.from_date <= checkin).
                                      filter(checkout - day <= RatePlan.to_date).first())
+                            
+                            adults_price_per_day = 0
+                                            
+                            if room.min_guests == 1 and room_capacity <= room.max_adults and room_capacity != 1:
+                                adults_price_per_day = total_guests * rate_plan.adult
+                            
+                            # If the search is for example 5 rooms and 5 persons 
+                            if room.min_guests == 1 and room_capacity == 1:
+                                adults_price_per_day += total_guests * rate_plan.single_adult
+                            
+                            # if the req room capacity is less than room.min_guests: Tax them with single_adult rate
+                            if room_capacity < room.min_guests:
+                                adults_price_per_day = total_guests * rate_plan.single_adult
+                            
+                            if room_capacity < room.min_guests and (adults / rooms_request) < room.min_guests:
+                                adults_price_per_day = (room.min_guests * rate_plan.adult) * rooms_request
+                            
+                            # If the search fits the room min and max criteria and its not for single rooms search
+                            if room_capacity >= room.min_guests and room_capacity <= room.max_adults and room_capacity != 1:
+                                adults_price_per_day = room.min_guests * rate_plan.adult
+                            
+                            if room_capacity >= room.min_guests and room_capacity <= room.max_adults and room_capacity != 1:
+                                adults_price_per_day = total_guests * rate_plan.adult
+                            
+                            # room_capacity is between min guests and max_adults: Tax the rooms with aduults == max_adults with regular price and tax with single_price the ones who are with less
+                            if room_capacity > room.min_guests and room_capacity < room.max_adults:
+                                adult_difference = floor(adults / rooms_request)
 
+                                if adult_difference < room.max_guests or adults_difference == 1:
+                                    adults_price_per_day = (((total_guests - adult_difference) * rate_plan.adult) + (adult_difference * rate_plan.single_adult) 
+                                                            if (room.max_adults == (adults - adult_difference) and adult_difference == 1 or room.max_adults == ((total_guests - adult_difference) / room.max_adults))
+                                                            else ((total_guests - (adult_difference + 1)) * rate_plan.adult) + ((adult_difference + 1) * rate_plan.single_adult))
+                                
+                                elif adult_difference > room.min_guests and adults_difference < room.max_guests and adults_difference != 1:
+                                    adults_price_per_day = (((total_guests - adult_difference) * rate_plan.adult) + (adult_difference * rate_plan.single_adult) 
+                                                            if (room.max_adults == (adults - adult_difference) and adult_difference == 1 or room.max_adults == ((total_guests - adult_difference) / room.max_adults))
+                                                            else ((total_guests - (adult_difference + 1)) * rate_plan.adult) + ((adult_difference + 1) * rate_plan.adult))
+                            
+    
                             # If there is rate plan for the selected dates
                             if rate_plan and listed_room.listed_date == checkout - day:
 
-                                adults_price_per_day = total_guests * rate_plan.adult
-                                total_price = adults_price_per_day * total_days
-                                price_room_stay = total_price / rooms_request
-                                price_per_day = price_room_stay / total_days
-                                all_rooms_per_day = price_per_day * rooms_request
+                                price_per_day_room = adults_price_per_day / rooms_request
+
+                                price_per_room_all_days = price_per_day_room * rooms_request
+
+                                all_rooms_total = price_per_room_all_days * total_days
 
                                 room_option = {
                                     'room_type': room.name,
-                                    'room_quantity': rooms_needed,
+                                    'room_quantity': rooms_request,
                                     'from_date': checkin,
                                     'to_date': checkout,
                                     'total_days': total_days,
                                     'total_guests': total_guests,
                                     'total_adults': adults,
                                     'total_children': 0,
-                                    'price_per_day': price_per_day,
-                                    'price_room_stay': all_rooms_per_day,
-                                    'total_price': total_price
+                                    'price_per_day': price_per_day_room,
+                                    'price_room_stay': price_per_room_all_days,
+                                    'total_price': all_rooms_total
 
                                     }   
                     
                                 bookable_rooms.append(room_option)
+
+            elif rooms_request > 1 and total_children > 0:
+
+                for listed_room in listed_rooms:
+
+                    if listed_room.quantity_per_date < rooms_request:
+                        flash("No rooms")
+                        return redirect("/")
+                    
+                    # Check if we have the requeired quantity for the selected dates
+                    if  (listed_room.quantity_per_date >= rooms_request and
+                        room.id == listed_room.room_id and total_guests <= (room.max_guests * rooms_request)): 
+
+                        adults_price = 0
+                        children_price = 0
+                        children_on_regular_bed = 0
+
+                        # Get rateplan between dates                      
+                        rp = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
+                                filter(RatePlan.from_date <= checkin).
+                                filter(checkout - day <= RatePlan.to_date).first())
+                        
+                        # Tax all adults regular price and all children extra bed price
+                        if adults >= (room.min_guests * rooms_request) and adults <= (room.max_adults * rooms_request) and total_guests <= (room.max_guests * rooms_request):
+                            adults_price = adults * rp.adult
+
+                            # Check how many children
+                            all_children = list([first_child if children == 'one' else first_child, second_child])
+
+                            # Check each child of what age is it and add the correct price from the rateplan
+                            for child in all_children:
+
+                                if child == '12':
+                                    children_price += rp.child_under_12_exb
+                                elif child == '6':
+                                    children_price += rp.child_under_7_exb
+                                elif child == '2':
+                                    children_price += rp.child_under_2_exb
+                        
+                        if adults < (room.min_guests * rooms_request):
+                             # Get the difference Example: 1 adult with 2 children - min guests = 3 - 1 adult == 2, 2 children must be taxed for regular bed
+                                adults_difference = (room.min_guests * rooms_request) - adults
+                                
+                                end = adults_difference
+                                for child in range(1, adults_difference + (1 if adults_difference == end else 0)):
+                                    children_price += rp.child_under_12_rb
+                                    children_on_regular_bed += 1
+                                
+                                children_extra_bed = (total_children - children_on_regular_bed) * rp.child_under_12_exb
+
+                                adults_price = adults * rp.adult
+                        
+
+                            # If there is rate plan for the selected dates
+                        if rp and listed_room.listed_date == checkout - day:
+
+                            price_per_day_room = (adults_price + children_price) / rooms_request
+
+                            price_per_room_all_days = price_per_day_room * rooms_request
+
+                            all_rooms_total = price_per_room_all_days * total_days
+
+                            room_option = {
+                                'room_type': room.name,
+                                'room_quantity': rooms_request,
+                                'from_date': checkin,
+                                'to_date': checkout,
+                                'total_days': total_days,
+                                'total_guests': total_guests,
+                                'total_adults': adults,
+                                'total_children': total_children,
+                                'price_per_day': price_per_day_room,
+                                'price_room_stay': price_per_room_all_days,
+                                'total_price': all_rooms_total
+
+                                }   
+                
+                            bookable_rooms.append(room_option)
+                                
+            # Continue from here
+
+
+
+
+
+
+
+
+
 
 
         # List comprehension over room_prices,  preserve original order and remove duplicates            
