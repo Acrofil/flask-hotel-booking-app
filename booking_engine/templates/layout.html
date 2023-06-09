@@ -45,8 +45,6 @@
     <!-- For JavaScript -->
     <script src="/static/hotel.js" type="text/javascript" defer></script>
 
-    
-
     <title>Reservations: {% block title %}{% endblock %}</title>
 
 </head>
@@ -56,11 +54,23 @@
 
 <div class="wrapper">
     
+    <div class="navbar bg-info bg-opacity-50  p-0 ">
+        <div class="container d-flex flex-row justify-content-center">
+            <i class="fa fa-phone mx-3"></i>
+            <a class=" text-dark" href="tel:+1-949-468-2750" style="text-decoration: none;">+1-949-468-2750</a>
+
+            <i class="fa fa-envelope mx-3"></i>
+            <a class=" text-dark " href="tel:+1-949-468-2750" style="text-decoration: none;">cs50x@hotel.edu</a>
+        </div>
+    </div>
+
+
     <div class="bg-img">
         <!-- NavBar -->
-        <div class="container container-fluid">
+        <!--<div class="container container-fluid">-->
             <section>
-                <nav class="navbar navbar-expand-lg navbar-light bg-secondary rounded-3 border border-1 border-warning shadow-lg bg-opacity-75">
+                <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-lg bg-opacity-50 ">
+                    <div class="container">
                     <a class="navbar-brand" href="#">
                         <img src="/static/images/logo1.png" width="100" height="50" class="d-inline-block align-top ml-3" alt="cs50xhotellogo">
                     </a>
@@ -102,10 +112,11 @@
                         {% endif %}
 
                     </div>
+                </div>
                 </nav>
             </section>
-        </div>
-    </div>
+        <!--</div>-->
+    
         <!--Main Templates -->
     
         {% if get_flashed_messages() %}
@@ -116,12 +127,20 @@
                 </header>
             {% endif %}
 
+    
+                <main class="py-5 bg-gradient bg-opacity-10 text-center">
+                    {% block search %}{% endblock %}
+                </main>
+    </div>
+
             <main class="container-fluid py-5 bg-gradient bg-opacity-10 text-center">
                 {% block main %}{% endblock %}
             </main>
+        
 
-
-            <footer class="footerWrap p-3 bg-dark bg-gradient bg-opacity-75 text-center text-white  shadow">
+            <!-- Footer -->
+            
+            <footer class="footerWrap p-3 bg-dark  bg-opacity-75 text-center text-white  shadow">
                 <div class="container">
                     <p class="lead text-white">Developed for <strong class="text-danger text-">Harvard </strong> <a href="https://cs50.harvard.edu/x/2023/" target=”_blank” style="text-decoration:underline" class="text-warning"><strong>CS50x</strong></a>  - 2023 &copy; by
                         <a href="https://github.com/Acrofil" target=”_blank” class="text-warning" style="text-decoration: underline;"><strong>A.P</strong></a></p>

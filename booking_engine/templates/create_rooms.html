@@ -9,7 +9,7 @@
 
 <h3 class="mb-4">Create New Room</h3>
 
-<div class="container border border-1 border-warning bg-light bg-gradient shadow-lg">
+<div class="admin-panel-box container border border-1 border-warning bg-light bg-gradient bg-opacity-75 shadow-lg">
     <form class="p-1" action="/create_rooms" method="post" id="form" enctype="multipart/form-data">
         <div class="container-fluid d-flex justify-content-center ">
 
@@ -67,7 +67,7 @@
 
 {% if room_info|length > 0 %}
 <h3 class="mt-5">Created Rooms</h3>
-<div class="row border border-1 border-warning mt-5 m-1 rounded-3 p-5 d-flex justify-content-start flex-wrap bg-light bg-gradient shadow-lg">
+<div class="admin-panel-box row border border-1 border-warning mb-5 mt-5 m-1 p-5 d-flex justify-content-evenly flex-wrap bg-light bg-opacity-75 shadow-lg">
     {% for room in room_info %}
         {% if room %}
             <div class="col-md-3">

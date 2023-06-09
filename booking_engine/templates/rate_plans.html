@@ -7,12 +7,12 @@
 
 
 {% block main %}
-<div class="container bg-light border border-3 border-info shadow-lg">
+<div class="admin-panel-box mb-5 container bg-light border border-3 border-info shadow-lg">
     <form class="form p-1" action="/rate_plans" method="post" id="rate_plans_form">
         <div class="container-fluid d-flex justify-content-center">
             <div class="row">
                 <h3 class="mt-2 text-warning">RATE PLANS</h3>         
-                <div class="col md-5 mt-5  d-block border-end">
+                <div class="col md-5 mt-5  d-block border-end border-warning">
 
                     <h5>Rate plan name *</h5>
 
@@ -103,8 +103,8 @@
             
                 </div>
 
-                <div class="row m-lg-2 border border-3 border-warning">
-                    <div class="col-md-4 mt-4 period_two border-bottom border-end">
+                <div class="admin-panel-box row m-lg-2 border border-3 border-warning">
+                    <div class="col-md-4 mt-4 period_two border-bottom border-end border-warning">
                         <h5>Date Period 2</h5>
 
                     
@@ -169,7 +169,7 @@
                         <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="button">REMOVE</button>
                     </div>
 
-                    <div class="col-md-4 mt-4 period_three border-bottom border-end">
+                    <div class="col-md-4 mt-4 period_three  border-end border-warning">
                         <h5>Date Period 3</h5>
 
                         <div class="hidden_dates d-block m-5 ml-5 shadow" id="datepicker1">
@@ -232,7 +232,7 @@
                         <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="button">REMOVE</button>
                     </div>
 
-                    <div class="col-md-4 mt-4 period_four">
+                    <div class="col-md-4 mt-5 period_four border-top border-warning">
                         <h5 class="">Date Period 4</h5>
 
                         <div class="hidden_dates  d-block m-5 ml-5 shadow" id="datepicker1">

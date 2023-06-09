@@ -23,7 +23,7 @@
 .bg-img {
     /* The image used */
     background-image: url("/static/images/banner-5.png");
-  
+
     min-height: 380px;
   
     /* Center and scale the image nicely */
@@ -58,7 +58,7 @@
 
 
   .navbar-toggler {
-    background-color: gold;
+    background-color:  	RGB(255, 193, 7);
     color: #fff;
     padding: 0.5rem 1rem;
     border: none;
@@ -151,3 +151,43 @@ html {
   bottom: 0;
   left: 0;
 }
+
+.cards {
+  margin-top: 200px;
+}
+
+.navbar {
+  border-bottom: 2.5px solid  RGB(255, 193, 7);
+ 
+ 
+}
+
+.search-form {
+  margin-top: 50px;
+  border-radius: 25px;
+  margin: 20px;
+
+}
+
+
+.search-input {
+  border-radius: 20px;
+}
+
+.calendar-input {
+  border-radius: 5px;
+}
+
+.progress-bar-box {
+  border-radius: 25px;
+  margin-bottom: 50px;
+}
+
+.admin-panel-box {
+  border-radius: 20px;
+
+}
+
+
+
+
