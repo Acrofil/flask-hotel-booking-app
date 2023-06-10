@@ -9,13 +9,14 @@ from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, R
 from datetime import datetime, timedelta
 from iteration_utilities import unique_everseen
 import pandas as pd
+import random
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
 
     if request.method == "POST":
-
+            
         checkin = datetime.strptime(request.form.get("checkin"), "%d-%m-%Y")
         checkout = datetime.strptime(request.form.get("checkout"), "%d-%m-%Y")
         rooms_request = int(request.form.get("rooms"))
@@ -75,20 +76,43 @@ def index():
 
                 if room:
                     bookable_rooms.append(room)
-            
-
 
         # List comprehension over room_prices,  preserve original order and remove duplicates            
        # one_room_bookable_offers = list(unique_everseen(one_room_search_prices, key=lambda item: frozenset(item.items())))
         #print(one_room_search_prices)
-
+        
+        booked_ago = ['2hrs', '5hrs', '1hr', '18hrs', '23hrs', '24hrs', '15hrs', '17hrs', '3hrs', '35min', '7hrs', '12hrs', '1day', '2days', '3days']
         if bookable_rooms:
-            return render_template("offer_rooms.html", bookable_rooms=bookable_rooms)
+            return render_template("offer_rooms.html", bookable_rooms=bookable_rooms, booked_ago=booked_ago)
                                 
         return redirect("/")
     else:
 
         return render_template("index.html")
+
+
+# Handle the client booking information, create client and reservation in db
+@app.route("/booking_request", methods=["GET", "POST"])
+def booking_request():
+
+    if request.method == "POST":
+
+        a = request.form.get('reservation_data')
+        # get all data and send it to booking form
+
+
+        return render_template("booking_form.html")
+       
+
+@app.route("/booking_form", methods=["GET", "POST"])
+def booking_form():
+    
+    if request.method == "POST":
+        pass
+    
+    else:
+        return render_template("booking_form.html")
+
 
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():

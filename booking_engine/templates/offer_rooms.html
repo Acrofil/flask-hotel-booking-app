@@ -6,17 +6,77 @@
 
 {% block main %}
 
-<div class="container container-fluid">
-    <div class="row col-12">
-        <div class="col col-md-4">
-            <div class="card">
-                
+    <div class="container progress-bar-box p-1 bg-light bg-gradient bg-opacity-50 border w-75 border-3 border-info">
+
+        <div class="position-relative m-5">
+            <div class="progress" style="height: 3px;">
+            <div class="progress-bar bg-info" role="progressbar" aria-label="Progress" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
+            <button type="button" class="fa fa-calendar-alt position-absolute top-0 start-0 translate-middle btn btn-sm btn-dark bg-warning text-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
+            <button type="button" class="bi-search position-absolute top-0 start-50 translate-middle btn btn-sm btn-dark bg-warning text-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
+            <button type="button" class="bi-check position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary bg-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
         </div>
 
     </div>
-</div>
 
+<form class="p-1" action="/" method="post" id="form" enctype="multipart/form-data">
+    <div class="row g-5 gy-5  text-start mb-5 pb-5 mx-2">
+        {% for room in bookable_rooms %}
+            {% if room != None %}
+            <div class="col-md-4">
+                <div class="card h-100 bg-info bg-gradient bg-opacity-10 border border-3 border-info">
+                    {% if room.room_image %} 
+                <div class="image-holder">
+                    <img class="card-img-top"  alt="Card image" src="{{ url_for('static', filename='uploads/' + room.room_image ) }}"/>
+                </div>
+                    {% elif not room.room_image %}
+                <div class="image-holder">
+                    <img class="card-img-top"  alt="Card image" src="{{ url_for('static', filename='uploads/' + 'stock_room_image.jpeg' ) }}"/>
+                </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-center" value="{{ room.room_type }}"> {{ room.room_type }} </h5>
+                        <i class="bi bi-people-fill"> Up to {{ room.max_guests }} guests </i>
+                        <br>
+                        <i class="bi bi-wifi"> Free Wi-Fi</i>
+                        <h5 class="card-title text-center"> Room description </h5>
+                        <p class="card-text mt-2" >{{ room.room_info }}</p>
+                        <br>
+                        <h5 class="text-center">Summary</h5>
+                        <i class="bi bi-sun" value="{{ room.room_quantity }}"> Total rooms selected {{ room.room_quantity}}</i>
+                        <br>
+                        <i class="bi bi-people-fill" value="{{ room.total_guests }}"> Guests: {{ room.total_guests }}</i>
+                        <br>
+                        <i class="bi bi-people-fill" value="{{ room.total_adults }}"> Adults: {{ room.total_adults }}</i>
+                        <br>
+                        <i class="bi bi-people-fill" value="{{ room.total_children }}"> Children: {{ room.total_children }}</i>
+                        <br>
+                        <i class="bi bi-calendar" value="{{ room.from_date }}"> Check in: {{ room.from_date.strftime('%d %B') }} Check out: {{ room.to_date.strftime('%d %B') }}</i>
+                        <br>
+                        <i class="bi bi-calendar-day-fill" value="{{ room.to_date }}"> Days: {{ room.total_days }}</i>
+                        <br>
+                        <br>
+                        <i class="bi bi-cash" value="{{ room.price_per_day }}"> Room price DAY - $<strong>{{ room.price_per_day }}</strong></i>
+                        <br>
+                        <i class="bi bi-cash" value="{{ room.price_room_stay }}"> All Rooms price DAY - $<strong>{{ room.price_room_stay }}</strong></i>
+                        <br>
+                        <i class="bi bi-cash-stack" value="{{ room.total_price }}"> TOTAL - $<strong>{{ room.total_price }}</strong></i>
+                        <div class="text-center">
+                            <button type="submit" id="reservation_data" name="reservation_data" value="{{ loop.index }}" class="btn btn-outline-primary btn-light">SELECT</button>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-dark bg-opacity-50">
+                    <small class="text-warning">Last booked {{ booked_ago|random()}} ago</small>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        
+    </div>
+</form>
+
+<!--
 <div class="container">
     <table>
         <thead>
@@ -63,5 +123,6 @@
 
 
 </div>
+-->
 
 {% endblock %}

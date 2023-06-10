@@ -69,22 +69,23 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
                     children_extra_bed = (total_children - children_on_regular_bed) * rp.child_under_12_exb
 
 
-                total_price = (price_per_day_adults + price_per_day_childen + children_extra_bed) * total_days
+                total_price_day = (price_per_day_adults + price_per_day_childen + children_extra_bed)
 
-                price_room_stay = total_price / rooms_request
-                price_per_day = price_room_stay / total_days
+                price_room_stay = total_price_day * rooms_request
+                total_price = total_price_day * total_days
 
                 room_option = {
                     'room_type': room.name,
                     'room_quantity': rooms_request,
                     'from_date': checkin,
                     'to_date': checkout,
+                    'max_guests': room.max_guests,
                     'total_days': total_days,
                     'total_guests': total_guests,
                     'total_adults': adults,
                     'total_children': total_children,
                     'children_age': tuple([first_child, second_child]) if total_children == 2 else first_child,
-                    'price_per_day': price_per_day,
+                    'price_per_day': total_price_day,
                     'price_room_stay': price_room_stay,
                     'total_price': total_price,
                     'room_image': room.room_image,
@@ -170,6 +171,7 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
                                     'from_date': checkin,
                                     'to_date': checkout,
                                     'total_days': total_days,
+                                    'max_guests': room.max_guests,
                                     'total_guests': total_guests,
                                     'total_adults': adults,
                                     'total_children': 0,

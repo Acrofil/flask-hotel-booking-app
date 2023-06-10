@@ -156,11 +156,7 @@ html {
   margin-top: 200px;
 }
 
-.navbar {
-  border-bottom: 2.5px solid  RGB(255, 193, 7);
- 
- 
-}
+
 
 .search-form {
   margin-top: 50px;
@@ -188,6 +184,11 @@ html {
 
 }
 
+.card {
+  transition: all 0.3s;
+}
 
-
+.card:hover {
+  transform: scale(1.05);
+}
 

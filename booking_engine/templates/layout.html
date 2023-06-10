@@ -65,11 +65,11 @@
     </div>
 
 
-    <div class="bg-img">
+    <div class="bg-img" id="overlay">
         <!-- NavBar -->
         <!--<div class="container container-fluid">-->
             <section>
-                <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-lg bg-opacity-50 ">
+                <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-lg bg-opacity-50  border-bottom border-warning ">
                     <div class="container">
                     <a class="navbar-brand" href="#">
                         <img src="/static/images/logo1.png" width="100" height="50" class="d-inline-block align-top ml-3" alt="cs50xhotellogo">
@@ -105,8 +105,13 @@
                         {% else %}
 
                         <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/admin_register">Register</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/admin_login">Login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Gallery</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Prices</a></li>
+                            <li class="nav-item {{'active' if active_page == 'reservation'}}"><a class="nav-link" href="/">Reservation</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/admin_login">About</a></li>
+                            <!--<li class="nav-item"><a class="nav-link" href="/admin_register">Register</a></li>-->
+                            <li class="nav-item mx-5"><a class="nav-link" href="/admin_login">Login</a></li>
                         </ul>
 
                         {% endif %}
@@ -133,9 +138,13 @@
                 </main>
     </div>
 
-            <main class="container-fluid py-5 bg-gradient bg-opacity-10 text-center">
-                {% block main %}{% endblock %}
-            </main>
+                <main class="container-fluid py-5 bg-gradient bg-opacity-10 text-center">
+                    {% block main %}{% endblock %}
+                </main>
+
+                <main class=" bg-gradient bg-opacity-10 text-start">
+                    {% block select_rooms %}{% endblock %}
+                </main>
         
 
             <!-- Footer -->
