@@ -1,13 +1,14 @@
-from booking_engine.models import RateType, RatePlan
+from booking_engine.models import RateType, RatePlan, RoomAvailability, Room
 from datetime import timedelta
 from math import floor, ceil
 
 def single_room_search(room, rooms_request, total_guests, adults, total_children, listed_rooms: list, checkin, checkout, first_child, second_child, children, total_days  ): 
          
     for listed_room in listed_rooms:
-           
+
+        room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()     
         # If there is desired room quantity available
-        if listed_room.quantity_per_date >= rooms_request and listed_room.room_id == room.id:
+        if room_availability.left_to_sell >= rooms_request and listed_room.room_id == room.id:
 
             # Get rateplan between dates                      
             rp = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
@@ -35,11 +36,11 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
                     # Check each child of what age is it and add the correct price from the rateplan
                     for child in all_children:
 
-                        if child == '12':
+                        if child == '7-12':
                             price_per_day_childen += rp.child_under_12_exb
-                        elif child == '6':
+                        elif child == '2-6':
                             price_per_day_childen += rp.child_under_7_exb
-                        elif child == '2':
+                        elif child == '0-2':
                             price_per_day_childen += rp.child_under_2_exb
                             
                 # For adults that are equal or more than room min guests and less or == max_guests
@@ -107,15 +108,18 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
                 
         # Loop all listed rooms for the selected dates
         for listed_room in listed_rooms:
-                    
+
+            room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()        
             # Check if we have the requeired quantity for the selected dates
-            if  (listed_room.quantity_per_date >= rooms_request and
+            if  (room_availability.left_to_sell >= rooms_request and
                         room.id == listed_room.room_id and room_capacity <= room.max_adults or
-                        listed_room.quantity_per_date < rooms_request and (room.max_guests * listed_room.quantity_per_date) >= total_guests):
+                        room_availability.left_to_sell < rooms_request and (room.max_guests * listed_room.quantity_per_date) >= total_guests) and room_availability.left_to_sell != 0:
         
                         rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                                     filter(RatePlan.from_date <= checkin).
                                     filter(checkout - timedelta(days=1) <= RatePlan.to_date).first())
+                        
+                        
                         
                         adults_price_per_day = 0
                                         
@@ -190,9 +194,10 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
 def multiple_rooms_search_children(room, rooms_request, total_guests, adults, total_children, listed_rooms: list, checkin, checkout, first_child, second_child, children, total_days):
     
     for listed_room in listed_rooms:
-     
+        
+        room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()  
         # Check if we have the requeired quantity for the selected dates
-        if  (listed_room.quantity_per_date >= rooms_request and
+        if  (room_availability.left_to_sell >= rooms_request and
             room.id == listed_room.room_id and total_guests <= (room.max_guests * rooms_request)): 
 
             adults_price = 0
@@ -214,11 +219,11 @@ def multiple_rooms_search_children(room, rooms_request, total_guests, adults, to
                 # Check each child of what age is it and add the correct price from the rateplan
                 for child in all_children:
 
-                    if child == '12':
+                    if child == '7-12':
                         children_price += rp.child_under_12_exb
-                    elif child == '6':
+                    elif child == '2-6':
                         children_price += rp.child_under_7_exb
-                    elif child == '2':
+                    elif child == '0-2':
                         children_price += rp.child_under_2_exb
             
             if adults < (room.min_guests * rooms_request):

@@ -17,6 +17,7 @@
         <button type="button" class="bi-check position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary bg-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
     </div>
 </div>
+
 <form action="/booking_form" method="post" enctype="multipart/form-data">
 <div class="row g-5 gy-5 d-flex flex-row justify-content-evenly mb-5">
     <div class="col-md-4">
@@ -85,13 +86,11 @@
                         <td>${{reservation.total_price}}</td>
                         <input type="hidden" name="total_price" value="{{ reservation.total_price }}">
                     </tr>
-                    
                     {% endfor %}  
                   </table>
             </div>
           </div> 
     </div>
-
 
     <div class="col-md-4">
         <div class="form-body">
@@ -99,8 +98,7 @@
                 <div class="form-holder">
                     <div class="form-content">
                         <div class="form-items">
-                            <h3 class="text-center">Guest Reservation Details</h3>
-               
+                            <h3 class="text-center">Guest Reservation Details</h3>              
                             <form class="requires-validation" novalidate>
     
                                 <div class="col-md-12">

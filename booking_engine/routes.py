@@ -133,14 +133,11 @@ def booking_request():
 
         reservation_data.append(reservation)
 
-        print(from_date)
-            
-
         RESERVATION_REQUEST = reservation_data
     
         return render_template("booking_form.html", reservation_data=RESERVATION_REQUEST, usd=usd)
+    
        
-
 @app.route("/booking_form", methods=["GET", "POST"])
 def booking_form():
     
@@ -168,8 +165,7 @@ def booking_form():
         reservation_number = random.randint(1000, 9999) + int(reservation_date)
 
         room = Room.query.filter_by(name=room_type).first()
-        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(from_date, to_date))
-        
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(from_date, to_date - timedelta(days=1))).filter(ListedRoom.room_id == room.id).all()    
 
         client = Client(
             first_name = first_name,
@@ -178,7 +174,7 @@ def booking_form():
             phone_number = phone
         )
 
-        reservation = Reservation(
+        client_reservation = Reservation(
             reservation_number = reservation_number,
             check_in = from_date,
             check_out = to_date,
@@ -195,12 +191,13 @@ def booking_form():
 
         )
 
-        db.session.add(client)
-        db.session.add(reservation)
+        
+        print(room_price_per_day)
+        print(total_price)
 
-    
+        client.reservation.append(client_reservation)
+
         for listed_room in listed_rooms:
-            listed_room.quantity_per_date -= total_rooms
 
             # Query room availability 
             room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()
@@ -210,7 +207,9 @@ def booking_form():
             if room_availability.left_to_sell == 0:
                 room_availability.is_it_available = 0
         
+        db.session.add(client)
         db.session.commit()
+
 
         return redirect("/")
     
