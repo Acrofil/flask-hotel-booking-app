@@ -1,4 +1,4 @@
-from flask import flash, render_template, redirect, session, request, jsonify
+from flask import flash, render_template, redirect, session, request, jsonify, json
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -11,6 +11,8 @@ from iteration_utilities import unique_everseen
 import pandas as pd
 import random
 
+# Global variable to hold the reservation request
+RESERVATION_REQUEST = None
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -65,7 +67,7 @@ def index():
 
             elif rooms_request > 1 and total_children == 0:
 
-                room = multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days)  
+                room = multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days, first_child, second_child, total_children)  
 
                 if room:
                     bookable_rooms.append(room)
@@ -97,18 +99,120 @@ def booking_request():
 
     if request.method == "POST":
 
-        a = request.form.get('reservation_data')
-        # get all data and send it to booking form
+        room_type = request.form.get("room_type")
+        total_rooms = request.form.get("total_rooms")
+        total_guests = request.form.get("total_guests")
+        total_adults = request.form.get("total_adults")
+        total_children = request.form.get("total_children")
+        children_age = request.form.get("children_age")
+        from_date = datetime.strptime(request.form.get("from_date"), '%d-%m-%Y')
+        to_date = datetime.strptime(request.form.get("to_date"), '%d-%m-%Y')
+        total_days = request.form.get("total_days")
+        room_price_per_day = request.form.get("room_price_per_day")
+        all_rooms_price_per_day = request.form.get("all_rooms_price_per_day")
+        total_price = request.form.get("total_price")
+        room_image = request.form.get("room_image")
 
+        reservation = {
+            'room_type': room_type,
+            'total_rooms': total_rooms,
+            'total_guests': total_guests,
+            'total_adults': total_adults,
+            'total_children': total_children,
+            'children_age': children_age,
+            'from_date': from_date,
+            'to_date': to_date,
+            'total_days': total_days,
+            'room_price_per_day': room_price_per_day,
+            'all_rooms_price_per_day': all_rooms_price_per_day,
+            'total_price': total_price,
+            'room_image': room_image
+        }
 
-        return render_template("booking_form.html")
+        reservation_data = []
+
+        reservation_data.append(reservation)
+
+        print(from_date)
+            
+
+        RESERVATION_REQUEST = reservation_data
+    
+        return render_template("booking_form.html", reservation_data=RESERVATION_REQUEST, usd=usd)
        
 
 @app.route("/booking_form", methods=["GET", "POST"])
 def booking_form():
     
     if request.method == "POST":
-        pass
+        
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
+
+        room_type = request.form.get("room_type")
+        total_rooms = int(request.form.get("total_rooms"))
+        total_guests = request.form.get("total_guests")
+        total_adults = request.form.get("total_adults")
+        total_children = request.form.get("total_children")
+        children_age = request.form.get("children_age")
+        from_date = datetime.strptime(request.form.get("from_date"), '%d-%m-%Y')
+        to_date = datetime.strptime(request.form.get("to_date"), '%d-%m-%Y')
+        total_days = request.form.get("total_days")
+        room_price_per_day = request.form.get("room_price_per_day")
+        all_rooms_price_per_day = request.form.get("all_rooms_price_per_day")
+        total_price = request.form.get("total_price")
+        
+        reservation_date = datetime.now().strftime('%Y%m%d%H%M%S')
+        reservation_number = random.randint(1000, 9999) + int(reservation_date)
+
+        room = Room.query.filter_by(name=room_type).first()
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(from_date, to_date))
+        
+
+        client = Client(
+            first_name = first_name,
+            last_name = last_name,
+            email = email,
+            phone_number = phone
+        )
+
+        reservation = Reservation(
+            reservation_number = reservation_number,
+            check_in = from_date,
+            check_out = to_date,
+            total_days = total_days,
+            total_rooms_reserved = total_rooms,
+            total_guests = total_guests,
+            total_adults = total_adults,
+            total_children = total_children,
+            children_age = children_age,
+            room_price_day = room_price_per_day,
+            all_rooms_price_day = all_rooms_price_per_day,
+            total_price = total_price,
+            room_id = room.id,
+
+        )
+
+        db.session.add(client)
+        db.session.add(reservation)
+
+    
+        for listed_room in listed_rooms:
+            listed_room.quantity_per_date -= total_rooms
+
+            # Query room availability 
+            room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()
+            room_availability.booked_quantity += total_rooms
+            room_availability.left_to_sell -= total_rooms
+
+            if room_availability.left_to_sell == 0:
+                room_availability.is_it_available = 0
+        
+        db.session.commit()
+
+        return redirect("/")
     
     else:
         return render_template("booking_form.html")

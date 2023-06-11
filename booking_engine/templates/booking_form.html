@@ -17,31 +17,129 @@
         <button type="button" class="bi-check position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary bg-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
     </div>
 </div>
-
-<div class="row g-5 gy-5 d-flex justify-content-evenly">
-    <div class="col-md-4 border border-2">
-        <div class="card bg-light bg-opacity-75">
-            <img class="card-img-top" src=".." alt="Card image cap">
-            <div class="card-body">
-                {% for a in room %}
-              <h5 class="card-title">Room {{a}}</h5>
-              <p class="card-text">{{ a.room_description }}</p>
-                {% endfor %}
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+<form action="/booking_form" method="post" enctype="multipart/form-data">
+<div class="row g-5 gy-5 d-flex flex-row justify-content-evenly mb-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body ">
+                <h3 class="text-center">Reservation Summary</h3>
+                <table style="width:100%" id="all_rate_plans" class="border border-3 border-warning">
+                    {% for reservation in reservation_data %}
+                    <tr>
+                      <th>Room type</th>
+                      <td>{{reservation.room_type}}</td>
+                      <input type="hidden" name="room_type" value="{{reservation.room_type}}"/>
+                    </tr>
+                    <tr>
+                      <th>Total rooms</th>
+                      <td>{{reservation.total_rooms}}</td>
+                      <input type="hidden" name="total_rooms" value="{{reservation.total_rooms}}"/>
+                    </tr>
+                    <tr>
+                      <th>Total guests</th>
+                      <td>{{reservation.total_guests}}</td>
+                      <input type="hidden" name="total_guests" value="{{ reservation.total_guests }}"/>
+                    </tr>
+                    <tr>
+                        <th>Adults</th>
+                        <td>{{reservation.total_adults}}</td>
+                        <input type="hidden" name="total_adults" value="{{ reservation.total_adults }}"/>
+                    </tr>
+                    <tr>
+                        <th>Children</th>
+                        <td>{{reservation.total_children}}</td>
+                        <input type="hidden" name="total_children" value="{{ reservation.total_children }}"/>
+                    </tr>
+                    <tr>
+                        <th>Children age</th>
+                        <td>{{reservation.children_age}}</td>
+                        <input type="hidden" name="children_age" value="{{ reservation.children_age }}"/>
+                    </tr>
+                    <tr>
+                        <th>Check-in</th>
+                        <td>{{reservation.from_date.strftime('%d %B')}}</td>
+                        <input type="hidden" name="from_date" value="{{ reservation.from_date.strftime('%d-%m-%Y') }}">
+                    </tr>
+                    <tr>
+                        <th>Check-out</th>
+                        <td>{{reservation.to_date.strftime('%d %B')}}</td>
+                        <input type="hidden" name="to_date" value="{{ reservation.to_date.strftime('%d-%m-%Y') }}">
+                    </tr>
+                    <tr>
+                        <th>Total days</th>
+                        <td>{{reservation.total_days}}</td>
+                        <input type="hidden"  name="total_days" value="{{ reservation.total_days}}">
+                    </tr>
+                    <tr>
+                        <th>Room price DAY</th>
+                        <td>${{reservation.room_price_per_day}}</td>
+                        <input type="hidden"  name="room_price_per_day" value="{{ reservation.room_price_per_day }}">
+                    </tr>
+                    <tr>
+                        <th>All rooms DAY</th>
+                        <td>${{reservation.all_rooms_price_per_day}}</td>
+                        <input type="hidden" name="all_rooms_price_per_day" value="{{ reservation.all_rooms_price_per_day }}">
+                    </tr>
+                    <tr>
+                        <th>TOTAL PRICE</th>
+                        <td>${{reservation.total_price}}</td>
+                        <input type="hidden" name="total_price" value="{{ reservation.total_price }}">
+                    </tr>
+                    
+                    {% endfor %}  
+                  </table>
             </div>
-          </div>
-
-
-        
+          </div> 
     </div>
-    <div class="col-md-4 border border-2">
-        FORM
-        ffffffffffffff
-        aaaaaaaaaaaaa
-        <br>fdsfdsfsdffsd
-        <br>fkjasfdsjfsf
+
+
+    <div class="col-md-4">
+        <div class="form-body">
+            <div class="row">
+                <div class="form-holder">
+                    <div class="form-content">
+                        <div class="form-items">
+                            <h3 class="text-center">Guest Reservation Details</h3>
+               
+                            <form class="requires-validation" novalidate>
+    
+                                <div class="col-md-12">
+                                   <input class="form-control" type="text" name="first_name" placeholder="First name" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" type="text" name="last_name" placeholder="Last name" required>
+                                 </div>
+    
+                                <div class="col-md-12">
+                                    <input class="form-control" type="email" name="email" placeholder="E-mail" required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <input class="form-control" type="text" name="phone" placeholder="Phone" required>
+                                 </div>
+    
+    
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                                    <label class="form-check-label">I confirm that all data are correct</label>
+                                </div>
+                      
+    
+                                <div class="form-button mt-3">
+                                    <button id="submit" type="submit" class="btn btn-primary">Book Now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     </div>
 
 </div>
-
+</form>
 {% endblock %}
+
+

@@ -96,7 +96,7 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
                 return room_option
     
 
-def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days):
+def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days, first_child, second_child, total_children):
                 
     client_search = [(adults, rooms_request)]        
 
@@ -175,6 +175,7 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
                                     'total_guests': total_guests,
                                     'total_adults': adults,
                                     'total_children': 0,
+                                    'children_age': tuple([first_child, second_child]) if total_children == 2 else first_child,
                                     'price_per_day': price_per_day_room,
                                     'price_room_stay': price_per_room_all_days,
                                     'total_price': all_rooms_total,
@@ -251,6 +252,7 @@ def multiple_rooms_search_children(room, rooms_request, total_guests, adults, to
                     'total_guests': total_guests,
                     'total_adults': adults,
                     'total_children': total_children,
+                    'children_age': tuple([first_child, second_child]) if total_children == 2 else first_child,
                     'price_per_day': price_per_day_room,
                     'price_room_stay': price_per_room_all_days,
                     'total_price': all_rooms_total,

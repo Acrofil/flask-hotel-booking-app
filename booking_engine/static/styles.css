@@ -192,3 +192,85 @@ html {
   transform: scale(1.05);
 }
 
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
+
+.form-holder {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 45vh;
+      background-color: gray;
+      border-radius: 15px;
+      opacity: 90%;
+      margin-bottom: 150px;
+}
+
+.card {
+  background-color: gray;
+  opacity: 90%;
+  border-radius: 15px;
+}
+
+
+.form-content .form-items {
+    border: 3px solid aqua;
+    padding: 40px;
+    display: inline-block;
+    width: 100%;
+    min-width: 540px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.form-content h3, .card h3 {
+    color: RGB(255, 193, 7);
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.form-content h3.form-title {
+    margin-bottom: 30px;
+}
+
+.form-content p {
+    color: black;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 20px;
+    margin-bottom: 30px;
+}
+
+
+.form-check{
+    color: #fff;
+}
+
+.form-content input[type=text], .form-content input[type=email] {
+    width: 100%;
+    padding: 9px 20px;
+    text-align: left;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 15px;
+    font-weight: 300;
+    color: black;
+    margin-top: 16px;
+}
+
+
+.btn-primary{
+    background-color: RGB(255, 193, 7);
+    color: black;
+    margin-left: 170px;
+    
+}

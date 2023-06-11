@@ -19,7 +19,7 @@
 
     </div>
 
-<form class="p-1" action="/" method="post" id="form" enctype="multipart/form-data">
+<form class="p-1" action="/booking_request" method="post" id="form" enctype="multipart/form-data">
     <div class="row g-5 gy-5  text-start mb-5 pb-5 mx-2">
         {% for room in bookable_rooms %}
             {% if room != None %}
@@ -28,6 +28,7 @@
                     {% if room.room_image %} 
                 <div class="image-holder">
                     <img class="card-img-top"  alt="Card image" src="{{ url_for('static', filename='uploads/' + room.room_image ) }}"/>
+                    <input type="hidden" name="room_image" value="{{room.room_image}}"/>
                 </div>
                     {% elif not room.room_image %}
                 <div class="image-holder">
@@ -43,26 +44,40 @@
                         <p class="card-text mt-2" >{{ room.room_info }}</p>
                         <br>
                         <h5 class="text-center">Summary</h5>
-                        <i class="bi bi-sun" value="{{ room.room_quantity }}"> Total rooms selected {{ room.room_quantity}}</i>
+                        <i class="bi bi-sun"> Total rooms selected {{ room.room_quantity}}</i>
+                        <input type="hidden" name="total_rooms" value="{{room.room_quantity}}"/>
                         <br>
-                        <i class="bi bi-people-fill" value="{{ room.total_guests }}"> Guests: {{ room.total_guests }}</i>
+                        <i class="bi bi-people-fill">Guests: {{ room.total_guests }}</i>
+                        <input type="hidden" name="total_guests" value="{{ room.total_guests }}"/>
                         <br>
-                        <i class="bi bi-people-fill" value="{{ room.total_adults }}"> Adults: {{ room.total_adults }}</i>
+                        <i class="bi bi-people-fill" > Adults: {{ room.total_adults }}</i>
+                        <input type="hidden" name="total_adults" value="{{ room.total_adults }}"/>
                         <br>
-                        <i class="bi bi-people-fill" value="{{ room.total_children }}"> Children: {{ room.total_children }}</i>
+                        <i class="bi bi-people-fill"  > Children: {{ room.total_children }}</i>
+                        <input type="hidden" name="total_children" value="{{ room.total_children }}"/>
                         <br>
-                        <i class="bi bi-calendar" value="{{ room.from_date }}"> Check in: {{ room.from_date.strftime('%d %B') }} Check out: {{ room.to_date.strftime('%d %B') }}</i>
+                        <i class="bi bi-people-fill"> Children's age between: {{ room.children_age }}</i>
+                        <input type="hidden" name="children_age" value="{{ room.children_age }}"/>
                         <br>
-                        <i class="bi bi-calendar-day-fill" value="{{ room.to_date }}"> Days: {{ room.total_days }}</i>
+                        <i class="bi bi-calendar"> Check-in: {{ room.from_date.strftime('%d %B') }}</i>
+                        <input type="hidden" name="from_date" value="{{ room.from_date.strftime('%d-%m-%Y') }}">
                         <br>
+                        <i class="bi bi-calendar"> Check-out: {{ room.to_date.strftime('%d %B') }}</i>
+                        <input type="hidden" name="to_date" value="{{ room.to_date.strftime('%d-%m-%Y') }}">
                         <br>
-                        <i class="bi bi-cash" value="{{ room.price_per_day }}"> Room price DAY - $<strong>{{ room.price_per_day }}</strong></i>
+                        <i class="bi bi-calendar-day-fill"> Total days: {{ room.total_days }}</i>
+                        <input type="hidden"  name="total_days" value="{{ room.total_days}}">
                         <br>
-                        <i class="bi bi-cash" value="{{ room.price_room_stay }}"> All Rooms price DAY - $<strong>{{ room.price_room_stay }}</strong></i>
+                        <i class="bi bi-cash"> Room price DAY - $<strong>{{ room.price_per_day }}</strong></i>
+                        <input type="hidden"  name="room_price_per_day" value="{{ room.price_per_day }}">
                         <br>
-                        <i class="bi bi-cash-stack" value="{{ room.total_price }}"> TOTAL - $<strong>{{ room.total_price }}</strong></i>
+                        <i class="bi bi-cash" > All Rooms price DAY - $<strong>{{ room.price_room_stay }}</strong></i>
+                        <input type="hidden" name="all_rooms_price_per_day" value="{{ room.price_room_stay }}">
+                        <br>
+                        <i class="bi bi-cash-stack"  > TOTAL - $<strong>{{ room.total_price }}</strong></i>
+                        <input type="hidden" name="total_price" value="{{ room.total_price }}">
                         <div class="text-center">
-                            <button type="submit" id="reservation_data" name="reservation_data" value="{{ loop.index }}" class="btn btn-outline-primary btn-light">SELECT</button>
+                            <button type="submit" id="reservation_data" name="room_type" value="{{ room.room_type }}" class="btn btn-outline-primary btn-light">SELECT</button>
                         </div>
                     </div>
                     <div class="card-footer bg-dark bg-opacity-50">
