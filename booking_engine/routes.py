@@ -45,7 +45,10 @@ def index():
         elif children == "two":
             total_children = 2
 
-        all_rooms = Room.query.all()
+        all_rooms = Room.query.join(ListedRoom).filter(ListedRoom.room_id == Room.id).filter(ListedRoom.listed_date.between(checkin, checkout - day)).all()
+
+
+        print(all_rooms)
 
         # total guests selected by client
         total_guests = adults + total_children
@@ -242,6 +245,8 @@ def admin_login():
     else:
 
         return render_template("admin_login.html")
+
+    
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
 
@@ -280,7 +285,19 @@ def admin_register():
 @login_required
 def admin_panel():
 
-    return render_template("admin_panel.html")
+    if request.method == "POST":
+        pass
+
+    else:
+
+        clients = Client.query.all()
+        rooms = Room.query.all()
+
+        print(clients)
+        
+
+
+        return render_template("admin_panel.html", clients=clients, rooms=rooms)
 
 @app.route("/create_rooms", methods=["GET", "POST"])
 @login_required

@@ -192,6 +192,16 @@ $(document).ready(function(){
     });
   });
 
+  
+
+    
+
+let table = new DataTable('#reservations');
+$(document).ready(function () {
+    $('#example').DataTable();
+});
+
+
   // Get dict data from selecting rooms offer / offer_rooms.html
 
   $.ajax({
@@ -221,4 +231,3 @@ $(document).ready(function(){
         }, false)
       })
     })()
-    

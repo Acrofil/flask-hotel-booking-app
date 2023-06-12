@@ -145,6 +145,7 @@ html {
   position: relative;
   min-height: 100%;
 }
+
 .footerWrap {
   position: absolute;
   width: 100%;
@@ -155,7 +156,6 @@ html {
 .cards {
   margin-top: 200px;
 }
-
 
 
 .search-form {
@@ -175,6 +175,7 @@ html {
 }
 
 .progress-bar-box {
+  margin-top: 55px;
   border-radius: 25px;
   margin-bottom: 50px;
 }
@@ -193,8 +194,6 @@ html {
 }
 
 
-
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
 
 .form-holder {
@@ -203,22 +202,38 @@ html {
       justify-content: center;
       align-items: center;
       text-align: center;
-      min-height: 45vh;
-      background-color: gray;
+      min-height: 53vh;
       border-radius: 15px;
       opacity: 90%;
       margin-bottom: 150px;
+      border: 3px solid aqua;
+      width: 90%;
+      margin-left: 20px;
+      background-color: rgba(50, 122, 182, 0.8);
+      
 }
 
 .card {
-  background-color: gray;
+  background-color: rgba(50, 122, 182, 0.8);
   opacity: 90%;
   border-radius: 15px;
+  border: 3px solid aqua;
+  width: 90%;
+  margin-left: 20px;
+
+}
+
+.booking-form-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(50, 122, 182, 0.8);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+
 }
 
 
 .form-content .form-items {
-    border: 3px solid aqua;
     padding: 40px;
     display: inline-block;
     width: 100%;
@@ -234,7 +249,8 @@ html {
     text-align: center;
     font-size: 30px;
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
+    
 }
 
 .form-content h3.form-title {
@@ -268,3 +284,6 @@ html {
 }
 
 
+.reservations, #th {
+  background-color:aquamarine;
+}

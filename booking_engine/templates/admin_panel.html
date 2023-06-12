@@ -5,8 +5,59 @@
     Admin Panel
 {% endblock %}
 
-{% block main %}
+{% block reservations %}
 
-<h1>Nothing here yet!</h1>
+<h1>Reservations</h1>
+
+    <table id="reservations" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Reservation Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Date Reserved</th>
+                <th>Room Type</th>
+                <th>Rooms</th>
+                <th>Guests</th>
+                <th>Adults</th>
+                <th>Children</th>
+                <th>Children Age</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Days</th>
+                <th>Room Price DAY</th>
+                <th>All Rooms DAY</th>
+                <th>TOTAL</th>           
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            {% for reservation in client.reservation %}
+            <tr>            
+                <td>{{ reservation.reservation_number }}</td>
+                <td>{{ client.first_name }}</td>
+                <td>{{ client.last_name }}</td>
+                <td>{{ client.phone_number }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ reservation.date_created.strftime('%d-%m-%Y') }}</td>     
+                <td>{{reservation.room_id}}</td>
+                <td>{{ reservation.total_rooms_reserved }}</td>
+                <td>{{ reservation.total_guests }}</td>
+                <td>{{ reservation.total_adults }}</td>
+                <td>{{ reservation.total_children }}</td>
+                <td>{{ reservation.children_age }}</td>
+                <td>{{ reservation.check_in.strftime('%d-%m-%Y') }}</td>
+                <td>{{ reservation.check_out.strftime('%d-%m-%Y') }}</td>
+                <td>{{ reservation.total_days }}</td>
+                <td>{{ reservation.room_price_day }}</td>
+                <td>{{ reservation.all_rooms_price_day }}</td>
+                <td>{{ reservation.total_price }}</td>               
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

@@ -3,19 +3,35 @@ from datetime import timedelta
 from math import floor, ceil
 
 def single_room_search(room, rooms_request, total_guests, adults, total_children, listed_rooms: list, checkin, checkout, first_child, second_child, children, total_days  ): 
-         
+    
+    room_is_available = True
+    #print(len(listed_rooms))
     for listed_room in listed_rooms:
 
-        room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()     
+        room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).all()
+
+        for room in room_availability:
+
+            if room.left_to_sell < rooms_request:
+                room_is_available = False 
+
         # If there is desired room quantity available
-        if room_availability.left_to_sell >= rooms_request and listed_room.room_id == room.id:
+        if room_is_available and listed_room.room_id == room.id:
 
             # Get rateplan between dates                      
             rp = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                             filter(RatePlan.from_date <= checkin).
                             filter(checkout - timedelta(days=1) <= RatePlan.to_date).first())
+            
+            #if room_availability.is_it_available == 0 and listed_room.room_id == room.id:
+                #room_is_available = False
+            
+            #if room_availability.left_to_sell < rooms_request and listed_room.room_id == room.id:
+                #room_is_available = False
+            
+              #print(listed_room.listed_date)
                 
-            if rp and listed_room.listed_date == checkout - timedelta(days=1):
+            if rp and listed_room.listed_date == checkout - timedelta(days=1) and room_is_available:
 
                 price_per_day_adults = 0
                 price_per_day_childen = 0
