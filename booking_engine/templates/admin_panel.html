@@ -9,7 +9,7 @@
 
 <h1>Reservations</h1>
 
-    <table id="reservations" class="display" style="width:100%">
+    <table id="reservations" class="display mb-5" style="width:100%">
         <thead>
             <tr>
                 <th>Reservation Number</th>
@@ -41,8 +41,12 @@
                 <td>{{ client.last_name }}</td>
                 <td>{{ client.phone_number }}</td>
                 <td>{{ client.email }}</td>
-                <td>{{ reservation.date_created.strftime('%d-%m-%Y') }}</td>     
-                <td>{{reservation.room_id}}</td>
+                <td>{{ reservation.date_created.strftime('%d-%m-%Y') }}</td> 
+                {% for room in rooms %}
+                    {% if room.id == reservation.room_id %}    
+                        <td>{{room.name}}</td>
+                    {% endif %}
+                {% endfor %}
                 <td>{{ reservation.total_rooms_reserved }}</td>
                 <td>{{ reservation.total_guests }}</td>
                 <td>{{ reservation.total_adults }}</td>

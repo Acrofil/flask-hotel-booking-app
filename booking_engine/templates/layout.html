@@ -76,9 +76,8 @@
     </div>
 
 
-    <div class="bg-img" id="overlay">
+    <div class="bg-img">
         <!-- NavBar -->
-        <!--<div class="container container-fluid">-->
             <section>
                 <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-lg bg-opacity-50  border-bottom border-warning ">
                     <div class="container">
@@ -131,7 +130,6 @@
                 </div>
                 </nav>
             </section>
-        <!--</div>-->
     
         <!--Main Templates -->
     
@@ -144,20 +142,20 @@
             {% endif %}
 
     
-                <main class="py-5 bg-gradient bg-opacity-10 text-center">
+                <main class="py-5 bg-gradient bg-opacity-10 text-center" >
                     {% block search %}{% endblock %}
                 </main>
     </div>
 
-                <main class="container-fluid bg-gradient bg-opacity-10 text-center">
+                <main class="container-fluid mt-5 bg-gradient bg-opacity-10 text-center">
                     {% block main %}{% endblock %}
                 </main>
 
-                <main class="container-fluid p-5 bg-gradient bg-opacity-10 text-center">
+                <main class="container-fluid p-5 mb-5 bg-gradient bg-opacity-10 text-center">
                     {% block reservations %}{% endblock %}
                 </main>
 
-                <main class="container bg-gradient bg-opacity-10 text-start">
+                <main class="container-fluid bg-gradient bg-opacity-10 mb-5  text-start">
                     {% block select_rooms %}{% endblock %}
                 </main>
         

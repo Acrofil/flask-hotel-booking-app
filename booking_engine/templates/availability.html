@@ -12,7 +12,7 @@
 
 <h3 class="mb-2">Add available rooms for the selected dates</h3>
 <div class="admin-panel-box container bg-light border border-1 border-info shadow-lg">
-    <form class="form p-5 d-flex justify-content-center" action="/add_room" method="post" id="availability_dates">
+    <form class="form p-5 d-flex" action="/add_room" method="post" id="availability_dates">
 
         <div>
           <select class="form-select d-flex" style="width: 500px; height: 30px;" name="selected_room" id="selected_room">
@@ -89,7 +89,7 @@
 
 <!-- Loop each room in rooms -->
 {% for room in rooms %}
-<div class="container d-flex justify-content-center">
+<div class="container-fluid d-flex justify-content-center">
 <div class="container-fluid mt-5  d-flex justify-content-center">
 <table class="border border-3 border-info bg-light bg-gradient shadow" border="1" width="50%" id="availability_table">
     <thead>

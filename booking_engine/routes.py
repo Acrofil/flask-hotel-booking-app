@@ -38,10 +38,10 @@ def index():
             flash("No rooms available for the selected dates!")
             return redirect("/")
         
-        if len(listed_rooms) != total_days:
+        if len(listed_rooms) < total_days:
             flash(f"Try different search, some dates are taken! Try from {listed_rooms[0].listed_date}")
-            return redirect("/")
-        
+            return redirect("/") 
+
         total_children = 0
 
         if children == "one":
@@ -64,6 +64,7 @@ def index():
                         total_children <= room.max_children and 
                         total_guests >= room.min_guests or adults < room.min_guests):
                 
+                
                 room_search = single_room_search(room, rooms_request, total_guests, adults, total_children, listed_rooms, checkin, checkout, first_child, second_child, children, total_days)
                 
                 if room_search:
@@ -72,8 +73,7 @@ def index():
             elif rooms_request > 1 and total_children == 0:
 
                 room_search = multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days, first_child, second_child, total_children)  
-                print(room.name)
-                print(room.id)
+        
                 if room_search:
                     bookable_rooms.append(room_search)
 
@@ -219,7 +219,7 @@ def booking_form():
         db.session.add(client)
         db.session.commit()
 
-        return redirect("/")
+        return render_template("reservation_created.html")
     
     else:
         return render_template("booking_form.html")
@@ -298,9 +298,7 @@ def admin_panel():
         clients = Client.query.all()
         rooms = Room.query.all()
 
-        print(clients)
-        
-
+    
 
         return render_template("admin_panel.html", clients=clients, rooms=rooms)
 
@@ -610,6 +608,7 @@ def add_room():
 
                 for available_room in rooms:
                     available_room.left_to_sell += add_room_quantity
+                    available_room.is_it_available = 1
 
         # If we do not have listed rooms for the selected dates           
         if not listed_rooms:

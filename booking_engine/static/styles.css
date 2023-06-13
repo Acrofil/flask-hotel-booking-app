@@ -1,124 +1,126 @@
 .dates {
     
-    margin-right: 25px;
-    margin-left: 25px;
-    width:300px; 
-    
-}
-
-.dates_rate_plans {
-    
-  margin-right: 160px;
-  margin-left: 160px;
+  margin-right: 25px;
+  margin-left: 25px;
   width:300px; 
   
 }
 
+.dates_rate_plans {
+  
+margin-right: 160px;
+margin-left: 160px;
+width:300px; 
+
+}
+
 
 .hidden_dates {
-  margin-left: 250px;
+margin-left: 250px;
 }
 
 
 .bg-img {
-    /* The image used */
-    background-image: url("/static/images/banner-5.png");
-
-    min-height: 380px;
+  /* The image used */
+  background-image: url("/static/images/banner-5.png");
   
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+
+  min-height: 380px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   
-    /* Needed to position the navbar */
-    position: relative;
-  }
 
-  #children {
-    display: block;
-  }
+  /* Needed to position the navbar */
+  position: relative;
+}
 
-  .one_child, .two_children{
-    display: none;
+#children {
+  display: block;
+}
 
-  }
+.one_child, .two_children{
+  display: none;
 
-  .bi-plus-square-fill {
-    color: red;
+}
 
-  }
+.bi-plus-square-fill {
+  color: red;
 
-  .active {
-    background-color: lightskyblue;
-    -webkit-text-fill-color: black;
-    border-radius: 7px;
+}
 
-  }
+.active {
+  background-color: lightskyblue;
+  -webkit-text-fill-color: black;
+  border-radius: 7px;
+
+}
 
 
-  .navbar-toggler {
-    background-color:  	RGB(255, 193, 7);
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border: none;
-    outline: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: scale 0.3 ease-in-out;
-    
+.navbar-toggler {
+  background-color:  	RGB(255, 193, 7);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: scale 0.3 ease-in-out;
+  
 }
 
 .nav-link {
-  -webkit-text-fill-color: lightgoldenrodyellow;
+-webkit-text-fill-color: lightgoldenrodyellow;
 }
 
 .period_two, .period_three, .period_four{
-  display: none;
+display: none;
 }
 
 
 #all_rate_plans {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+font-family: Arial, Helvetica, sans-serif;
+border-collapse: collapse;
+width: 100%;
 }
 
 #all_rate_plans td, #all_rate_plans th {
-  border: 1px solid #ddd;
-  padding: 15px;
+border: 1px solid #ddd;
+padding: 15px;
 }
 
 #availability_table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 50%;
+font-family: Arial, Helvetica, sans-serif;
+border-collapse: collapse;
+width: 50%;
 }
 
 #availability_table td, #availability_table th {
-  border: 1px solid #ddd;
-  padding: 15px;
+border: 1px solid #ddd;
+padding: 15px;
 }
 
 
 #availability_table th {
-  width: 30px;
-  height: 60px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: center;
-  background-color: lightblue;
-  color: black;
+width: 30px;
+height: 60px;
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: center;
+background-color: lightblue;
+color: black;
 }
 
 
 #all_rate_plans th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: center;
-  background-color: lightblue;
-  color: black;
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: center;
+background-color: lightblue;
+color: black;
 }
 
 #all_rate_plans, #availability_table tr:nth-child(even){background-color: #f2f2f2;}
@@ -127,163 +129,167 @@
 
 
 .hide_row, .hide_row1, .hide_row2, .hide_row3, .hide_row4, .hide_row5{
-  display: none;
+display: none;
 }
 
 table, th, td {
-  border: 1px solid black;
+border: 1px solid black;
 }
 
 .testing{
-  width: 180px;
-  border: 10px;
-  border-color: red;
-  margin-left: 20px;
+width: 180px;
+border: 10px;
+border-color: red;
+margin-left: 20px;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+position: relative;
+min-height: 100%;
 }
 
 .footerWrap {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  left: 0;
+position: absolute;
+width: 100%;
+bottom: 0;
+left: 0;
 }
 
 .cards {
-  margin-top: 200px;
+margin-top: 200px;
 }
 
 
 .search-form {
-  margin-top: 50px;
-  border-radius: 25px;
-  margin: 20px;
+margin-top: 50px;
+border-radius: 25px;
+margin: 20px;
 
 }
 
 
 .search-input {
-  border-radius: 20px;
+border-radius: 20px;
 }
 
 .calendar-input {
-  border-radius: 5px;
+border-radius: 5px;
 }
 
 .progress-bar-box {
-  margin-top: 55px;
-  border-radius: 25px;
-  margin-bottom: 50px;
+margin-top: 55px;
+border-radius: 25px;
+margin-bottom: 50px;
 }
 
 .admin-panel-box {
-  border-radius: 20px;
+border-radius: 20px;
 
 }
 
 .card {
-  transition: all 0.3s;
+transition: all 0.3s;
 }
 
 .card:hover {
-  transform: scale(1.05);
+transform: scale(1.05);
 }
 
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;900&display=swap');
 
 .form-holder {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      min-height: 53vh;
-      border-radius: 15px;
-      opacity: 90%;
-      margin-bottom: 150px;
-      border: 3px solid aqua;
-      width: 90%;
-      margin-left: 20px;
-      background-color: rgba(50, 122, 182, 0.8);
-      
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 53vh;
+    border-radius: 15px;
+    opacity: 90%;
+    margin-bottom: 150px;
+    border: 3px solid aqua;
+    width: 90%;
+    margin-left: 20px;
+    background-color: rgba(50, 122, 182, 0.8);
+    
 }
 
 .card {
-  background-color: rgba(50, 122, 182, 0.8);
-  opacity: 90%;
-  border-radius: 15px;
-  border: 3px solid aqua;
-  width: 90%;
-  margin-left: 20px;
+background-color: rgba(50, 122, 182, 0.8);
+opacity: 90%;
+border-radius: 15px;
+border: 3px solid aqua;
+width: 90%;
+margin-left: 20px;
 
 }
 
 .booking-form-row {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  background-color: rgba(50, 122, 182, 0.8);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: rgba(50, 122, 182, 0.8);
+-webkit-backdrop-filter: blur(5px);
+backdrop-filter: blur(5px);
 
 }
 
 
 .form-content .form-items {
-    padding: 40px;
-    display: inline-block;
-    width: 100%;
-    min-width: 540px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    text-align: left;
+  padding: 40px;
+  display: inline-block;
+  width: 100%;
+  min-width: 540px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  text-align: left;
 }
 
 .form-content h3, .card h3 {
-    color: RGB(255, 193, 7);
-    text-align: center;
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    
+  color: RGB(255, 193, 7);
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  
 }
 
 .form-content h3.form-title {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .form-content p {
-    color: black;
-    text-align: left;
-    font-size: 17px;
-    font-weight: 300;
-    line-height: 20px;
-    margin-bottom: 30px;
+  color: black;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 20px;
+  margin-bottom: 30px;
 }
 
 
 .form-check{
-    color: #fff;
+  color: #fff;
 }
 
 .form-content input[type=text], .form-content input[type=email] {
-    width: 100%;
-    padding: 9px 20px;
-    text-align: left;
-    border-radius: 6px;
-    background-color: #fff;
-    font-size: 15px;
-    font-weight: 300;
-    color: black;
-    margin-top: 16px;
+  width: 100%;
+  padding: 9px 20px;
+  text-align: left;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 15px;
+  font-weight: 300;
+  color: black;
+  margin-top: 16px;
 }
 
 
 .reservations, #th {
-  background-color:aquamarine;
+background-color:aquamarine;
+}
+
+.overlay {
+  background-color: rgba(0,0,0,0.3);
 }

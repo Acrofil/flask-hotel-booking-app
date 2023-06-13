@@ -4,7 +4,7 @@
     Select rooms
 {% endblock %}
 
-{% block main %}
+{% block select_rooms %}
 
     <div class="container progress-bar-box p-1 bg-light bg-gradient bg-opacity-50 border w-75 border-3 border-info">
 
@@ -18,7 +18,8 @@
         </div>
 
     </div>
-    <div class="row g-5 gy-5 d-flex flex-row text-start mb-5 pb-5 mx-2">
+  
+    <div class="row g-5 gy-5 d-flex flex-row text-start mb-5 pb-5 pt-2 mx-2">
         {% for room in bookable_rooms %}
             {% if room != None %}
             <div class="col-md-4">
@@ -88,54 +89,5 @@
             {% endif %}
         {% endfor %}        
     </div>
-
-<!--
-<div class="container">
-    <table>
-        <thead>
-            <tr>
-                <th>Rooms</th>
-                <th>Quantity</th>
-                <th>Checkin</th>
-                <th>Checkout</th>
-                <th>Total days</th>
-                <th>Guests</th>
-                <th>Adults</th>
-                <th>Children</th>
-                <th>Children age</th>
-                <th>Room price per DAY</th>
-                <th>All Rooms per DAY</th>
-                <th>TOTAL</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            
-                {% for room in bookable_rooms %}
-                <tr>
-                <td>{{room.room_type}}</td>
-                <td>{{room.room_quantity}}</td>
-                <td>{{room.from_date.strftime('%Y-%m-%d')}}</td>
-                <td>{{room.to_date.strftime('%Y-%m-%d')}}</td>
-                <td>{{room.total_days}}</td>
-                <td>{{room.total_guests}}</td>
-                <td>{{room.total_adults}}</td>
-                <td>{{room.total_children}}</td>
-                <td>{{room.children_age}}</td>
-                <td>{{room.price_per_day}}</td>
-                <td>{{room.price_room_stay}}</td>
-                <td>{{room.total_price}}</td>
-                </tr>
-                {% endfor %}
-
-        </tbody>
-        
-
-
-    </table>
-
-
-</div>
--->
 
 {% endblock %}

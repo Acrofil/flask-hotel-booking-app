@@ -202,32 +202,4 @@ $(document).ready(function () {
 });
 
 
-  // Get dict data from selecting rooms offer / offer_rooms.html
 
-  $.ajax({
-    url: "/booking_request",
-    type: "POST",
-    contentType: "application/json;charset=UTF-8",
-    dataType: "json",
-    data: JSON.stringify({html_data: bookable_rooms}),
-    success: function(response) {
-        console.log(response);
-    },
-
-  });
-
-  (function () {
-    'use strict'
-    const forms = document.querySelectorAll('.requires-validation')
-    Array.from(forms)
-      .forEach(function (form) {
-        form.addEventListener('submit', function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-    
-          form.classList.add('was-validated')
-        }, false)
-      })
-    })()

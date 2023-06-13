@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Reservation created
+{% endblock %}
+
+{% block main %}
+
+<div class="container progress-bar-box p-1 bg-light bg-gradient bg-opacity-50 border w-75 border-3 border-info">
+
+    <div class="position-relative m-5">
+        <div class="progress" style="height: 3px;">
+        <div class="progress-bar bg-info" role="progressbar" aria-label="Progress" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <button type="button" class="fa fa-calendar-alt position-absolute top-0 start-0 translate-middle btn btn-sm btn-light bg-warning text-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
+        <button type="button" class="bi-search position-absolute top-0 start-50 translate-middle btn btn-sm btn-light bg-warning text-dark rounded-pill" style="width: 2rem; height:2rem;"></button>
+        <button type="button" class="bi-check position-absolute top-0 start-100 translate-middle btn btn-sm btn-light bg-warning rounded-pill" style="width: 2rem; height:2rem;"></button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-header bg-warning text-dark bg-opacity-75">Reservation Succesfully Created!</div>
+            <div class="card-body bi-card-text bg-light bg-opacity-75">
+                Thank you for your reservation at cs50x hotel! Check your email for the reservation confirmation.
+                <br>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia provident labore beatae inventore, nostrum reiciendis? Saepe rerum commodi rem eius. Sapiente eos neque ex architecto!
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+{% endblock %}
+
+

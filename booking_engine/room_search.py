@@ -7,20 +7,25 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
     
     available = True
     no_availability = []
+
+    days = 0
+    for r in listed_rooms:
+        
+        if r.room_id == room.id:
+            days += 1
+    
     
     for listed_room in listed_rooms:
-
         for date in listed_room.room_availability:
-            if listed_room.id == date.listed_room_id and date.left_to_sell < rooms_request:
+            if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
                 no_availability.append(not_available)
+            
 
-
-    if available:            
+    if available and days == total_days:            
 
         for listed_room in listed_rooms:
-
 
             # If there is desired room quantity available
             if listed_room.room_id == room.id:
@@ -119,11 +124,17 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
     #room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).all()
     available = True
 
+    days = 0
+    for r in listed_rooms:
+        
+        if r.room_id == room.id:
+            days += 1
+
     no_availability = []
     for listed_room in listed_rooms:
 
         for date in listed_room.room_availability:
-            if listed_room.id == date.listed_room_id and date.left_to_sell < rooms_request:
+            if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
                 no_availability.append(not_available)
@@ -133,7 +144,7 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
         print(no_availability)
         return       
 
-    if available:
+    if available and days == total_days:
 
         room_capacity = 0
         for guests, rooms in client_search:
@@ -228,16 +239,22 @@ def multiple_rooms_search_children(room, rooms_request, total_guests, adults, to
     
     available = True
     no_availability = []
+
+    days = 0
+    for r in listed_rooms:
+        
+        if r.room_id == room.id:
+            days += 1
     
     for listed_room in listed_rooms:
 
         for date in listed_room.room_availability:
-            if listed_room.id == date.listed_room_id and date.left_to_sell < rooms_request:
+            if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
                 no_availability.append(not_available)
     
-    if available:
+    if available and days == total_days:
 
         for listed_room in listed_rooms:
         
