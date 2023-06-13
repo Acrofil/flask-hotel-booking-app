@@ -38,6 +38,10 @@ def index():
             flash("No rooms available for the selected dates!")
             return redirect("/")
         
+        if len(listed_rooms) != total_days:
+            flash(f"Try different search, some dates are taken! Try from {listed_rooms[0].listed_date}")
+            return redirect("/")
+        
         total_children = 0
 
         if children == "one":
@@ -46,9 +50,6 @@ def index():
             total_children = 2
 
         all_rooms = Room.query.join(ListedRoom).filter(ListedRoom.room_id == Room.id).filter(ListedRoom.listed_date.between(checkin, checkout - day)).all()
-
-
-        print(all_rooms)
 
         # total guests selected by client
         total_guests = adults + total_children
@@ -63,24 +64,25 @@ def index():
                         total_children <= room.max_children and 
                         total_guests >= room.min_guests or adults < room.min_guests):
                 
-                room = single_room_search(room, rooms_request, total_guests, adults, total_children, listed_rooms, checkin, checkout, first_child, second_child, children, total_days)
+                room_search = single_room_search(room, rooms_request, total_guests, adults, total_children, listed_rooms, checkin, checkout, first_child, second_child, children, total_days)
                 
-                if room:
-                    bookable_rooms.append(room)
+                if room_search:
+                    bookable_rooms.append(room_search)
 
             elif rooms_request > 1 and total_children == 0:
 
-                room = multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days, first_child, second_child, total_children)  
-
-                if room:
-                    bookable_rooms.append(room)
+                room_search = multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days, first_child, second_child, total_children)  
+                print(room.name)
+                print(room.id)
+                if room_search:
+                    bookable_rooms.append(room_search)
 
             elif rooms_request > 1 and total_children > 0:
 
-                room = multiple_rooms_search_children(room, rooms_request, total_guests, adults, total_children, listed_rooms, checkin, checkout, first_child, second_child, children, total_days)
+                room_search = multiple_rooms_search_children(room, rooms_request, total_guests, adults, total_children, listed_rooms, checkin, checkout, first_child, second_child, children, total_days)
 
-                if room:
-                    bookable_rooms.append(room)
+                if room_search:
+                    bookable_rooms.append(room_search)
 
         # List comprehension over room_prices,  preserve original order and remove duplicates            
        # one_room_bookable_offers = list(unique_everseen(one_room_search_prices, key=lambda item: frozenset(item.items())))
@@ -194,25 +196,28 @@ def booking_form():
 
         )
 
-        
-        print(room_price_per_day)
-        print(total_price)
 
         client.reservation.append(client_reservation)
 
+        availability = []
         for listed_room in listed_rooms:
 
             # Query room availability 
-            room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).first()
-            room_availability.booked_quantity += total_rooms
-            room_availability.left_to_sell -= total_rooms
+            room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).all()
+            availability.append(room_availability)
 
-            if room_availability.left_to_sell == 0:
-                room_availability.is_it_available = 0
-        
+
+        for date  in availability:
+            for room in date:
+                
+                room.booked_quantity += total_rooms
+                room.left_to_sell -= total_rooms
+
+                if room.left_to_sell == 0:
+                    room.is_it_available = 0
+
         db.session.add(client)
         db.session.commit()
-
 
         return redirect("/")
     
