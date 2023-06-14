@@ -3,7 +3,7 @@
 #### Description:
 
 ## Tools used
-- Python, Flask, Flask-SQLAlchemy, SQLite, Bootstrap, HTML, CSS, JavaScript, jQuerry
+- Python, Flask, Flask-SQLAlchemy, SQLite, Bootstrap, HTML, Jinja2, CSS, JavaScript, jQuerry
 
 # This is my personal project for [CS50x](https://cs50.harvard.edu/x/2023/) programming course by Harvard.
 This web app is developed for CS50x course in 2023. The web app is intendet for the hotel front end (client side) and backend (reception / hotel management).

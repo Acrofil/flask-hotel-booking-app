@@ -422,7 +422,6 @@ def rate_plans():
             price_adult = request.form.get("price_per_day_adult" + "_" + str(i))
             price_single_adult = request.form.get("price_per_day_single_adult" + "_" + str(i))
             price_child_under_12_reg_bed = request.form.get("price_per_day_child_under_12_regular_bed" + "_" + str(i))
-            price_child_18 = request.form.get("price_per_day_child_under_18" + "_" + str(i))
             price_child_12 = request.form.get("price_per_day_child_under_12" + "_" + str(i))
             price_child_7 = request.form.get("price_per_day_child_under_7" + "_" + str(i))
             price_child_2 = request.form.get("price_per_day_child_under_2" + "_" + str(i))
@@ -443,7 +442,6 @@ def rate_plans():
             adult = price_adult,
             single_adult = price_single_adult,
             child_under_12_rb = price_child_under_12_reg_bed,
-            child_under_18_exb = price_child_18,
             child_under_12_exb = price_child_12,
             child_under_7_exb = price_child_7,
             child_under_2_exb = price_child_2,
