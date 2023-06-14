@@ -2,11 +2,12 @@
 #### Video Demo:  <URL HERE>
 #### Description:
 
-# This is my personal project for [CS50x](https://cs50.harvard.edu/x/2023/) programming course by Harvard.
-This web app is for the hotel front end (client side) and backend (reception / hotel management).
-
 ## Tools used
-- Python, Flask, Flask-SQLAlchemy, SQLite, Bootstrap, HTML, CSS, JavaScript, JQuerry, 
+- Python, Flask, Flask-SQLAlchemy, SQLite, Bootstrap, HTML, CSS, JavaScript, jQuerry
+
+# This is my personal project for [CS50x](https://cs50.harvard.edu/x/2023/) programming course by Harvard.
+This web app is developed for CS50x course in 2023. The web app is intendet for the hotel front end (client side) and backend (reception / hotel management).
+This web app is designed with the purpose to automate reservations for the hotel and be integrated in the hotel website.
 
 ## Backend
 In the backend the hotel management staff executes the following operations:
@@ -34,8 +35,7 @@ In the backend the hotel management staff executes the following operations:
 
 ## Frontend / Client side
 
-- Client search for check-in and check-out dates with specific criteria
-- Total rooms, total adults and children. 
+- Client search for check-in and check-out dates with specific criteria - Total rooms, total adults and children. 
 - Rooms are limited per 3, clients to 6 and children to two per search.
 - If children are selected Client must input their age range.
 
@@ -53,3 +53,22 @@ In the backend the hotel management staff executes the following operations:
 ## Flask structure
 ![Model](https://github.com/Acrofil/cs50x-final-project/blob/main/treestructure.png)
 
+## Ways to improve the web app
+
+- Use wtf-forms as more secure way
+- Improve the security of the app
+- let each room have gallery instead of just one image
+- the names of the images stored for the room's can be uploaded like cdns or use uuid to change the name.
+- Option to edit rate plans, rename rate types, edit rooms.
+- Mobile expirience for hotel-managment can be improved as for now the back end is more intendet for desktop use.
+- At the end of the process of making reservation can be generated pdf with the hotel logo and custom design for pdf printing.
+- At the table with reservations can be included the option to download given reservation as csv, pdf or other format
+- When sending mail for confirmation the reservation pdf can be included too.
+- Overall expirience in the web app can be improved with using Ajax and limit page reloads and more easy data transfer
+- If there are no rooms to accommodate the current search or not available for the selected dates - return suggested dates for when are gonna be available.
+- Implement some paying system.
+- Improve client side visuals
+- Improve search
+
+
+*For now is not suitable for real usage
