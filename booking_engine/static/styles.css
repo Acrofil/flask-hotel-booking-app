@@ -35,7 +35,11 @@ margin-left: 250px;
 
   /* Needed to position the navbar */
   position: relative;
+  background-color: rgba(0, 0, 0, 0.5);
 }
+
+
+
 
 #children {
   display: block;
@@ -293,10 +297,20 @@ backdrop-filter: blur(5px);
 background-color:aquamarine;
 }
 
-.overlay {
-  background-color: rgba(0,0,0,0.3);
-}
 
 .text-headings-box {
   border-radius: 10px;
+}
+
+.search-form, .progress-bar-box {
+  
+  background-color:rgba(0, 0, 0, 0.3);
+}
+
+
+.datepicker td,th{
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: black;
 }

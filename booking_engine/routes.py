@@ -1,8 +1,9 @@
 from flask import flash, render_template, redirect, session, request, jsonify, json
 from flask_session import Session
+from flask_mail import Message
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
-from booking_engine import app, db, os, basedir
+from booking_engine import app, db, os, basedir, mail
 from booking_engine.helpers import login_required, allowed_file, usd
 from booking_engine.room_search import single_room_search, multiple_rooms_search_no_children, multiple_rooms_search_children
 from booking_engine.models import Admin, Room, RateType, RatePlan, ListedRoom, RoomAvailability, bookings, Client, Reservation
@@ -218,6 +219,16 @@ def booking_form():
 
         db.session.add(client)
         db.session.commit()
+
+        try:
+            msg = Message('Hello', sender = 'cs50xhotel@gmail.com', recipients = [f'{client.email}'])
+            msg.body = f"""Hello {client.first_name} {client.last_name}! Thank you for your reservation! The reservation number is {client_reservation.reservation_number} 
+            with check-in date {client_reservation.check_in}. If you have any questions or information is needed you can always call us on - +1-949-468-2750.
+            """
+            mail.send(msg)
+        except:
+            return render_template("reservation_created.html")
+
 
         return render_template("reservation_created.html")
     

@@ -8,7 +8,7 @@
 {% block search %}
 <div class="search-container d-flex flex-column justify-content-center  container p-1">
     
-    <div class="container progress-bar-box p-1 bg-light bg-gradient bg-opacity-50 border w-75 border-3 border-info">
+    <div class="container progress-bar-box p-1  border w-75 border-3 border-info">
 
         <div class="position-relative m-5 ">
             <div class="progress" style="height: 3px;">
@@ -21,14 +21,14 @@
     
     </div>
 
-    <form class="search-form p-1 bg-light shadow bg-gradient bg-shadow  bg-opacity-50 border border-3 border-info" id="form" action="{{ url_for('index') }}" method="post">
+    <form class="search-form p-1  shadow  bg-shadow  border border-3 border-info" id="form" action="{{ url_for('index') }}" method="post">
         <div class="container p-3">
             <div class="row d-flex">
                 <div class="col-md d-flex justify-content-center">
 
                     <div class="dates d-flex shadow" id="datepicker1">
                         <span class="input-group-addon p-1 bg-light  bg-transparent" data-target="#datepicker1" data-toggle="datetimepicker">
-                            <i class="bi bi-calendar text-dark icon bg-transparent "></i>
+                            <i class="bi bi-calendar text-light icon bg-transparent "></i>
                         </span>
                         <input type="text" class="calendar-input form-control was-validated" required id="checkin" name="checkin" placeholder="Check In" autocomplete="off"/>
                         
@@ -37,7 +37,7 @@
                     <div class="dates d-flex shadow">
                         <input type="text" class="calendar-input form-control was-validated" required id="checkout" name="checkout" placeholder="Check Out" autocomplete="off" >
                         <span class="calendar-input input-group-addon p-1 bg-light bg-transparent" data-target="#datepicker1" data-toggle="datetimepicker">
-                            <span class="bi bi-calendar text-dark icon bg-transparent  "></span>
+                            <span class="bi bi-calendar text-light icon bg-transparent  "></span>
                         </span>
                     </div>
                 </div>

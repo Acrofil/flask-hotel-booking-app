@@ -2,8 +2,11 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
+mail= Mail(app)
+
 app.config['SECRET_KEY'] = 'CS50X-HOTEL-BOOKING-ENGINE-SECRET-PASSWORD!@##$#%$#434343-43-443434-...//'
 csrf = CSRFProtect(app)
 
@@ -24,13 +27,20 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 
-
 @app.after_request
 def apply_caching(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers["HTTP-HEADER"] = "VALUE"
     return response
 
+# Configure mail
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'cs50xhotel@gmail.com'
+app.config['MAIL_PASSWORD'] = 'mymailpassword'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 
 db = SQLAlchemy(app)
