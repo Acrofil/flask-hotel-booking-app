@@ -48,8 +48,8 @@ In the backend the hotel management staff executes the following operations:
 - Client and Reservation are stored in the hotel database and displayed in the reservation tab
 
 ## Database structure
-![](<images/table sqltablesdesign.png>)
+![Model](https://github.com/Acrofil/cs50x-final-project/blob/main/sqltablesdesign.png)
 
 ## Flask structure
-![](<images/table treestructure.png>)
+![Model](https://github.com/Acrofil/cs50x-final-project/blob/main/treestructure.png)
 
