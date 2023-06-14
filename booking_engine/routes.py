@@ -332,9 +332,10 @@ def create_rooms():
 
         if room_image and allowed_file(room_image.filename):
             filename = secure_filename(room_image.filename)
-            room_image.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename))
-            room_image_new = filename
-            flash('succes!')
+            if filename:
+                room_image.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], filename))
+                room_image_new = filename
+                flash('succes!')
         
         room = Room(
             name = room_name,

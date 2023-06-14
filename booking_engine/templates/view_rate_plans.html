@@ -7,7 +7,10 @@
 
 {% block main %}
 
-<h3 class="mt-2 text-primary">RATE PLANS</h3>  
+ 
+<div class="text-headings-box container bg-secondary bg-gradient bg-opacity-75">
+    <h3 class="mt-2 text-warning">RATE PLANS</h3> 
+</div>
 
 <div class="container-fluid">
 {% for rate_type in rate_plans %}
@@ -15,12 +18,13 @@
 <h3>{{ rate_type.rate_name }}</h3>
 <input class="btn btn-success bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "button" name = "Test1" id="show{{ rate_type.id }}" value = "Show/Hide">
 
-<form action="/view_rate_plans" method="post">
+<form action="{{ url_for('view_rate_plans') }}" method="post">
     <div class="admin-panel-box container-fluid d-flex justify-content-start">   
         <table  class="mt-5 border border-3 border-info hide_row{{ rate_type.id }}"  style="width: 50%;" id="all_rate_plans">
             <tr class="">
                 <th>Name</th>
                  <td class="rate_plan_view"><strong class="text-primary">{{ rate_type.rate_name }}</strong></td>
+                 <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" />
                 <td><button type="submit" 
                         class="btn btn-danger"  
                         id="delete" name="delete" 

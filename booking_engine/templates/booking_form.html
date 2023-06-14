@@ -18,10 +18,10 @@
     </div>
 </div>
 
-<form action="/booking_form" method="post" enctype="multipart/form-data">
+<form action="{{ url_for('booking_form') }}" method="post" enctype="multipart/form-data">
 <div class="row booking-form-row g-5 gy-5 d-flex flex-row justify-content-center mb-5">
     <div class="col-md-4 justify-content-center">
-        <div class="card" id="card-form">
+        <div class="card booking-card" id="card-form">
             <div class="card-body ">
                 <h3 class="text-center">Reservation Summary</h3>
                 <table style="width:100%" id="all_rate_plans" class="">
@@ -125,6 +125,7 @@
                       
     
                                 <div class="form-button mt-5 d-flex flex-row justify-content-center">
+                                    <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
                                     <button id="submit" type="submit" class="btn btn-warning">Book Now</button>
                                 </div>
                             </form>

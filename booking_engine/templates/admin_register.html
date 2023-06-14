@@ -6,7 +6,7 @@
 
 {% block main %}
 
-    <form action="/admin_register" method="post">
+    <form action="{{ url_for('admin_register') }}" method="post">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto was-validated" required id="admin" name="admin" placeholder="Username" type="text">
         </div>
@@ -16,6 +16,7 @@
         <div class="mb-3">
             <input class="form-control mx-auto w-auto was-validated" required id="confirm_password" name="confirm_password" placeholder="Confirm password" type="password">
         </div>
+        <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
         <button class="btn btn-warning text-dark shadow bg-gradient" type="submit">Register</button>
     </form>
 

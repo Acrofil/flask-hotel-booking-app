@@ -137,12 +137,7 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
             if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
-                no_availability.append(not_available)
-
-    if not available:
-        flash("No availability for some dates")
-        print(no_availability)
-        return       
+                no_availability.append(not_available)    
 
     if available and days == total_days:
 

@@ -10,9 +10,12 @@
 
 <!-- Add rooms for sale / booking -->
 
-<h3 class="mb-2">Add available rooms for the selected dates</h3>
+
+<div class="text-headings-box container bg-secondary bg-gradient bg-opacity-75">
+  <h3 class="mb-2 text-warning">ADD AVAILABLE ROOMS FOR SELECTED DATES</h3>
+</div>
 <div class="admin-panel-box container bg-light border border-1 border-info shadow-lg">
-    <form class="form p-5 d-flex" action="/add_room" method="post" id="availability_dates">
+    <form class="form p-5 d-flex" action="{{ url_for('add_room') }}" method="post" id="availability_dates">
 
         <div>
           <select class="form-select d-flex" style="width: 500px; height: 30px;" name="selected_room" id="selected_room">
@@ -48,6 +51,7 @@
             </div>  
         </div>
         <div>
+          <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
           <input class="btn btn-primary bg-gradient mb-2 text-light mt-3 rounded shadow shadow-lg mt-5" type = "submit" name = "Test1" id="show_dates" value = "ADD ROOM">
       </div>          
     </form>
@@ -55,9 +59,12 @@
 
 <!--Select Dates to check availability for all room types -->
 
-<h3 class="mb-2 mt-5">Check availability for the selected dates</h3>
+
+<div class="text-headings-box container bg-secondary bg-gradient bg-opacity-75 mt-5">
+  <h3 class="mb-2 text-warning">CHECK AVAILABILITY FOR SELECTED DATES</h3>
+</div>
 <div class="admin-panel-box container bg-light border border-1 border-info shadow-lg">
-    <form class="form p-1" action="/availability" method="post" id="availability_dates">
+    <form class="form p-1" action="{{ url_for('availability') }}" method="POST" id="availability_dates">
 
         <h5>Dates</h5>
         
@@ -77,14 +84,17 @@
             </div>
 
             <div>
+                <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
                 <input class="btn btn-primary bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" type = "submit" name = "Test1" id="show_dates" value = "SHOW">
             </div> 
         </div>            
     </form>
 </div>
 
-<h3 class="mt-5 mb-4">Availability Calendar</h3>
 
+<div class="text-headings-box container bg-secondary bg-gradient bg-opacity-75 mt-5">
+  <h3 class="mt-5 text-warning">AVAILABILITY CALENDAR</h3>
+</div>
 
 
 <!-- Loop each room in rooms -->
@@ -208,9 +218,10 @@
       </tr>
     </tbody>
   </table>
-  <form action="/stop_sale" method="POST">
+  <form action="{{ url_for('stop_sale') }}" method="POST">
     <div class="testing bg-light bg-gradient opacity-75 container-fluid d-block border border-1 border-danger shadow">
       <h5 class="mt-4">STOP / ADD SALE</h5>
+      <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
       <input type="text" class="form-control"  id="start_date" name="start_stop_date" placeholder="Start date" autocomplete="off" >
       <input type="text" class="form-control mt-2"  id="end_date" name="end_stop_date" placeholder="End Date" autocomplete="off" >
       <button class="btn btn-danger bg-gradient  text-light  rounded shadow shadow-lg mt-5 mb-3" type = "submit" name = "stop_sale" id="show_dates" value = "STOP">STOP SALE</button>

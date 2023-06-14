@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/login" method="post" class="">
+    <form action="{{ url_for('login') }}" method="post" class="">
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
         </div>
         <div class="mb-3">
             <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
         </div>
+        <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
         <button class="btn btn-primary" type="submit">Log In</button>
     </form>
     

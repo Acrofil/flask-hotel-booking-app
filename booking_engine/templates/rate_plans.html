@@ -8,7 +8,7 @@
 
 {% block main %}
 <div class="admin-panel-box mb-5 mt-5 container bg-light border border-3 border-info shadow-lg">
-    <form class="form p-1" action="/rate_plans" method="post" id="rate_plans_form">
+    <form class="form p-1" action="{{ url_for('rate_plans') }}" method="post" id="rate_plans_form">
         <div class="container-fluid d-flex justify-content-center">
             <div class="row">
                 <h3 class="mt-2 text-warning">RATE PLANS</h3>         
@@ -292,6 +292,7 @@
                                 autocomplete="off">     
                                              
                         </div>
+                        <input type="hidden" name="csrf_token" value = "{{ csrf_token() }}" /> 
                         <button class="btn btn-danger bg-gradient mb-3 text-light mt-3 rounded shadow shadow-lg" id="remove_rate_plan" value="remove" type="button">REMOVE</button>
                     </div>
                 </div>

@@ -196,7 +196,7 @@ $(document).ready(function(){
 
     
 
-let table = new DataTable('#reservations');
+let table = new DataTable('#reservations_table');
 $(document).ready(function () {
     $('#example').DataTable();
 });
