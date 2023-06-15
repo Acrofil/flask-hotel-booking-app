@@ -45,7 +45,5 @@ mail = Mail(app)
 
 db = SQLAlchemy(app)
 
-app.debug = True
-app.app_context().push()
 
 from booking_engine import routes
