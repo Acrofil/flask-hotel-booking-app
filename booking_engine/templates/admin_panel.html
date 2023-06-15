@@ -58,9 +58,9 @@
                 <td>{{ reservation.check_in.strftime('%d-%m-%Y') }}</td>
                 <td>{{ reservation.check_out.strftime('%d-%m-%Y') }}</td>
                 <td>{{ reservation.total_days }}</td>
-                <td>{{ reservation.room_price_day }}</td>
-                <td>{{ reservation.all_rooms_price_day }}</td>
-                <td>{{ reservation.total_price }}</td>               
+                <td>${{ reservation.room_price_day }}</td>
+                <td>${{ reservation.all_rooms_price_day }}</td>
+                <td>${{ reservation.total_price }}</td>               
             </tr>
             {% endfor %}
             {% endfor %}

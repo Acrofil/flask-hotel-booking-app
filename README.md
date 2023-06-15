@@ -7,7 +7,7 @@
 
 # This is my personal project for [CS50x](https://cs50.harvard.edu/x/2023/) programming course by Harvard.
 This web app is developed for CS50x course in 2023. The web app is intendet for the hotel front end (client side) and backend (reception / hotel management).
-This web app is designed with the purpose to automate reservations for the hotel and be integrated in the hotel website.
+This web app is designed with the purpose to automate reservations for the hotel.
 
 ## Backend
 In the backend the hotel management staff executes the following operations:
@@ -36,7 +36,7 @@ In the backend the hotel management staff executes the following operations:
 ## Frontend / Client side
 
 - Client search for check-in and check-out dates with specific criteria - Total rooms, total adults and children. 
-- Rooms are limited per 3, clients to 6 and children to two per search.
+- Rooms are limited to 3, clients to 6 and children to two per search.
 - If children are selected Client must input their age range.
 
 - If the search is succesfull - There are room/s that meet the Client criteria
@@ -66,9 +66,14 @@ In the backend the hotel management staff executes the following operations:
 - When sending mail for confirmation the reservation pdf can be included too.
 - Overall expirience in the web app can be improved with using Ajax and limit page reloads and more easy data transfer
 - If there are no rooms to accommodate the current search or not available for the selected dates - return suggested dates for when are gonna be available.
-- Implement some paying system.
+- Implement some paying service.
 - Improve client side visuals
 - Improve search
 
+## How to test/install
+- clone the repo
+- download the repo to local machine
+- build from requirements.txt
+- activate .venv and 'python run.py'
 
 *For now is not suitable for real usage

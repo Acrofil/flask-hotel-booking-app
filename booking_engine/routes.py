@@ -92,6 +92,10 @@ def index():
         booked_ago = ['2hrs', '5hrs', '1hr', '18hrs', '23hrs', '24hrs', '15hrs', '17hrs', '3hrs', '35min', '7hrs', '12hrs', '1day', '2days', '3days']
         if bookable_rooms:
             return render_template("offer_rooms.html", bookable_rooms=bookable_rooms, booked_ago=booked_ago)
+
+        if not bookable_rooms:
+            flash("No availability for the selected dates!")
+            return redirect("/")
                                 
         return redirect("/")
     else:

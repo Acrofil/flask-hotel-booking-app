@@ -17,7 +17,7 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
     
     for listed_room in listed_rooms:
         for date in listed_room.room_availability:
-            if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
+            if listed_room.id == date.listed_room_id and listed_room.room_id == room.id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
                 no_availability.append(not_available)
@@ -70,10 +70,21 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
                     # For single person with room that has min guest of 1 person
                     if adults == 1 and room.min_guests == 1 and not total_children:
                         price_per_day_adults = adults * rp.single_adult
+                    
+                    if adults == 1 and room.min_guests == 1 and total_children != 0:
+                        price_per_day_adults = adults * rp.adult
+                        
+
+                        if (room.max_adults - adults) == total_children:
+                            price_per_day_childen = total_children * rp.child_under_12_rb
+                        else:
+    
+                            price_per_day_childen = ((total_children - 1) * rp.child_under_12_rb) + ( (total_children - 1) * rp.child_under_12_exb if second_child == '7-12' else rp.child_under_7_exb if second_child == '2-6' else rp.child_under_2_exb if second_child == '0-2' else 0)
+                        
 
                     # Offer the room for the full price even if adults are less than req minimum guests   
                     if adults < room.min_guests and total_children == 0:
-                        price_per_day_adults = room.min_guests * rp.adult
+                        price_per_day_adults =  rp.single_adult
                     
                     # Adults + children under 12 y.o on regular beds + exb
                     if adults < room.min_guests and total_children <= room.max_children and total_children != 0 and adults + total_children <= room.max_guests:
@@ -118,7 +129,7 @@ def single_room_search(room, rooms_request, total_guests, adults, total_children
     
 
 def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults, listed_rooms, checkin, checkout, total_days, first_child, second_child, total_children):
-                
+      
     client_search = [(adults, rooms_request)]        
 
     #room_availability = RoomAvailability.query.filter(RoomAvailability.listed_room_id == listed_room.id).filter(Room.id == room.id).all()
@@ -131,13 +142,13 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
             days += 1
 
     no_availability = []
-    for listed_room in listed_rooms:
 
+    for listed_room in listed_rooms:
         for date in listed_room.room_availability:
-            if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
+            if listed_room.id == date.listed_room_id and listed_room.room_id == room.id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
-                no_availability.append(not_available)    
+                no_availability.append(not_available)
 
     if available and days == total_days:
 
@@ -149,12 +160,9 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
                 
         # Loop all listed rooms for the selected dates
         for listed_room in listed_rooms:
-            print(listed_room.room_id)
-            print(room.id)
             
             # Check if we have the requeired quantity for the selected dates
             if room.id == listed_room.room_id:
-                print("TEEEST")
         
                 rate_plan = (RatePlan.query.filter(RatePlan.rate_type_id == listed_room.rate_type_id).
                         filter(RatePlan.from_date <= checkin).
@@ -162,7 +170,6 @@ def multiple_rooms_search_no_children(room, rooms_request, total_guests, adults,
                             
                                 
                 adults_price_per_day = 0
-                print(adults_price_per_day)
                                     
                 if room.min_guests == 1 and room_capacity <= room.max_adults and room_capacity != 1:
                     adults_price_per_day = total_guests * rate_plan.adult
@@ -244,7 +251,7 @@ def multiple_rooms_search_children(room, rooms_request, total_guests, adults, to
     for listed_room in listed_rooms:
 
         for date in listed_room.room_availability:
-            if listed_room.id == date.listed_room_id and (date.left_to_sell - rooms_request) < 0:
+            if listed_room.id == date.listed_room_id and listed_room.room_id == room.id and (date.left_to_sell - rooms_request) < 0:
                 available = False
                 not_available = datetime.strftime(listed_room.listed_date, "%d %m")
                 no_availability.append(not_available)
