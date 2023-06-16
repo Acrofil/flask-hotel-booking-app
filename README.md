@@ -1,4 +1,4 @@
-# CS50X - HOTEL BOOKING Flask app
+# CS50X - HOTEL BOOKING Web app with Flask
 #### Video Demo:  <https://www.youtube.com/watch?v=DPIXv9mg8Is>
 #### Description:
 
@@ -60,13 +60,17 @@ In the backend the hotel management staff executes the following operations:
 - let each room have gallery instead of just one image
 - the names of the images stored for the room's can be uploaded like cdns or use uuid to change the name.
 - Option to edit rate plans, rename rate types, edit rooms.
-- Mobile expirience for hotel-managment can be improved as for now the back end is more intendet for desktop use.
+- Mobile exp for hotel-managment can be improved as for now the back end is more intendet for desktop use.
 - At the end of the process of making reservation can be generated pdf with the hotel logo and custom design for pdf printing.
 - At the table with reservations can be included the option to download given reservation as csv, pdf or other format
 - When sending mail for confirmation the reservation pdf can be included too.
-- Overall expirience in the web app can be improved with using Ajax and limit page reloads and more easy data transfer
+- Overall exp in the web app can be improved with using Ajax and limit page reloads and more easy data transfer
 - If there are no rooms to accommodate the current search or not available for the selected dates - return suggested dates for when are gonna be available.
 - Implement some paying service.
+- Include in the reservation the rate plan - breakfast, half board etc
 - Improve client side visuals
 - Improve search
+- Edit created rooms
+- Delete or Cancel reservation
+- Send reservation to the hotel mail or server as csv or other format.
 
