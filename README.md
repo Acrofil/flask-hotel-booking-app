@@ -1,5 +1,5 @@
 # CS50X - HOTEL BOOKING Flask app
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://www.youtube.com/watch?v=DPIXv9mg8Is>
 #### Description:
 
 ## Tools used
