@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
@@ -7,7 +8,9 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 mail= Mail(app)
 
-app.config['SECRET_KEY'] = 'CS50X-HOTEL-BOOKING-ENGINE-SECRET-PASSWORD!@##$#%$#434343-43-443434-...//'
+load_dotenv()
+
+app.secret_key = os.getenv('SECRET_KEY', 'for dev') 
 csrf = CSRFProtect(app)
 
 # Set upload folder

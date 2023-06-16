@@ -3,7 +3,7 @@
 #### Description:
 
 ## Tools used
-- Python, Flask, Flask-SQLAlchemy, SQLite, Bootstrap, HTML, Jinja2, CSS, JavaScript, jQuerry
+- Python, Flask, Flask-SQLAlchemy, SQLite3, Bootstrap, HTML, Jinja2, CSS, JavaScript, jQuerry
 
 # This is my personal project for [CS50x](https://cs50.harvard.edu/x/2023/) programming course by Harvard.
 This web app is developed for CS50x course in 2023. The web app is intendet for the hotel front end (client side) and backend (reception / hotel management).
@@ -31,7 +31,7 @@ In the backend the hotel management staff executes the following operations:
 - Reservations tab
 - Here all reservations are displayed in a table with all the information needed for the staff
 - The table is searchable and can be ordered and has pagination.
-- The plugin iam using for this table is from datatables.net
+- The plugin iam using for this table is from [datatables.net](https://datatables.net/) 
 
 ## Frontend / Client side
 
