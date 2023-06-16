@@ -12,9 +12,8 @@ from iteration_utilities import unique_everseen
 import pandas as pd
 import random
 
-# Global variable to hold the reservation request
-RESERVATION_REQUEST = None
 
+# Main index from where the client performs the search
 @app.route("/", methods=["GET", "POST"])
 def index():
 
@@ -85,10 +84,8 @@ def index():
                 if room_search:
                     bookable_rooms.append(room_search)
 
-        # List comprehension over room_prices,  preserve original order and remove duplicates            
-       # one_room_bookable_offers = list(unique_everseen(one_room_search_prices, key=lambda item: frozenset(item.items())))
-        #print(one_room_search_prices)
         
+        # Display under the cards with options random booked status
         booked_ago = ['2hrs', '5hrs', '1hr', '18hrs', '23hrs', '24hrs', '15hrs', '17hrs', '3hrs', '35min', '7hrs', '12hrs', '1day', '2days', '3days']
         if bookable_rooms:
             return render_template("offer_rooms.html", bookable_rooms=bookable_rooms, booked_ago=booked_ago)
@@ -143,11 +140,11 @@ def booking_request():
 
         reservation_data.append(reservation)
 
-        RESERVATION_REQUEST = reservation_data
     
-        return render_template("booking_form.html", reservation_data=RESERVATION_REQUEST, usd=usd)
+        return render_template("booking_form.html", reservation_data=reservation_data)
     
-       
+
+# Get the guest data and reservation data and create client and reservation objects linked together in bookings table       
 @app.route("/booking_form", methods=["GET", "POST"])
 def booking_form():
     
@@ -275,6 +272,7 @@ def logout():
 
     return redirect("/")
 
+# This will be turned off from the html layout and navbar
 @app.route("/admin_register", methods=["GET", "POST"])
 def admin_register():
 
@@ -301,6 +299,7 @@ def admin_register():
 
     return render_template("admin_register.html")
 
+# Only used to render the Reservations tab no other functionality for now
 @app.route("/admin_panel", methods=["GET", "POST"])
 @login_required
 def admin_panel():
@@ -317,12 +316,14 @@ def admin_panel():
 
         return render_template("admin_panel.html", clients=clients, rooms=rooms)
 
+# This route handles the room creation process
 @app.route("/create_rooms", methods=["GET", "POST"])
 @login_required
 def create_rooms():
 
     if request.method == "POST":
 
+        # First we get the management inputed data
         room_name = request.form.get("room")
         max_guests = int(request.form.get("max_guests"))
         min_guests = int(request.form.get("min_guests"))
@@ -332,6 +333,7 @@ def create_rooms():
         room_image = request.files.get("room_image")
         room_description = request.form.get("room_description")
 
+        # Run some basic checks
         if max_guests == max_adults and max_children > 0 or max_adults > max_guests:
             flash("Max capacity exceeded!")
             return redirect("/create_rooms")
@@ -345,6 +347,8 @@ def create_rooms():
         
         room_image_new = ''
 
+        # Check if there is umg uploaded. Check if filename is supported and secure.
+        # Here can be improved with using uuid for creating unique id for this room only or upload and use as cdn link
         if room_image and allowed_file(room_image.filename):
             filename = secure_filename(room_image.filename)
             if filename:
@@ -374,6 +378,7 @@ def create_rooms():
 
         return render_template("create_rooms.html", room_info=room_info)
 
+# Used to delete rooms
 @app.route("/delete_rooms", methods=["GET", "POST"])
 @login_required
 def delete_rooms():
@@ -388,6 +393,7 @@ def delete_rooms():
             db.session.commit()
             return redirect("/create_rooms")
 
+# This route handles rate plans creation
 @app.route("/rate_plans", methods=["GET", "POST"])
 @login_required
 def rate_plans():
@@ -430,6 +436,7 @@ def rate_plans():
             price_child_7 = request.form.get("price_per_day_child_under_7" + "_" + str(i))
             price_child_2 = request.form.get("price_per_day_child_under_2" + "_" + str(i))
 
+            # If something wrong all_data_is_correct will be set to False
             if (price_adult.isalpha() or
                     price_single_adult.isalpha() or
                     price_child_under_12_reg_bed.isalpha() or
@@ -456,6 +463,7 @@ def rate_plans():
                                             
             db.session.add(rate_plan_rates)
 
+        # Commit only if its True
         if all_data_is_correct:
             db.session.commit()
 
@@ -465,7 +473,7 @@ def rate_plans():
 
         return render_template("rate_plans.html")
     
-
+# Route to view the rate plans
 @app.route("/view_rate_plans", methods=["GET", "POST"])
 @login_required
 def view_rate_plans():
@@ -501,7 +509,7 @@ def view_rate_plans():
     
     return render_template("view_rate_plans.html", rate_plans=rate_plans, headings=headings, usd=usd)
 
-# Availability
+# Availability route used to render availability calendar for selected room
 @app.route("/availability", methods=["GET", "POST"])
 @login_required
 def availability():
@@ -527,6 +535,7 @@ def availability():
 
         return render_template("availability.html", all_rooms=all_rooms, rate_types=rate_types)
 
+# Stop sale selected room for selected dates
 @app.route("/stop_sale", methods=["GET", "POST"])
 @login_required
 def stop_sale():
