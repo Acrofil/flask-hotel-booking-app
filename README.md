@@ -70,10 +70,3 @@ In the backend the hotel management staff executes the following operations:
 - Improve client side visuals
 - Improve search
 
-## How to test/install
-- clone the repo
-- download the repo to local machine
-- build from requirements.txt
-- activate .venv and 'python run.py'
-
-*For now is not suitable for real usage

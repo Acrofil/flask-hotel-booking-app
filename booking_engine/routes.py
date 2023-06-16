@@ -506,29 +506,24 @@ def view_rate_plans():
 @login_required
 def availability():
 
+    all_rooms = Room.query.all()
+    rate_types = RateType.query.all()
+
     if request.method == "POST":
     
 
-        rooms = Room.query.all()
-        rate_types = RateType.query.all()
-        rate_types = RateType.query.all()
-
+        selected_room = request.form.get("selected_room")
         from_date = datetime.strptime(request.form.get("from_date"), "%d-%m-%Y")
         to_date = datetime.strptime(request.form.get("to_date"), "%d-%m-%Y")
         dates = pd.date_range(start=from_date, end=to_date)
 
-        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(from_date, to_date)).all()
-        available_rooms = RoomAvailability.query.all()
-
-
-        return render_template("availability.html", rooms=rooms, dates=dates, listed_rooms=listed_rooms, available_rooms=available_rooms, rate_types=rate_types)
+        room = Room.query.filter_by(id=selected_room).first()
+        listed_rooms = ListedRoom.query.filter(ListedRoom.listed_date.between(from_date, to_date)).filter(ListedRoom.room_id == room.id).join(RoomAvailability).filter(RoomAvailability.listed_room_id == ListedRoom.id).all()
+       
+  
+        return render_template("availability.html", all_rooms=all_rooms, room=room, dates=dates, listed_rooms=listed_rooms, rate_types=rate_types)
 
     else:
-
-        all_rooms = Room.query.all()
-        rate_types = RateType.query.all()
-
-        
 
         return render_template("availability.html", all_rooms=all_rooms, rate_types=rate_types)
 
@@ -566,7 +561,7 @@ def stop_sale():
                     db.session.commit()
 
 
-        return render_template("availability.html")
+        return redirect("/availability")
 
 
 

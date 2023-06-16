@@ -20,8 +20,8 @@
         <div>
           <select class="form-select d-flex" style="width: 500px; height: 30px;" name="selected_room" id="selected_room">
             <option selected disabled>Select Room</option>
-            {% for room in all_rooms %}
-              <option value="{{ room.id }}">{{ room.name }}</option>
+            {% for rm in all_rooms %}
+              <option value="{{ rm.id }}">{{ rm.name }}</option>
             {% endfor %}
           </select>
           <select class="form-select d-flex mt-2" style="width: 500px; height: 30px;" name="rate_name" id="rate_name">
@@ -59,13 +59,22 @@
 
 <!--Select Dates to check availability for all room types -->
 
-
 <div class="text-headings-box container bg-secondary bg-gradient bg-opacity-75 mt-5">
   <h3 class="mb-2 text-warning">CHECK AVAILABILITY FOR SELECTED DATES</h3>
 </div>
 <div class="admin-panel-box container bg-light border border-1 border-info shadow-lg">
     <form class="form p-1" action="{{ url_for('availability') }}" method="POST" id="availability_dates">
         
+
+        <div>
+          <select class="form-select mb-3 mt-3 mx-5" style="width: 500px; height: 30px;" name="selected_room" id="selected_room">
+            <option selected disabled>Select Room</option>
+            {% for rm in all_rooms %}
+              <option value="{{ rm.id }}">{{ rm.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
         <div class="row d-flex justify-content-start">
             <div class="dates_rate_plans d-flex shadow mb-4">
                 <input type="text" class="form-control was-validated"  id="from_date" name="from_date" placeholder="Start Date" autocomplete="off" >
@@ -94,9 +103,7 @@
   <h3 class="mt-5 text-warning">AVAILABILITY CALENDAR</h3>
 </div>
 
-
-<!-- Loop each room in rooms -->
-{% for room in rooms %}
+{% if room %}
 <div class="container-fluid d-flex justify-content-center">
 <div class="container-fluid mt-5  d-flex justify-content-center">
 <table class="border border-3 border-info bg-light bg-gradient shadow" border="1" width="50%" id="availability_table">
@@ -111,7 +118,7 @@
             {{date.strftime('%a')}}
 
             {% for listed_room in listed_rooms %}
-              {% for available_room in available_rooms %}
+              {% for available_room in listed_room.room_availability %}
                 {% if listed_room.room_id == room.id and listed_room.listed_date == date and available_room.listed_room_id == listed_room.id %}
                   {% if available_room.is_it_available == 1 %}
                     <br>
@@ -132,7 +139,7 @@
   
     <tbody>
       <tr>
-        <td rowspan="7">{{ room.name }}</td>
+        <td rowspan="7">{{room.name}}</td>
         <!-- room.name -->
       </tr>
       <tr class="border border-2">
@@ -172,7 +179,7 @@
 
               {% if listed_room.room_id == room.id and listed_room.listed_date == date %}
 
-                {% for available_room in available_rooms %}
+                {% for available_room in listed_room.room_availability %}
                   
                   {% if available_room.listed_room_id == listed_room.id %}
 
@@ -197,7 +204,7 @@
 
             {% if listed_room.room_id == room.id and listed_room.listed_date == date %}
 
-              {% for available_room in available_rooms %}
+              {% for available_room in listed_room.room_availability %}
                 
                 {% if available_room.listed_room_id == listed_room.id %}
 
@@ -223,13 +230,13 @@
       <input type="text" class="form-control"  id="start_date" name="start_stop_date" placeholder="Start date" autocomplete="off" >
       <input type="text" class="form-control mt-2"  id="end_date" name="end_stop_date" placeholder="End Date" autocomplete="off" >
       <button class="btn btn-danger bg-gradient  text-light  rounded shadow shadow-lg mt-5 mb-3" type = "submit" name = "stop_sale" id="show_dates" value = "STOP">STOP SALE</button>
-      <input type="text" value="{{ room.id }}" style="display: none;" id="stop_sale_room_id" name="stop_sale_room_id">
+      <input type="text" value="{{room.id}}" style="display: none;" id="stop_sale_room_id" name="stop_sale_room_id">
       <button class="btn btn-success bg-gradient text-light  rounded shadow shadow-lg mt-3 mb-5" type = "submit" name = "add_sale" id="show_dates" value = "ADD">ADD SALE</button>
     </div>
     
   </form>
 </div>
 </div>
-{% endfor %}
+{% endif %}
 
 {% endblock %}
