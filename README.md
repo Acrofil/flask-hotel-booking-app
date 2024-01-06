@@ -1,12 +1,12 @@
-# CS50X - HOTEL BOOKING Web app with Flask
+# Hotel booking Web app with Flask, project for CS50X
 #### Video Demo:  <https://www.youtube.com/watch?v=DPIXv9mg8Is>
 #### Description:
 
 ## Tools used
-- Python, Flask, Flask-SQLAlchemy, SQLite3, Bootstrap, HTML, Jinja2, CSS, JavaScript, jQuerry
+- Python, Flask, Flask-SQLAlchemy, SQLite3, HTML5, Jinja2, CSS, Bootstrap, JavaScript, jQuerry
 
 # This is my personal project for [CS50x](https://cs50.harvard.edu/x/2023/) programming course by Harvard.
-This web app is developed for CS50x course in 2023. The web app is intendet for the hotel front end (client side) and backend (reception / hotel management).
+This web app is developed for CS50x course in 2023. The web app is intended for the hotel front end (client side) and backend (reception / hotel management).
 This web app is designed with the purpose to automate reservations for the hotel.
 
 ## Backend
